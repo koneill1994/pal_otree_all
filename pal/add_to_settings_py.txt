@@ -1,0 +1,6 @@
+    dict(
+       name='pal',
+       display_name="pal",
+       num_demo_participants=4,
+       app_sequence=['pal']
+    )

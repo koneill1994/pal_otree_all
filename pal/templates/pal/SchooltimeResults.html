@@ -1,0 +1,113 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Schooltime results
+{% endblock %}
+
+{% block content %}
+
+<ul>
+    {% for p in group.get_players %}
+        <li>
+            <div id="playerchoice">
+                <p id="result_{{p.id_in_group}}">
+                    Player {{p.id_in_group}} chose {{p.pair_choice}}
+                </p>
+            </div>
+        </li>
+    {%endfor%}
+</ul>
+
+<div id="hidden_input">
+    {% formfield player.hovercount1 %}
+    {% formfield player.hovertime1  %}
+    {% formfield player.hover_json1 %}
+    
+    {% formfield player.hovercount2 %}
+    {% formfield player.hovertime2  %}
+    {% formfield player.hover_json2 %}
+    
+    {% formfield player.hovercount3 %}
+    {% formfield player.hovertime3  %}
+    {% formfield player.hover_json3 %}
+    
+    {% formfield player.hovercount4 %}
+    {% formfield player.hovertime4  %}
+    {% formfield player.hover_json4 %}
+</div>
+
+
+<style>
+    {% for p in group.get_players %}
+        #result_{{p.id_in_group}}{
+            opacity:0; 
+            display: inline-block;
+            margin-bottom: 0px;
+            padding: 10px;
+        }
+    
+        #result_{{p.id_in_group}}:hover{
+            opacity:1 !important;
+        }
+    {%endfor%}
+
+#hidden_input{
+    display:none;
+}
+
+#playerchoice{
+    display: inline-block;
+    background: #EEEEEE;
+    margin: 10px;
+}
+</style>
+
+
+{% formfield player.player_choice_final %}
+
+<script>
+page_start=new Date().getTime();
+
+{% for p in group.get_players %}
+
+    el{{p.id_in_group}}=document.getElementById("result_{{p.id_in_group}}")
+    hcbox{{p.id_in_group}}=document.getElementById("id_hovercount{{p.id_in_group}}")
+    htbox{{p.id_in_group}}=document.getElementById("id_hovertime{{p.id_in_group}}")
+    hjson_box{{p.id_in_group}}=document.getElementById("id_hover_json{{p.id_in_group}}")
+
+    ht{{p.id_in_group}}=0
+    hc{{p.id_in_group}}=0
+
+    moveover_time{{p.id_in_group}}=0
+    move_off_time{{p.id_in_group}}=0
+
+    hoverlist{{p.id_in_group}}=[]
+
+    el{{p.id_in_group}}.onmouseover = function(){
+        hc{{p.id_in_group}}++;
+        hcbox{{p.id_in_group}}.value=hc{{p.id_in_group}};
+        moveover_time{{p.id_in_group}}=new Date().getTime();
+    };
+
+    el{{p.id_in_group}}.onmouseleave =function(){
+        move_off_time{{p.id_in_group}}=new Date().getTime()
+        ht{{p.id_in_group}}+=move_off_time{{p.id_in_group}}-moveover_time{{p.id_in_group}}; // in ms
+        
+        hoverlist{{p.id_in_group}}.push([moveover_time{{p.id_in_group}}-page_start,move_off_time{{p.id_in_group}}-page_start])
+        
+        hjson_box{{p.id_in_group}}.value=JSON.stringify(hoverlist{{p.id_in_group}})
+        htbox{{p.id_in_group}}.value=ht{{p.id_in_group}};
+    }
+{%endfor%}
+
+</script>
+
+
+
+
+
+    {% next_button %}
+{% endblock %}
+
+

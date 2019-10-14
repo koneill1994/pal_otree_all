@@ -1,0 +1,38 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Exam
+{% endblock %}
+
+{% block content %}
+
+{{player.presented_word}}
+
+{% formfield player.pair_choice %}
+
+    {% next_button %}
+
+<div id="hidden_rt" style="display: none;">
+    {% formfield player.response_time %}
+</div>
+
+<script>
+
+page_start=new Date().getTime();
+
+nextbutton=document.getElementsByClassName("otree-btn-next")[0];
+
+rt_field=document.getElementById("id_response_time");
+
+function record_rt(){
+    rt_field.value=new Date().getTime() - page_start;
+
+}
+
+nextbutton.onclick=record_rt;
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Feedback
+{% endblock %}
+
+{% block content %}
+
+<p>
+    The correct match to {{player.presented_word}} 
+    was {{player.correct_match}} 
+    and you chose {{player.player_choice_final}}
+</p>
+
+{% if player.player_choice_final == player.correct_match %}
+
+Good job!  You got it correct.  
+
+{% else %}
+
+Sorry!  You were not correct.  
+
+{% endif %}
+
+ {{ form.errors }}
+
+    {% next_button %}
+{% endblock %}
+
+
