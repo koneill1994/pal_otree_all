@@ -3,7 +3,7 @@ from otree.api import (
     Currency as c, currency_range
 )
 
-import random
+import random, json
 
 author = 'Your name here'
 
@@ -16,17 +16,17 @@ class Constants(BaseConstants):
     name_in_url = 'pal'
     players_per_group = None
     num_rounds = 10
-    pairs={
-        "alpha" : "1",
-        "bravo":"2",
-        "charlie":"3",
-        "delta":"4",
-        "echo":"5"
-    }
+
+    with open('wordlist.json') as json_file:
+        data = json.load(json_file)
+        
+    pairs=dict([(x[0][0],x[1][0]) for x in data])
+    
     words=list(pairs.keys())
     random.shuffle(words)
     
     condition=random.randint(0,2)
+
 
 class Subsession(BaseSubsession):
     pass
@@ -50,21 +50,9 @@ class Player(BasePlayer):
         self.presented_word=word
         self.correct_match=Constants.pairs[word]
 
-    hometime_choice=models.CharField(
-        choices=[
-            ["rest","Just rest for the hometime period"],
-            ["game","Play a game for the hometime period"],
-            ["study","Study the word pairs for the hometime period"]        
-        ]
-    )
-
-    pair_choice=models.CharField(
-        choices=list(Constants.pairs.values())
-    )
+    pair_choice=models.CharField()
     
-    player_choice_final=models.CharField(
-        choices=list(Constants.pairs.values())
-    )
+    player_choice_final=models.CharField()
     
     hovercount=models.IntegerField(default=0)
     hovertime=models.IntegerField(default=0)

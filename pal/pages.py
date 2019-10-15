@@ -81,4 +81,7 @@ sequence_non_interactive = [
 #####
 sequence_conditional=[sequence_group,sequence_individual,sequence_non_interactive]
 
-page_sequence = sequence_conditional[Constants.condition]
+# page_sequence = sequence_conditional[Constants.condition]
+page_sequence = sequence_conditional[0]
+
+

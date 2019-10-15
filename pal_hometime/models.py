@@ -2,7 +2,7 @@ from otree.api import (
     models, widgets, BaseConstants, BaseSubsession, BaseGroup, BasePlayer,
     Currency as c, currency_range
 )
-import random
+import random, json
 
 author = 'Your name here'
 
@@ -15,13 +15,12 @@ class Constants(BaseConstants):
     name_in_url = 'pal_hometime'
     players_per_group = None
     num_rounds = 1000
-    pairs={
-        "alpha" : "1",
-        "bravo":"2",
-        "charlie":"3",
-        "delta":"4",
-        "echo":"5"
-    }
+
+    with open('wordlist.json') as json_file:
+        data = json.load(json_file)
+        
+    pairs=dict([(x[0][0],x[1][0]) for x in data])
+    
     words=list(pairs.keys())
     random.shuffle(words)
     

@@ -9,7 +9,8 @@ class StartHometime(Page):
     def is_displayed(self):
         return self.round_number == 1
     def before_next_page(self):
-        self.participant.vars['expiry'] = time.time() + 60*Constants.home_timer
+        self.participant.vars['hometime_start'] = time.time()
+        self.participant.vars['expiry'] = self.participant.vars['hometime_start'] + 60*Constants.home_timer
 
 
 class Hometime_all(Page):

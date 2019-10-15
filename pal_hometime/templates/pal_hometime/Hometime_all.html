@@ -36,8 +36,6 @@
 
 <script>
 
-page_start=new Date().getTime();
-
 game=document.getElementById("game1")
 rest=document.getElementById("rest")
 task=document.getElementById("task")
@@ -82,7 +80,7 @@ function picktask(){
 
 function record_click(button){
     
-    clicktime=new Date().getTime() - page_start;
+    clicktime=(new Date().getTime()/1000) - {{self.participant.vars['hometime_start']}};
     clicklist.push([button, clicktime])
     
     hiddeninput.value=JSON.stringify(clicklist)
