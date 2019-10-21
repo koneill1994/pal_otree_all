@@ -50,14 +50,6 @@ class Player(BasePlayer):
         self.presented_word=word
         self.correct_match=Constants.pairs[word]
 
-    hometime_choice=models.CharField(
-        choices=[
-            ["rest","Just rest for the hometime period"],
-            ["game","Play a game for the hometime period"],
-            ["study","Study the word pairs for the hometime period"]        
-        ]
-    )
-
     pair_choice=models.CharField(
         choices=list(Constants.pairs.values())
     )

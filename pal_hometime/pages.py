@@ -22,6 +22,10 @@ class Hometime_all(Page):
         return self.participant.vars['expiry'] - time.time()
     def is_displayed(self):
         return self.get_timeout_seconds() > 3
+    def vars_for_template(self):
+        return dict(
+            hometime_start=self.participant.vars['hometime_start']
+        )
 
         
 class schooltime1(Page):
