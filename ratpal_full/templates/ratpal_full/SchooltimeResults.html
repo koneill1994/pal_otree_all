@@ -7,6 +7,14 @@
 
 {% block content %}
 
+<b>Words:</b>
+<ul>
+{% for word in player.get_split_words %}
+    <li>{{word}}</li>
+{% endfor %}
+</ul>
+
+
 <ul>
     {% for p in group.get_players %}
         <li>

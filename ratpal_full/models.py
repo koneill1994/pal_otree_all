@@ -120,6 +120,9 @@ class Player(BasePlayer):
     
     def evaluate_choice(self):
         return(self.pair_choice in Group.correct_match.split("/"))
+        
+    def get_split_words(self):
+        return self.presented_word.split("/")
    
 
 

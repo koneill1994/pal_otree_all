@@ -7,7 +7,11 @@
 
 {% block content %}
 
-{{player.presented_word}}
+<ul>
+{% for word in player.get_split_words %}
+    <li>{{word}}</li>
+{% endfor %}
+</ul>
 
 {{player.correct_match}}
 
