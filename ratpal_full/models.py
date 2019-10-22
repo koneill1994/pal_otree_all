@@ -25,19 +25,19 @@ class Constants(BaseConstants):
     
     num_rounds = pair_rounds*2*max_rounds
     
-
-    def is_hometime(self,round_n):
-        if round_n%(2*self.max_rounds)<self.max_rounds:
+    
+    def is_hometime(round_n):
+        if round_n%(2*Constants.max_rounds)<Constants.max_rounds:
             return True
         return False
         
-    def is_schooltime(self,round_n):
-        if round_n%(2*self.max_rounds)>=self.max_rounds and round_n%(2*self.max_rounds)<self.st_rounds:
+    def is_schooltime(round_n):
+        if round_n%(2*Constants.max_rounds)>=Constants.max_rounds and round_n%(2*Constants.max_rounds)<Constants.st_rounds:
             return True
         return False
         
-    def is_hometime_start(self,round_n):
-        if round_n%(2*self.max_rounds)==1:
+    def is_hometime_start(round_n):
+        if round_n%(2*Constants.max_rounds)==1:
             return True
         return False
     
@@ -105,7 +105,7 @@ class Player(BasePlayer):
     homechoose_json=models.CharField()
     
     def evaluate_choice(self):
-        return(self.pair_choice==Group.correct_match)
+        return(self.pair_choice in Group.correct_match.split("/"))
    
 
 
