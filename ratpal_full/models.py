@@ -109,6 +109,12 @@ class Player(BasePlayer):
     hover_json2=models.StringField(blank=True)
     hover_json3=models.StringField(blank=True)
     hover_json4=models.StringField(blank=True)
+    
+    click_json1=models.StringField(blank=True)
+    click_json2=models.StringField(blank=True)
+    click_json3=models.StringField(blank=True)
+    click_json4=models.StringField(blank=True)
+
 
     homechoose_json=models.CharField()
     

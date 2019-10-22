@@ -23,18 +23,28 @@
     {% formfield player.hovercount1 %}
     {% formfield player.hovertime1  %}
     {% formfield player.hover_json1 %}
+    {% formfield player.click_json1 %}
     
     {% formfield player.hovercount2 %}
     {% formfield player.hovertime2  %}
     {% formfield player.hover_json2 %}
+    {% formfield player.click_json2 %}
+
     
     {% formfield player.hovercount3 %}
     {% formfield player.hovertime3  %}
     {% formfield player.hover_json3 %}
+    {% formfield player.click_json3 %}
+
     
     {% formfield player.hovercount4 %}
     {% formfield player.hovertime4  %}
     {% formfield player.hover_json4 %}
+    {% formfield player.click_json4 %}
+
+    
+    {% formfield player.player_choice_final %}
+
 </div>
 
 
@@ -64,11 +74,17 @@
 }
 </style>
 
+<p>Your final choice:</p>
+<div id="player_choice_display" style="font-weight: bold"> [None chosen yet] </div>
 
-{% formfield player.player_choice_final %}
 
 <script>
 page_start=new Date().getTime();
+
+choice_input=document.getElementById("id_player_choice_final")
+choice_display=document.getElementById("player_choice_display")
+
+clicklist=[]
 
 {% for p in group.get_players %}
 
@@ -76,6 +92,7 @@ page_start=new Date().getTime();
     hcbox{{p.id_in_group}}=document.getElementById("id_hovercount{{p.id_in_group}}")
     htbox{{p.id_in_group}}=document.getElementById("id_hovertime{{p.id_in_group}}")
     hjson_box{{p.id_in_group}}=document.getElementById("id_hover_json{{p.id_in_group}}")
+    click_json_box{{p.id_in_group}}=document.getElementById("id_click_json{{p.id_in_group}}")
 
     ht{{p.id_in_group}}=0
     hc{{p.id_in_group}}=0
@@ -100,13 +117,26 @@ page_start=new Date().getTime();
         hjson_box{{p.id_in_group}}.value=JSON.stringify(hoverlist{{p.id_in_group}})
         htbox{{p.id_in_group}}.value=ht{{p.id_in_group}};
     }
+    el{{p.id_in_group}}.onclick =function(){
+        
+        clicklist.push(["{{p.id_in_group}}",new Date().getTime()-page_start])
+        
+        click_json_box{{p.id_in_group}}.value=JSON.stringify(clicklist)
+    
+        choice_input.value="{{p.pair_choice}}"
+        choice_display.innerHTML="{{p.pair_choice}}"
+    }
 {%endfor%}
+
+
+
+
 
 </script>
 
 
 
-
+<br>
 
     {% next_button %}
 {% endblock %}
