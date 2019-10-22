@@ -33,7 +33,7 @@ SESSION_CONFIGS = [
        name='ratpal_full',
        display_name="ratpal_full",
        num_demo_participants=4,
-       app_sequence=['ratpal_full']
+       app_sequence=['ratpal_full','pal_exam']
     )
 ]
 

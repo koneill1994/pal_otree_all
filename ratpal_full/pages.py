@@ -3,11 +3,15 @@ from ._builtin import Page, WaitPage
 from .models import Constants
 import time
     
+    
+    ## schooltime
+    
 class SchoolTimeWaitPage(Page): 
     def is_displayed(self):
         return Constants.is_schooltime(self.round_number)
     def before_next_page(self):
         self.player.get_pair()
+        self.player.set_task()
         
 class schooltime1(Page):
     form_model='player'
@@ -47,12 +51,13 @@ class Feedback(Page):
         return Constants.is_schooltime(self.round_number)
 
 
-
+## hometime
 
 class StartHometime(Page):
     def is_displayed(self):
         return Constants.is_hometime_start(self.round_number)
     def before_next_page(self):
+        self.player.set_task()
         self.participant.vars['hometime_start'] = time.time()
         self.participant.vars['expiry'] = self.participant.vars['hometime_start'] + 60*Constants.home_timer
 

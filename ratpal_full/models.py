@@ -17,10 +17,10 @@ class Constants(BaseConstants):
     players_per_group = None
     
     
-    home_timer=30 # in minutes
+    home_timer=1 # in minutes
     
-    max_rounds=100 # should be an arbitrarily large number, theoretical end of ht
-    st_rounds=20 # number of words shown to players in schooltime
+    max_rounds=20 # should be an arbitrarily large number, theoretical end of ht
+    st_rounds=5 # number of words shown to players in schooltime
     pair_rounds=6 # number of times players go through ht/st paired tasks
     
     num_rounds = pair_rounds*2*max_rounds
@@ -32,7 +32,7 @@ class Constants(BaseConstants):
         return False
         
     def is_schooltime(round_n):
-        if round_n%(2*Constants.max_rounds)>=Constants.max_rounds and round_n%(2*Constants.max_rounds)<Constants.st_rounds:
+        if (round_n%(2*Constants.max_rounds)>Constants.max_rounds) and (round_n%(2*Constants.max_rounds)<Constants.st_rounds+Constants.max_rounds):
             return True
         return False
         
@@ -70,6 +70,14 @@ class Player(BasePlayer):
     
     presented_word=models.CharField()
     correct_match=models.CharField()
+    
+    def set_task(self):
+        if Constants.is_schooltime(self.round_number):
+            task="Schooltime"
+        elif Constants.is_hometime(self.round_number):
+            task="Hometime"
+        else:
+            task="error" # i sure hope this never triggers
 
     def get_pair(self):
         word=Constants.words[self.round_number]
