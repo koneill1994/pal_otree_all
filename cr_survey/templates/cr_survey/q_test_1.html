@@ -1,0 +1,93 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Page title
+{% endblock %}
+
+{% block content %}
+
+<button id="testbutton">test</button>
+
+
+    {% for field in form  %}
+        {% formfield field %}
+    {% endfor %}
+
+
+<div id="hidden_input">
+
+</div>
+
+<script>
+question_names=[]
+{% for field in qnames  %}
+    question_names.push("{{field}}")
+{% endfor %}
+
+
+function getQuestionAnswers(){
+    questions=[]
+    
+    question_names.forEach(function(n){
+        questions.push(document.getElementsByName(n))
+    }
+    
+    answers=[]
+    questions.forEach(function(q){
+        answer=null
+        q.forEach(function(box){
+            if(box.checked){
+                answer=box.value
+            }
+        })
+        answers.push(answer)
+    })
+    return(answers);
+}
+
+function getMaxLongString(responses){
+    max_string=0;
+    currString=0;
+    last_r=-1;
+    
+    responses.forEach(function(r){
+        if(r==last_r){
+            currString++;
+        }
+        else{
+            if(currString>max_string){
+                max_string=currString;
+            }
+            currString=0;
+        }
+        last_r=r;
+    })
+    return(max_string);
+}
+
+function getInfrequency(question_names,responses,qdict){
+    infrequency=[]
+    
+    for(var key in qdict){
+        ix=question_names.findIndex(key)
+        infrequency.push(qdict[key]==responses[ix])    
+    }
+    return(infrequency)
+}
+
+function testClick(){
+    ans=getQuestionAnswers();
+    console.log(getMaxLongString(ans));
+}
+
+document.getElementById("testbutton").addEventListener("click", testClick);
+
+</script>
+
+
+
+
+    {% next_button %}
+
+{% endblock %}
