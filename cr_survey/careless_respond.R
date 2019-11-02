@@ -38,8 +38,8 @@ item_scale_list=list(
   RI="Likert5",
   RIR="Likert5",
   Dem="Likert5",
-  Age="Likert5",
-  Gender="Likert5"
+  Age="StringInput",
+  Gender="StringInput"
 )
 
 scales=
@@ -55,13 +55,18 @@ View(df1[sapply(strsplit(df1$survey,"_"),function(x){x[1]})=="Ant",])
 View(df1[sapply(strsplit(df1$survey,"_"),function(x){x[1]})=="Syn",])
 
 {
+  cr_measures=c("MLS","Infreq","Syn","Ant","Pagetime")
+  
+  
+  
   # creating the code to paste into the otree models.py script
   lines=c()
   
   # this bit will go in constants
   for(page in unique(df1$page)){
     varname=paste0(unlist(strsplit(page," ")),collapse="_")
-    varlist=paste0(sapply((df1[df1$page == page,]$survey),
+    cr_page=sapply(cr_measures,function(x){paste0(varname,"_",x,collapse="")})
+    varlist=paste0(sapply(c(df1[df1$page == page,]$survey,cr_page),
                          function(x){paste0("\"",x,"\"",sep="")}),collapse=", ")
     lines=c(lines,paste0(varname,"=[",varlist,"]"))
   }
@@ -76,6 +81,14 @@ View(df1[sapply(strsplit(df1$survey,"_"),function(x){x[1]})=="Syn",])
     coderow=paste0(row$survey,"=",row$scale,"(\"",fix_rowtext,"\")")
     fix_apos=paste0(unlist(strsplit(coderow,"'")),collapse="'")
     lines=c(lines,fix_apos)
+  }
+  for(page in unique(df1$page)){
+    varname=paste0(unlist(strsplit(page," ")),collapse="_")
+    cr_page=sapply(cr_measures,function(x){paste0(varname,"_",x,collapse="")})
+    for(var in cr_page){
+      coderow=paste0(var,"=","StringInput","(\"",var,"\")")
+      lines=c(lines,coderow)
+    }
   }
   
   lines=c(lines,"")
