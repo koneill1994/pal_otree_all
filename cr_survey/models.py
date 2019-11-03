@@ -16,26 +16,23 @@ class Constants(BaseConstants):
     players_per_group = None
     num_rounds = 1
 
-    varnames1=["q"+str(x) for x in list(range(0,10))]
-    
     ### paste constants code below
-    Page_1=["GO_1", "GO_2", "GO_3", "GO_4", "GO_5", "GO_6", "GO_7", "Ant_1a", "GO_8", "GO_9", "GO_10", "GO_11", "Infreq_1", "GO_12", "GO_13", "Page_1_MLS", "Page_1_Infreq", "Page_1_Syn", "Page_1_Ant", "Page_1_Pagetime"]
-    Page_2=["F_1", "F_2", "F_3", "Ant_2a", "F_4", "F_5", "F_6", "F_7", "Infreq_2", "F_8", "F_9", "F_10", "Page_2_MLS", "Page_2_Infreq", "Page_2_Syn", "Page_2_Ant", "Page_2_Pagetime"]
-    Page_3=["WE_1", "WE_2", "WE_3", "WE_4", "Syn_1a", "WE_5", "WE_6", "WE_7", "RI_1", "WE_8", "WE_9", "WE_10", "WE_11", "WE_12", "Infreq_3", "WE_13", "WE_14", "Page_3_MLS", "Page_3_Infreq", "Page_3_Syn", "Page_3_Ant", "Page_3_Pagetime"]
-    Page_4=["WE_15", "WE_16", "Ant_3a", "WE_17", "WE_18", "WE_19", "WE_20", "Syn_2a", "WE_21", "WE_22", "WE_23", "WE_24", "RI_2", "WE_25", "WE_26", "WE_27", "WE_28", "Page_4_MLS", "Page_4_Infreq", "Page_4_Syn", "Page_4_Ant", "Page_4_Pagetime"]
-    Page_5=["d_1", "Ant_4a", "d_2", "Syn_3a", "d_3", "d_4", "Ant_5a", "d_5", "Infreq_4", "d_6", "d_7", "RI_3", "d_8", "d_9", "Syn_4a", "d_10", "Page_5_MLS", "Page_5_Infreq", "Page_5_Syn", "Page_5_Ant", "Page_5_Pagetime"]
-    Page_6=["m_1", "m_2", "Infreq_5", "m_3", "m_4", "m_5", "m_6", "Ant_6a", "m_7", "m_8", "m_9", "m_10", "Ant_1b", "m_11", "m_12", "RI_4", "m_13", "m_14", "Page_6_MLS", "Page_6_Infreq", "Page_6_Syn", "Page_6_Ant", "Page_6_Pagetime"]
-    Page_7=["Ant_7a", "m_15", "m_16", "m_17", "RI_5", "m_18", "m_19", "m_20", "Infreq_6", "m_21", "m_22", "m_23", "m_24", "Ant_8a", "m_25", "m_26", "m_27", "m_28", "Page_7_MLS", "Page_7_Infreq", "Page_7_Syn", "Page_7_Ant", "Page_7_Pagetime"]
-    Page_8=["RI_6", "N_1", "C_1", "Ant_9a", "O_1", "E_1", "Infreq_7", "N_2", "C_2", "Syn_5a", "C_3", "C_4", "Syn_6a", "N_3", "E_2", "Syn_7a", "A_1", "Page_8_MLS", "Page_8_Infreq", "Page_8_Syn", "Page_8_Ant", "Page_8_Pagetime"]
-    Page_9=["RI_7", "A_2", "C_5", "Ant_10a", "O_2", "A_3", "Syn_8a", "N_4", "Ant_11a", "O_3", "Infreq_8", "E_3", "Syn_9a", "C_6", "E_4", "Syn_10a", "E_5", "Page_9_MLS", "Page_9_Infreq", "Page_9_Syn", "Page_9_Ant", "Page_9_Pagetime"]
-    Page_10=["RI_8", "O_4", "Syn_11a", "A_4", "N_5", "Infreq_9", "O_5", "Syn_1b", "N_6", "A_5", "Ant_9b", "E_6", "Syn_5b", "N_7", "C_7", "Syn_6b", "Infreq_10", "Page_10_MLS", "Page_10_Infreq", "Page_10_Syn", "Page_10_Ant", "Page_10_Pagetime"]
-    Page_11=["N_8", "Ant_2b", "RI_9", "C_8", "Syn_7b", "E_7", "A_6", "Ant_4b", "A_7", "Infreq_11", "E_8", "O_6", "Syn_2b", "O_7", "Ant_10b", "O_8", "Syn_4b", "Page_11_MLS", "Page_11_Infreq", "Page_11_Syn", "Page_11_Ant", "Page_11_Pagetime"]
-    Page_12=["N_9", "Ant_11b", "A_8", "C_9", "Syn_8b", "O_9", "Ant_8b", "O_10", "RI_10", "N_10", "C_10", "Syn_3b", "E_9", "Ant_5b", "A_9", "A_10", "Syn_9b", "E_10", "Page_12_MLS", "Page_12_Infreq", "Page_12_Syn", "Page_12_Ant", "Page_12_Pagetime"]
-    page_13=["IM_1", "IM_2", "IM_3", "Infreq_12", "IM_4", "IM_5", "Ant_6b", "IM_6", "IM_7", "IM_8", "Syn_10b", "IM_9", "IM_10", "IM_11", "page_13_MLS", "page_13_Infreq", "page_13_Syn", "page_13_Ant", "page_13_Pagetime"]
-    Page_14=["IM_12", "Ant_7b", "IM_13", "IM_14", "RI_11", "IM_15", "IM_16", "Syn_11b", "IM_17", "IM_18", "IM_19", "IM_20", "Ant_3b", "IM_21", "Page_14_MLS", "Page_14_Infreq", "Page_14_Syn", "Page_14_Ant", "Page_14_Pagetime"]
-    Page_15=["RIR_1", "RIR_2", "RIR_3", "RIR_4", "RIR_6", "RIR_5", "RIR_7", "RIR_8", "RIR_9", "RIR_10", "RIR_11", "Page_15_MLS", "Page_15_Infreq", "Page_15_Syn", "Page_15_Ant", "Page_15_Pagetime"]
-    Page_16=["Age", "Gender", "Page_16_MLS", "Page_16_Infreq", "Page_16_Syn", "Page_16_Ant", "Page_16_Pagetime"]
-
+    Page_1=["GO_1", "GO_2", "GO_3", "GO_4", "GO_5", "GO_6", "GO_7", "Ant_1a", "GO_8", "GO_9", "GO_10", "GO_11", "Infreq_1", "GO_12", "GO_13", "Page_1_MLS", "Page_1_Pagetime"]
+    Page_2=["F_1", "F_2", "F_3", "Ant_2a", "F_4", "F_5", "F_6", "F_7", "Infreq_2", "F_8", "F_9", "F_10", "Page_2_MLS", "Page_2_Pagetime"]
+    Page_3=["WE_1", "WE_2", "WE_3", "WE_4", "Syn_1a", "WE_5", "WE_6", "WE_7", "RI_1", "WE_8", "WE_9", "WE_10", "WE_11", "WE_12", "Infreq_3", "WE_13", "WE_14", "Page_3_MLS", "Page_3_Pagetime"]
+    Page_4=["WE_15", "WE_16", "Ant_3a", "WE_17", "WE_18", "WE_19", "WE_20", "Syn_2a", "WE_21", "WE_22", "WE_23", "WE_24", "RI_2", "WE_25", "WE_26", "WE_27", "WE_28", "Page_4_MLS", "Page_4_Pagetime"]
+    Page_5=["d_1", "Ant_4a", "d_2", "Syn_3a", "d_3", "d_4", "Ant_5a", "d_5", "Infreq_4", "d_6", "d_7", "RI_3", "d_8", "d_9", "Syn_4a", "d_10", "Page_5_MLS", "Page_5_Pagetime"]
+    Page_6=["m_1", "m_2", "Infreq_5", "m_3", "m_4", "m_5", "m_6", "Ant_6a", "m_7", "m_8", "m_9", "m_10", "Ant_1b", "m_11", "m_12", "RI_4", "m_13", "m_14", "Page_6_MLS", "Page_6_Pagetime"]
+    Page_7=["Ant_7a", "m_15", "m_16", "m_17", "RI_5", "m_18", "m_19", "m_20", "Infreq_6", "m_21", "m_22", "m_23", "m_24", "Ant_8a", "m_25", "m_26", "m_27", "m_28", "Page_7_MLS", "Page_7_Pagetime"]
+    Page_8=["RI_6", "N_1", "C_1", "Ant_9a", "O_1", "E_1", "Infreq_7", "N_2", "C_2", "Syn_5a", "C_3", "C_4", "Syn_6a", "N_3", "E_2", "Syn_7a", "A_1", "Page_8_MLS", "Page_8_Pagetime"]
+    Page_9=["RI_7", "A_2", "C_5", "Ant_10a", "O_2", "A_3", "Syn_8a", "N_4", "Ant_11a", "O_3", "Infreq_8", "E_3", "Syn_9a", "C_6", "E_4", "Syn_10a", "E_5", "Page_9_MLS", "Page_9_Pagetime"]
+    Page_10=["RI_8", "O_4", "Syn_11a", "A_4", "N_5", "Infreq_9", "O_5", "Syn_1b", "N_6", "A_5", "Ant_9b", "E_6", "Syn_5b", "N_7", "C_7", "Syn_6b", "Infreq_10", "Page_10_MLS", "Page_10_Pagetime"]
+    Page_11=["N_8", "Ant_2b", "RI_9", "C_8", "Syn_7b", "E_7", "A_6", "Ant_4b", "A_7", "Infreq_11", "E_8", "O_6", "Syn_2b", "O_7", "Ant_10b", "O_8", "Syn_4b", "Page_11_MLS", "Page_11_Pagetime"]
+    Page_12=["N_9", "Ant_11b", "A_8", "C_9", "Syn_8b", "O_9", "Ant_8b", "O_10", "RI_10", "N_10", "C_10", "Syn_3b", "E_9", "Ant_5b", "A_9", "A_10", "Syn_9b", "E_10", "Page_12_MLS", "Page_12_Pagetime"]
+    page_13=["IM_1", "IM_2", "IM_3", "Infreq_12", "IM_4", "IM_5", "Ant_6b", "IM_6", "IM_7", "IM_8", "Syn_10b", "IM_9", "IM_10", "IM_11", "page_13_MLS", "page_13_Pagetime"]
+    Page_14=["IM_12", "Ant_7b", "IM_13", "IM_14", "RI_11", "IM_15", "IM_16", "Syn_11b", "IM_17", "IM_18", "IM_19", "IM_20", "Ant_3b", "IM_21", "Page_14_MLS", "Page_14_Pagetime"]
+    Page_15=["RIR_1", "RIR_2", "RIR_3", "RIR_4", "RIR_6", "RIR_5", "RIR_7", "RIR_8", "RIR_9", "RIR_10", "RIR_11", "Page_15_MLS", "Page_15_Pagetime"]
+    Page_16=["Age", "Gender", "Page_16_MLS", "Page_16_Pagetime"]
 
 class Subsession(BaseSubsession):
     pass
@@ -107,37 +104,32 @@ class Player(BasePlayer):
             verbose_name = q,
             blank=True
           )
-      
-    # test variables
-    q0=Likert5("a")
-    q1=Likert5("b")
-    q2=Likert5("c")
-    q3=Likert5("d")
-    q4=Likert5("e")
-    q5=Likert5("f")
-    q6=Likert5("g")
-    q7=Likert5("h")
-    q8=Likert5("i")
-    q9=Likert5("j")
-    q10=Likert5("k")
-    q11=Likert5("l")
-    q12=Likert5("m")
-    q13=Likert5("n")
-    q14=Likert5("o")
-    q15=Likert5("p")
-    q16=Likert5("q")
-    q17=Likert5("r")
-    q18=Likert5("s")
-    q19=Likert5("t")
-    q20=Likert5("u")
-    q21=Likert5("v")
-    q22=Likert5("w")
-    q23=Likert5("x")
-    q24=Likert5("y")
-    q25=Likert5("z")
+          '''
+    def checkInfreq():
+        infreq_sum=0
+        if Infreq_1!=None:
+            infreq_sum+=int(Infreq_1==x) # replace x with whatever the right answer is supposed to be
+            # repeat the top 2 lines for each of the infrequency items
+            
+    def checkSynonym():
+        syn_sum=0
+        if Syn_1a!=None and Syn_1b!=None:
+            syn_sum+=int(Syn_1a==Syn_1b)
+            # repeat via script for each of the synonyms
 
+    def checkAntonym():
+        ant_sum=0
+        if Ant_1a!=None and Ant_1b!=None:
+            ant_sum+=int(Ant_1a==Ant_1b)
+            # repeat via script for each of the synonyms
+
+    # to get the current value of the careless responding metric
+    # take the weighted sum of the component metrics
+    
+    # we gotta work out the specifics of the algorithm
+      '''
     ### paste player variables code below
-
+    
     GO_1=GoalOrientation("I am willing to select a challenging class assignment that I can learn a lot from.")
     GO_2=GoalOrientation("I often look for opportunities to develop new skills and knowledge.")
     GO_3=GoalOrientation("I enjoy challenging and difficult tasks at class where I'll learn new skills.")
@@ -458,3 +450,4 @@ class Player(BasePlayer):
     Page_16_Syn=StringInput("Page_16_Syn")
     Page_16_Ant=StringInput("Page_16_Ant")
     Page_16_Pagetime=StringInput("Page_16_Pagetime")
+    

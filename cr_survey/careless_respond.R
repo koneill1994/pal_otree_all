@@ -55,26 +55,32 @@ View(df1[sapply(strsplit(df1$survey,"_"),function(x){x[1]})=="Ant",])
 View(df1[sapply(strsplit(df1$survey,"_"),function(x){x[1]})=="Syn",])
 
 {
+  # the variables which will bring our metrics from js into python
   cr_measures=c("MLS","Infreq","Syn","Ant","Pagetime")
-  
-  
+  cr_measures_page=c("MLS","Pagetime")
   
   # creating the code to paste into the otree models.py script
   lines=c()
   
+  lines=c(lines,"# Paste the following into Constants")
+  
   # this bit will go in constants
   for(page in unique(df1$page)){
     varname=paste0(unlist(strsplit(page," ")),collapse="_")
-    cr_page=sapply(cr_measures,function(x){paste0(varname,"_",x,collapse="")})
+    cr_page=sapply(cr_measures_page,function(x){paste0(varname,"_",x,collapse="")})
     varlist=paste0(sapply(c(df1[df1$page == page,]$survey,cr_page),
                          function(x){paste0("\"",x,"\"",sep="")}),collapse=", ")
     lines=c(lines,paste0(varname,"=[",varlist,"]"))
   }
   
   # separate them
+
   lines=c(lines,"")
   
   # this bit will go into player
+  
+  lines=c(lines,"# Paste the following into player")
+  
   for(n in 1:nrow(df1)){
     row=df1[n,]
     fix_rowtext=paste0(unlist(strsplit(row$text,"\"")),collapse="\\\"")
@@ -91,8 +97,16 @@ View(df1[sapply(strsplit(df1$survey,"_"),function(x){x[1]})=="Syn",])
     }
   }
   
+  # for(page in unique(df1$page)){
+  #   varname=paste0(unlist(strsplit(page," ")),collapse="_")
+  #   varlist=paste0(sapply(df1[df1$page == page,]$survey,
+  #                         function(x){paste0("",x,"",sep="")}),collapse=", ")
+  #   lines=c(lines,paste0(varname,"_vars=[",varlist,"]"))
+  # }
+  
   lines=c(lines,"")
   
+  lines=c(lines,"# Paste the following into pages.py")
   
   page_class1="class "
   page_class2="(Page):

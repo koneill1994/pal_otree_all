@@ -20,12 +20,15 @@
 </div>
 
 <script>
+
+start=new Date().getTime()
+
 question_names=[]
 {% for field in qnames  %}
     question_names.push("{{field}}")
 {% endfor %}
 
-num_cr_measures=5
+num_cr_measures=2
 
 cr_measures=question_names.slice(question_names.length-num_cr_measures,question_names.length)
 question_names=question_names.slice(0,question_names.length-num_cr_measures)
@@ -80,19 +83,15 @@ function getMaxLongString(responses){
     return(max_string);
 }
 
-<!-- function getInfrequency(question_names,responses,qdict){ -->
-    <!-- infrequency=[] -->
-    
-    <!-- for(var key in qdict){ -->
-        <!-- ix=question_names.findIndex(key) -->
-        <!-- infrequency.push(qdict[key]==responses[ix])     -->
-    <!-- } -->
-    <!-- return(infrequency) -->
-<!-- } -->
+function getPageTime(){
+    pagetime=(new Date().getTime() - start)/1000
+    return pagetime;
+}
 
 function testClick(){
     ans=getQuestionAnswers();
     measure_boxes[0].value = (getMaxLongString(ans));
+    measure_boxes[1].value = getPageTime();
 }
 
 document.getElementById("testbutton").addEventListener("click", testClick);
