@@ -136,25 +136,25 @@ class Results(Page):
     pass
 
 
-# page_sequence = [
-    # q_test_1
-# ]
-
 page_sequence = [
-    Page_1,
-    Page_2,
-    Page_3,
-    Page_4,
-    Page_5,
-    Page_6,
-    Page_7,
-    Page_8,
-    Page_9,
-    Page_10,
-    Page_11,
-    Page_12,
-    page_13,
-    Page_14,
-    Page_15,
-    Page_16
+    q_test_1
 ]
+
+# page_sequence = [
+    # Page_1,
+    # Page_2,
+    # Page_3,
+    # Page_4,
+    # Page_5,
+    # Page_6,
+    # Page_7,
+    # Page_8,
+    # Page_9,
+    # Page_10,
+    # Page_11,
+    # Page_12,
+    # page_13,
+    # Page_14,
+    # Page_15,
+    # Page_16
+# ]

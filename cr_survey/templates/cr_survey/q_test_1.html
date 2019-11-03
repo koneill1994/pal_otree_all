@@ -25,13 +25,27 @@ question_names=[]
     question_names.push("{{field}}")
 {% endfor %}
 
+num_cr_measures=5
+
+cr_measures=question_names.slice(question_names.length-num_cr_measures,question_names.length)
+question_names=question_names.slice(0,question_names.length-num_cr_measures)
+
+console.log(cr_measures)
+
+measure_boxes=[]
+
+cr_measures.forEach(function(m){
+    measure_boxes.push(document.getElementById("id_"+m))
+})
+
+console.log(measure_boxes)
 
 function getQuestionAnswers(){
     questions=[]
     
     question_names.forEach(function(n){
         questions.push(document.getElementsByName(n))
-    }
+    })
     
     answers=[]
     questions.forEach(function(q){
@@ -48,7 +62,7 @@ function getQuestionAnswers(){
 
 function getMaxLongString(responses){
     max_string=0;
-    currString=0;
+    currString=1;
     last_r=-1;
     
     responses.forEach(function(r){
@@ -59,26 +73,26 @@ function getMaxLongString(responses){
             if(currString>max_string){
                 max_string=currString;
             }
-            currString=0;
+            currString=1;
         }
         last_r=r;
     })
     return(max_string);
 }
 
-function getInfrequency(question_names,responses,qdict){
-    infrequency=[]
+<!-- function getInfrequency(question_names,responses,qdict){ -->
+    <!-- infrequency=[] -->
     
-    for(var key in qdict){
-        ix=question_names.findIndex(key)
-        infrequency.push(qdict[key]==responses[ix])    
-    }
-    return(infrequency)
-}
+    <!-- for(var key in qdict){ -->
+        <!-- ix=question_names.findIndex(key) -->
+        <!-- infrequency.push(qdict[key]==responses[ix])     -->
+    <!-- } -->
+    <!-- return(infrequency) -->
+<!-- } -->
 
 function testClick(){
     ans=getQuestionAnswers();
-    console.log(getMaxLongString(ans));
+    measure_boxes[0].value = (getMaxLongString(ans));
 }
 
 document.getElementById("testbutton").addEventListener("click", testClick);

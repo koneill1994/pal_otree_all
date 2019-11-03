@@ -105,6 +105,7 @@ class Player(BasePlayer):
     def StringInput(q):
         return models.StringField(
             verbose_name = q,
+            blank=True
           )
       
     # test variables
