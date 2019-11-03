@@ -90,7 +90,7 @@ View(df1[sapply(strsplit(df1$survey,"_"),function(x){x[1]})=="Syn",])
   }
   for(page in unique(df1$page)){
     varname=paste0(unlist(strsplit(page," ")),collapse="_")
-    cr_page=sapply(cr_measures,function(x){paste0(varname,"_",x,collapse="")})
+    cr_page=sapply(cr_measures_page,function(x){paste0(varname,"_",x,collapse="")})
     for(var in cr_page){
       coderow=paste0(var,"=","StringInput","(\"",var,"\")")
       lines=c(lines,coderow)

@@ -104,24 +104,72 @@ class Player(BasePlayer):
             verbose_name = q,
             blank=True
           )
+          
+
           '''
+          
+    def checkMaxLongString():
+        mls_sum=0
+        mls_count=0
+        if Page_1_MLS!=None:
+            mls_count+=1
+            mls_sum+=int(Page_1_MLS)
+        return mls_sum/mls_count
+        
+    def checkPageTime():
+        pt_sum=0
+        pt_count=0
+        if Page_1_Pagetime!=None:
+            pt_count+=1
+            pt_sum+=int(Page_1_Pagetime)
+        return pt_sum/pt_count
+        # calculated as 2*number of questions is the cutoff where more than this time indicates “good quality” and less time is careless.
+          
     def checkInfreq():
         infreq_sum=0
+        infreq_count=0
         if Infreq_1!=None:
+            infreq_count+=1
             infreq_sum+=int(Infreq_1==x) # replace x with whatever the right answer is supposed to be
             # repeat the top 2 lines for each of the infrequency items
+        return infreq_sum/infreq_count
             
     def checkSynonym():
         syn_sum=0
+        syn_count=0
         if Syn_1a!=None and Syn_1b!=None:
+            syn_count+=1
             syn_sum+=int(Syn_1a==Syn_1b)
             # repeat via script for each of the synonyms
+        return syn_sum/syn_count
 
     def checkAntonym():
         ant_sum=0
+        ant_count=0
         if Ant_1a!=None and Ant_1b!=None:
+            ant_count+=1
             ant_sum+=int(Ant_1a==Ant_1b)
             # repeat via script for each of the synonyms
+        return ant_sum/ant_count
+        
+    def get_CR_Metric():
+        weights=[1]*5
+        metrics=[
+            checkMaxLongString(),
+            checkPageTime(),
+            checkInfreq(),
+            checkSynonym(),
+            checkAntonym()
+        ]
+        weight_sum=0
+        for n in len(metrics):
+            weight_sum+=metrics[n]*weights[n]
+        return weight sum
+        
+    def update_cr(cr):
+        cr=get_CR_Metric()
+        
+    Page_1_cr=FloatField()
 
     # to get the current value of the careless responding metric
     # take the weighted sum of the component metrics
@@ -368,86 +416,37 @@ class Player(BasePlayer):
     RIR_9=Likert5("Earlier in the questionnaire, we asked you whether you had a fear of __________.")
     RIR_10=Likert5("Earlier in the questionnaire, we asked you whether you would like to spend an afternoon at _________.")
     RIR_11=Likert5("Earlier in the questionnaire, we asked you whether you would be impatient if you had to wait in line at ___________.")
-    Age=Likert5("What year were you born?")
-    Gender=Likert5("What is your gender?")
+    Age=StringInput("What year were you born?")
+    Gender=StringInput("What is your gender?")
     Page_1_MLS=StringInput("Page_1_MLS")
-    Page_1_Infreq=StringInput("Page_1_Infreq")
-    Page_1_Syn=StringInput("Page_1_Syn")
-    Page_1_Ant=StringInput("Page_1_Ant")
     Page_1_Pagetime=StringInput("Page_1_Pagetime")
     Page_2_MLS=StringInput("Page_2_MLS")
-    Page_2_Infreq=StringInput("Page_2_Infreq")
-    Page_2_Syn=StringInput("Page_2_Syn")
-    Page_2_Ant=StringInput("Page_2_Ant")
     Page_2_Pagetime=StringInput("Page_2_Pagetime")
     Page_3_MLS=StringInput("Page_3_MLS")
-    Page_3_Infreq=StringInput("Page_3_Infreq")
-    Page_3_Syn=StringInput("Page_3_Syn")
-    Page_3_Ant=StringInput("Page_3_Ant")
     Page_3_Pagetime=StringInput("Page_3_Pagetime")
     Page_4_MLS=StringInput("Page_4_MLS")
-    Page_4_Infreq=StringInput("Page_4_Infreq")
-    Page_4_Syn=StringInput("Page_4_Syn")
-    Page_4_Ant=StringInput("Page_4_Ant")
     Page_4_Pagetime=StringInput("Page_4_Pagetime")
     Page_5_MLS=StringInput("Page_5_MLS")
-    Page_5_Infreq=StringInput("Page_5_Infreq")
-    Page_5_Syn=StringInput("Page_5_Syn")
-    Page_5_Ant=StringInput("Page_5_Ant")
     Page_5_Pagetime=StringInput("Page_5_Pagetime")
     Page_6_MLS=StringInput("Page_6_MLS")
-    Page_6_Infreq=StringInput("Page_6_Infreq")
-    Page_6_Syn=StringInput("Page_6_Syn")
-    Page_6_Ant=StringInput("Page_6_Ant")
     Page_6_Pagetime=StringInput("Page_6_Pagetime")
     Page_7_MLS=StringInput("Page_7_MLS")
-    Page_7_Infreq=StringInput("Page_7_Infreq")
-    Page_7_Syn=StringInput("Page_7_Syn")
-    Page_7_Ant=StringInput("Page_7_Ant")
     Page_7_Pagetime=StringInput("Page_7_Pagetime")
     Page_8_MLS=StringInput("Page_8_MLS")
-    Page_8_Infreq=StringInput("Page_8_Infreq")
-    Page_8_Syn=StringInput("Page_8_Syn")
-    Page_8_Ant=StringInput("Page_8_Ant")
     Page_8_Pagetime=StringInput("Page_8_Pagetime")
     Page_9_MLS=StringInput("Page_9_MLS")
-    Page_9_Infreq=StringInput("Page_9_Infreq")
-    Page_9_Syn=StringInput("Page_9_Syn")
-    Page_9_Ant=StringInput("Page_9_Ant")
     Page_9_Pagetime=StringInput("Page_9_Pagetime")
     Page_10_MLS=StringInput("Page_10_MLS")
-    Page_10_Infreq=StringInput("Page_10_Infreq")
-    Page_10_Syn=StringInput("Page_10_Syn")
-    Page_10_Ant=StringInput("Page_10_Ant")
     Page_10_Pagetime=StringInput("Page_10_Pagetime")
     Page_11_MLS=StringInput("Page_11_MLS")
-    Page_11_Infreq=StringInput("Page_11_Infreq")
-    Page_11_Syn=StringInput("Page_11_Syn")
-    Page_11_Ant=StringInput("Page_11_Ant")
     Page_11_Pagetime=StringInput("Page_11_Pagetime")
     Page_12_MLS=StringInput("Page_12_MLS")
-    Page_12_Infreq=StringInput("Page_12_Infreq")
-    Page_12_Syn=StringInput("Page_12_Syn")
-    Page_12_Ant=StringInput("Page_12_Ant")
     Page_12_Pagetime=StringInput("Page_12_Pagetime")
     page_13_MLS=StringInput("page_13_MLS")
-    page_13_Infreq=StringInput("page_13_Infreq")
-    page_13_Syn=StringInput("page_13_Syn")
-    page_13_Ant=StringInput("page_13_Ant")
     page_13_Pagetime=StringInput("page_13_Pagetime")
     Page_14_MLS=StringInput("Page_14_MLS")
-    Page_14_Infreq=StringInput("Page_14_Infreq")
-    Page_14_Syn=StringInput("Page_14_Syn")
-    Page_14_Ant=StringInput("Page_14_Ant")
     Page_14_Pagetime=StringInput("Page_14_Pagetime")
     Page_15_MLS=StringInput("Page_15_MLS")
-    Page_15_Infreq=StringInput("Page_15_Infreq")
-    Page_15_Syn=StringInput("Page_15_Syn")
-    Page_15_Ant=StringInput("Page_15_Ant")
     Page_15_Pagetime=StringInput("Page_15_Pagetime")
     Page_16_MLS=StringInput("Page_16_MLS")
-    Page_16_Infreq=StringInput("Page_16_Infreq")
-    Page_16_Syn=StringInput("Page_16_Syn")
-    Page_16_Ant=StringInput("Page_16_Ant")
     Page_16_Pagetime=StringInput("Page_16_Pagetime")
-    
