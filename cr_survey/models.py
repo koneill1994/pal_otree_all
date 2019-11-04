@@ -17,6 +17,7 @@ class Constants(BaseConstants):
     num_rounds = 1
 
     ### paste constants code below
+    infreq_ans=[5,3,5,4,4,3,4,3,2,1,1,4]
     Page_1=["GO_1", "GO_2", "GO_3", "GO_4", "GO_5", "GO_6", "GO_7", "Ant_1a", "GO_8", "GO_9", "GO_10", "GO_11", "Infreq_1", "GO_12", "GO_13", "Page_1_MLS", "Page_1_Pagetime"]
     Page_2=["F_1", "F_2", "F_3", "Ant_2a", "F_4", "F_5", "F_6", "F_7", "Infreq_2", "F_8", "F_9", "F_10", "Page_2_MLS", "Page_2_Pagetime"]
     Page_3=["WE_1", "WE_2", "WE_3", "WE_4", "Syn_1a", "WE_5", "WE_6", "WE_7", "RI_1", "WE_8", "WE_9", "WE_10", "WE_11", "WE_12", "Infreq_3", "WE_13", "WE_14", "Page_3_MLS", "Page_3_Pagetime"]
@@ -29,7 +30,7 @@ class Constants(BaseConstants):
     Page_10=["RI_8", "O_4", "Syn_11a", "A_4", "N_5", "Infreq_9", "O_5", "Syn_1b", "N_6", "A_5", "Ant_9b", "E_6", "Syn_5b", "N_7", "C_7", "Syn_6b", "Infreq_10", "Page_10_MLS", "Page_10_Pagetime"]
     Page_11=["N_8", "Ant_2b", "RI_9", "C_8", "Syn_7b", "E_7", "A_6", "Ant_4b", "A_7", "Infreq_11", "E_8", "O_6", "Syn_2b", "O_7", "Ant_10b", "O_8", "Syn_4b", "Page_11_MLS", "Page_11_Pagetime"]
     Page_12=["N_9", "Ant_11b", "A_8", "C_9", "Syn_8b", "O_9", "Ant_8b", "O_10", "RI_10", "N_10", "C_10", "Syn_3b", "E_9", "Ant_5b", "A_9", "A_10", "Syn_9b", "E_10", "Page_12_MLS", "Page_12_Pagetime"]
-    page_13=["IM_1", "IM_2", "IM_3", "Infreq_12", "IM_4", "IM_5", "Ant_6b", "IM_6", "IM_7", "IM_8", "Syn_10b", "IM_9", "IM_10", "IM_11", "page_13_MLS", "page_13_Pagetime"]
+    Page_13=["IM_1", "IM_2", "IM_3", "Infreq_12", "IM_4", "IM_5", "Ant_6b", "IM_6", "IM_7", "IM_8", "Syn_10b", "IM_9", "IM_10", "IM_11", "Page_13_MLS", "Page_13_Pagetime"]
     Page_14=["IM_12", "Ant_7b", "IM_13", "IM_14", "RI_11", "IM_15", "IM_16", "Syn_11b", "IM_17", "IM_18", "IM_19", "IM_20", "Ant_3b", "IM_21", "Page_14_MLS", "Page_14_Pagetime"]
     Page_15=["RIR_1", "RIR_2", "RIR_3", "RIR_4", "RIR_6", "RIR_5", "RIR_7", "RIR_8", "RIR_9", "RIR_10", "RIR_11", "Page_15_MLS", "Page_15_Pagetime"]
     Page_16=["Age", "Gender", "Page_16_MLS", "Page_16_Pagetime"]
@@ -99,31 +100,59 @@ class Player(BasePlayer):
         widget=widgets.RadioSelectHorizontal
       )
       
+    def div_z(self,a,b):
+        if a==0 & b==0:
+            return 0
+        return a/b
+
+      
     def StringInput(q):
         return models.StringField(
             verbose_name = q,
             blank=True
           )
           
-
-          '''
+    def IterateMLS(self,var,sum,count):
+        if(var!=None):
+            return((sum+int(var),count+1))
+        return(sum,count)
+        
+    def IteratePageTime(self,var,n_q,sum,count):
+        if(var!=None):
+            return((sum+int(float(var)>2*n_q),count+1))
+        return(sum,count)
+            
+    def IterateSyn(self,var1,var2,s,c):
+        if var1!=None and var2!=None:
+            return((s+int(var1==var2),c+1))
+        return((s,c))
+        
+    def IterateAnt(self,var1,var2,s,c):
+        if var1!=None and var2!=None:
+            return((s+int(var1!=var2),c+1))
+        return((s,c))       
+     
+    def IterateInfreq(self,var,ans,sum,count):
+        if(var!=None):
+            return((sum+int(var==ans),count+1))
+        return(sum,count)
+     
+    '''
           
+     
     def checkMaxLongString():
         mls_sum=0
         mls_count=0
-        if Page_1_MLS!=None:
-            mls_count+=1
-            mls_sum+=int(Page_1_MLS)
+        (mls_sum,mls_count)=IterateMLS(Page_1_MLS,mls_sum,mls_count)
         return mls_sum/mls_count
+
         
     def checkPageTime():
-        pt_sum=0
-        pt_count=0
-        if Page_1_Pagetime!=None:
-            pt_count+=1
-            pt_sum+=int(Page_1_Pagetime)
-        return pt_sum/pt_count
+        s=0
+        c=0
+        (s,c)=IteratePageTime(Page_1_Pagetime,len(Constants.Page_1),s,c)
         # calculated as 2*number of questions is the cutoff where more than this time indicates “good quality” and less time is careless.
+        return s/c
           
     def checkInfreq():
         infreq_sum=0
@@ -148,23 +177,11 @@ class Player(BasePlayer):
         ant_count=0
         if Ant_1a!=None and Ant_1b!=None:
             ant_count+=1
-            ant_sum+=int(Ant_1a==Ant_1b)
+            ant_sum+=int(Ant_1a!=Ant_1b)
             # repeat via script for each of the synonyms
         return ant_sum/ant_count
         
-    def get_CR_Metric():
-        weights=[1]*5
-        metrics=[
-            checkMaxLongString(),
-            checkPageTime(),
-            checkInfreq(),
-            checkSynonym(),
-            checkAntonym()
-        ]
-        weight_sum=0
-        for n in len(metrics):
-            weight_sum+=metrics[n]*weights[n]
-        return weight sum
+
         
     def update_cr(cr):
         cr=get_CR_Metric()
@@ -175,9 +192,25 @@ class Player(BasePlayer):
     # take the weighted sum of the component metrics
     
     # we gotta work out the specifics of the algorithm
-      '''
+    '''
+      
+    current_cr=models.FloatField()
+      
+    def get_CR_Metric(self):
+        weights=[1]*5
+        metrics=[
+            self.checkMaxLongString(),
+            self.checkPageTime(),
+            self.checkInfreq(),
+            self.checkSynonym(),
+            self.checkAntonym()
+        ]
+        weight_sum=0
+        for n in range(0,len(metrics)):
+            weight_sum+=metrics[n]*weights[n]
+        return weight_sum
+      
     ### paste player variables code below
-    
     GO_1=GoalOrientation("I am willing to select a challenging class assignment that I can learn a lot from.")
     GO_2=GoalOrientation("I often look for opportunities to develop new skills and knowledge.")
     GO_3=GoalOrientation("I enjoy challenging and difficult tasks at class where I'll learn new skills.")
@@ -420,33 +453,161 @@ class Player(BasePlayer):
     Gender=StringInput("What is your gender?")
     Page_1_MLS=StringInput("Page_1_MLS")
     Page_1_Pagetime=StringInput("Page_1_Pagetime")
+    Page_1_cr=models.FloatField()
     Page_2_MLS=StringInput("Page_2_MLS")
     Page_2_Pagetime=StringInput("Page_2_Pagetime")
+    Page_2_cr=models.FloatField()
     Page_3_MLS=StringInput("Page_3_MLS")
     Page_3_Pagetime=StringInput("Page_3_Pagetime")
+    Page_3_cr=models.FloatField()
     Page_4_MLS=StringInput("Page_4_MLS")
     Page_4_Pagetime=StringInput("Page_4_Pagetime")
+    Page_4_cr=models.FloatField()
     Page_5_MLS=StringInput("Page_5_MLS")
     Page_5_Pagetime=StringInput("Page_5_Pagetime")
+    Page_5_cr=models.FloatField()
     Page_6_MLS=StringInput("Page_6_MLS")
     Page_6_Pagetime=StringInput("Page_6_Pagetime")
+    Page_6_cr=models.FloatField()
     Page_7_MLS=StringInput("Page_7_MLS")
     Page_7_Pagetime=StringInput("Page_7_Pagetime")
+    Page_7_cr=models.FloatField()
     Page_8_MLS=StringInput("Page_8_MLS")
     Page_8_Pagetime=StringInput("Page_8_Pagetime")
+    Page_8_cr=models.FloatField()
     Page_9_MLS=StringInput("Page_9_MLS")
     Page_9_Pagetime=StringInput("Page_9_Pagetime")
+    Page_9_cr=models.FloatField()
     Page_10_MLS=StringInput("Page_10_MLS")
     Page_10_Pagetime=StringInput("Page_10_Pagetime")
+    Page_10_cr=models.FloatField()
     Page_11_MLS=StringInput("Page_11_MLS")
     Page_11_Pagetime=StringInput("Page_11_Pagetime")
+    Page_11_cr=models.FloatField()
     Page_12_MLS=StringInput("Page_12_MLS")
     Page_12_Pagetime=StringInput("Page_12_Pagetime")
-    page_13_MLS=StringInput("page_13_MLS")
-    page_13_Pagetime=StringInput("page_13_Pagetime")
+    Page_12_cr=models.FloatField()
+    Page_13_MLS=StringInput("Page_13_MLS")
+    Page_13_Pagetime=StringInput("Page_13_Pagetime")
+    Page_13_cr=models.FloatField()
     Page_14_MLS=StringInput("Page_14_MLS")
     Page_14_Pagetime=StringInput("Page_14_Pagetime")
+    Page_14_cr=models.FloatField()
     Page_15_MLS=StringInput("Page_15_MLS")
     Page_15_Pagetime=StringInput("Page_15_Pagetime")
+    Page_15_cr=models.FloatField()
     Page_16_MLS=StringInput("Page_16_MLS")
     Page_16_Pagetime=StringInput("Page_16_Pagetime")
+    Page_16_cr=models.FloatField()
+    def checkMaxLongString(self):
+      s=0
+      c=0
+      (s,c)=self.IterateMLS(self.Page_1_MLS,s,c)
+      (s,c)=self.IterateMLS(self.Page_2_MLS,s,c)
+      (s,c)=self.IterateMLS(self.Page_3_MLS,s,c)
+      (s,c)=self.IterateMLS(self.Page_4_MLS,s,c)
+      (s,c)=self.IterateMLS(self.Page_5_MLS,s,c)
+      (s,c)=self.IterateMLS(self.Page_6_MLS,s,c)
+      (s,c)=self.IterateMLS(self.Page_7_MLS,s,c)
+      (s,c)=self.IterateMLS(self.Page_8_MLS,s,c)
+      (s,c)=self.IterateMLS(self.Page_9_MLS,s,c)
+      (s,c)=self.IterateMLS(self.Page_10_MLS,s,c)
+      (s,c)=self.IterateMLS(self.Page_11_MLS,s,c)
+      (s,c)=self.IterateMLS(self.Page_12_MLS,s,c)
+      (s,c)=self.IterateMLS(self.Page_13_MLS,s,c)
+      (s,c)=self.IterateMLS(self.Page_14_MLS,s,c)
+      (s,c)=self.IterateMLS(self.Page_15_MLS,s,c)
+      (s,c)=self.IterateMLS(self.Page_16_MLS,s,c)
+      return self.div_z(s,c)
+
+    def checkPageTime(self):
+      s=0
+      c=0
+      (s,c)=self.IteratePageTime(self.Page_1_Pagetime,len(Constants.Page_1),s,c)
+      (s,c)=self.IteratePageTime(self.Page_2_Pagetime,len(Constants.Page_2),s,c)
+      (s,c)=self.IteratePageTime(self.Page_3_Pagetime,len(Constants.Page_3),s,c)
+      (s,c)=self.IteratePageTime(self.Page_4_Pagetime,len(Constants.Page_4),s,c)
+      (s,c)=self.IteratePageTime(self.Page_5_Pagetime,len(Constants.Page_5),s,c)
+      (s,c)=self.IteratePageTime(self.Page_6_Pagetime,len(Constants.Page_6),s,c)
+      (s,c)=self.IteratePageTime(self.Page_7_Pagetime,len(Constants.Page_7),s,c)
+      (s,c)=self.IteratePageTime(self.Page_8_Pagetime,len(Constants.Page_8),s,c)
+      (s,c)=self.IteratePageTime(self.Page_9_Pagetime,len(Constants.Page_9),s,c)
+      (s,c)=self.IteratePageTime(self.Page_10_Pagetime,len(Constants.Page_10),s,c)
+      (s,c)=self.IteratePageTime(self.Page_11_Pagetime,len(Constants.Page_11),s,c)
+      (s,c)=self.IteratePageTime(self.Page_12_Pagetime,len(Constants.Page_12),s,c)
+      (s,c)=self.IteratePageTime(self.Page_13_Pagetime,len(Constants.Page_13),s,c)
+      (s,c)=self.IteratePageTime(self.Page_14_Pagetime,len(Constants.Page_14),s,c)
+      (s,c)=self.IteratePageTime(self.Page_15_Pagetime,len(Constants.Page_15),s,c)
+      (s,c)=self.IteratePageTime(self.Page_16_Pagetime,len(Constants.Page_16),s,c)
+      return self.div_z(s,c)
+
+    def checkSynonym(self):
+      s=0
+      c=0
+      (s,c)=self.IterateSyn(self.Syn_1a,self.Syn_1b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_2a,self.Syn_2b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_3a,self.Syn_3b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_4a,self.Syn_4b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_5a,self.Syn_5b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_6a,self.Syn_6b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_7a,self.Syn_7b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_8a,self.Syn_8b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_9a,self.Syn_9b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_10a,self.Syn_10b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_11a,self.Syn_11b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_1a,self.Syn_1b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_5a,self.Syn_5b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_6a,self.Syn_6b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_7a,self.Syn_7b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_2a,self.Syn_2b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_4a,self.Syn_4b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_8a,self.Syn_8b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_3a,self.Syn_3b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_9a,self.Syn_9b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_10a,self.Syn_10b,s,c)
+      (s,c)=self.IterateSyn(self.Syn_11a,self.Syn_11b,s,c)
+      return self.div_z(s,c)
+
+    def checkAntonym(self):
+      s=0
+      c=0
+      (s,c)=self.IterateAnt(self.Ant_1a,self.Ant_1b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_2a,self.Ant_2b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_3a,self.Ant_3b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_4a,self.Ant_4b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_5a,self.Ant_5b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_6a,self.Ant_6b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_1a,self.Ant_1b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_7a,self.Ant_7b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_8a,self.Ant_8b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_9a,self.Ant_9b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_10a,self.Ant_10b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_11a,self.Ant_11b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_9a,self.Ant_9b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_2a,self.Ant_2b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_4a,self.Ant_4b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_10a,self.Ant_10b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_11a,self.Ant_11b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_8a,self.Ant_8b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_5a,self.Ant_5b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_6a,self.Ant_6b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_7a,self.Ant_7b,s,c)
+      (s,c)=self.IterateAnt(self.Ant_3a,self.Ant_3b,s,c)
+      return self.div_z(s,c)
+
+    def checkInfreq(self):
+      s=0
+      c=0
+      (s,c)=self.IterateInfreq(self.Infreq_1,Constants.infreq_ans[0],s,c)
+      (s,c)=self.IterateInfreq(self.Infreq_2,Constants.infreq_ans[1],s,c)
+      (s,c)=self.IterateInfreq(self.Infreq_3,Constants.infreq_ans[2],s,c)
+      (s,c)=self.IterateInfreq(self.Infreq_4,Constants.infreq_ans[3],s,c)
+      (s,c)=self.IterateInfreq(self.Infreq_5,Constants.infreq_ans[4],s,c)
+      (s,c)=self.IterateInfreq(self.Infreq_6,Constants.infreq_ans[5],s,c)
+      (s,c)=self.IterateInfreq(self.Infreq_7,Constants.infreq_ans[6],s,c)
+      (s,c)=self.IterateInfreq(self.Infreq_8,Constants.infreq_ans[7],s,c)
+      (s,c)=self.IterateInfreq(self.Infreq_9,Constants.infreq_ans[8],s,c)
+      (s,c)=self.IterateInfreq(self.Infreq_10,Constants.infreq_ans[9],s,c)
+      (s,c)=self.IterateInfreq(self.Infreq_11,Constants.infreq_ans[10],s,c)
+      (s,c)=self.IterateInfreq(self.Infreq_12,Constants.infreq_ans[11],s,c)
+      return self.div_z(s,c)

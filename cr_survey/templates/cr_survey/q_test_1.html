@@ -7,7 +7,9 @@
 
 {% block content %}
 
-<button id="testbutton">test CR calculation</button>
+
+
+<!-- <button id="testbutton">test CR calculation</button> -->
 
 
     {% for field in form  %}
@@ -15,9 +17,12 @@
     {% endfor %}
 
 
-<div id="hidden_input">
-
+<div id="next">
+    {% next_button %}
 </div>
+
+
+
 
 <script>
 
@@ -66,17 +71,17 @@ function getQuestionAnswers(){
 function getMaxLongString(responses){
     max_string=0;
     currString=1;
-    last_r=-1;
+    last_r="-1";
     
     responses.forEach(function(r){
         if(r==last_r){
             currString++;
         }
         else{
-            if(currString>max_string){
-                max_string=currString;
-            }
             currString=1;
+        }
+        if(currString>max_string){
+                max_string=currString;
         }
         last_r=r;
     })
@@ -88,19 +93,22 @@ function getPageTime(){
     return pagetime;
 }
 
-function testClick(){
+
+function compute_page_vals(){
     ans=getQuestionAnswers();
+    console.log(ans)
+    console.log(getMaxLongString(ans))
     measure_boxes[0].value = (getMaxLongString(ans));
     measure_boxes[1].value = getPageTime();
 }
 
-document.getElementById("testbutton").addEventListener("click", testClick);
+<!-- document.getElementById("testbutton").addEventListener("click", compute_page_vals); -->
+
+document.getElementById("next").addEventListener("click", compute_page_vals);
 
 </script>
 
 
 
-
-    {% next_button %}
 
 {% endblock %}
