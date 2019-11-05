@@ -17,7 +17,8 @@ class Page_1(Page):
   form_fields=Constants.Page_1
   def vars_for_template(self):
     return(dict(
-      qnames=Constants.Page_1
+      qnames=Constants.Page_1,
+      cr_score=None
       ))
   def before_next_page(self):
     self.player.Page_1_cr=self.player.get_CR_Metric()

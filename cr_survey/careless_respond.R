@@ -252,6 +252,8 @@ def checkPageTime(self):
       qnames=Constants.Page_%s"
   page_class_cr=",
       cr_score=self.player.Page_%s_cr"
+  page_class_cr2=",
+      cr_score=None"
   pc2="
       ))
   def before_next_page(self):
@@ -265,7 +267,7 @@ def checkPageTime(self):
     part_m=sprintf(page_class_cr,as.character(n-1))
     part2=sprintf(pc2,num)
     if(n==1){
-      part_m=""
+      part_m=page_class_cr2
     }
     lines=c(lines,paste0(part1,part_m,part2))
   }

@@ -8,6 +8,12 @@
 {% block content %}
 
 
+{% if cr_score %}
+    <div>
+    Current careless responding score:
+    {{cr_score}}
+    </div>
+{% endif %}
 
 <!-- <button id="testbutton">test CR calculation</button> -->
 
@@ -45,6 +51,8 @@ measure_boxes=[]
 cr_measures.forEach(function(m){
     measure_boxes.push(document.getElementById("id_"+m))
 })
+
+<!-- here put code to hide the measure boxes -->
 
 console.log(measure_boxes)
 
