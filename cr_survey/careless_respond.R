@@ -19,7 +19,6 @@ df1[,1]=pages
 
 colnames(df1)=c("page","survey","text")
 
-# correcting for misspelling
 
 df1$page=unlist(
   lapply(df1$page,
@@ -31,7 +30,6 @@ df1$page=unlist(
   )
 )
 
-# correct for lack of scale information
 item_scale_list=list(
   GO="GoalOrientation",
   "F"="GoalOrientation",
@@ -69,10 +67,26 @@ if(F){
   View(df1[sapply(strsplit(df1$survey,"_"),function(x){x[1]})=="Infreq",])
 }
 
-# need a list of proper answers for infrequency measures
-# we'll just randomize it here
-inf_count=nrow(df1[sapply(strsplit(df1$survey,"_"),function(x){x[1]})=="Infreq",])
-infreq_answers=sample.int(5, inf_count, replace = TRUE)
+infreq_items=c(
+  "I can teleport across time and space.",
+  "I have never used a computer.",
+  "I enjoy receiving telemarketer's calls."	,
+  "I have been to every country in the world.",
+  "I sleep less than one hour per night.",
+  "I have never brushed my teeth.",
+  "I don't like getting speeding tickets.",
+  "It feels good to be appreciated.",
+  "I'd be happy if I won the lottery.",
+  "I look forward to my time off.",
+  "I am using an electronic device currently.",
+  "I have felt tired or sleepy in my lifetime."
+)
+items_ans=c(rep(1,6),rep(5,6))
+
+q_ordered=df1[sapply(strsplit(df1$survey,"_"),function(x){x[1]})=="Infreq",]$text
+
+infreq_answers=items_ans[apply(adist(infreq_items,q_ordered),2,which.min)]
+
 
 
 make_mls_func=function(pagelist){

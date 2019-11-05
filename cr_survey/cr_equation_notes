@@ -1,0 +1,30 @@
+
+The careless responding measure is calculated as  a weighted sum of all the averages of the sub_measures.  
+
+cr_measure=
+    w_mls*avg(mls)+
+    w_pagetime*avg(pagetime<2*number_of_questions_on_page)+
+    w_syn*avg(syn_a==syn_b)+
+    w_ant*avg(ant_a!=ant_b)+
+    w_infreq*avg(infreq==infreq_ans)
+    
+where:
+    w_... is the weight for each measure
+    mls is the max long string measure, which is between 1 and the number of questions on the page
+    pagetime is the time spent on each page
+    syn is for semantic synonyms, where syn_a and syn_b represent synonymous item pairs
+    ant is for semantic antonyms, where ant_a and ant_b represent antonymous item pairs
+    infreq is for infrequency (bogus) questions, where infreq is the item and infreq_ans is the expected response
+    
+    
+avg represents a calculation of the arithmetic mean (aka average)
+    (computed as sum(n)/count(n))
+    avg's for mls and pagetime are calculated over all completed pages
+    avg's for syn, ant, and infrq are calculated over all completed items
+    If there are no entries for a submeasure, it returns 0
+    
+    
+comparison operators ==, !=, < (equals, not equals, less than, resp.) evaluate to a true or false, 
+    which is cast to a 1 or a 0
+    e.g. if syn_a==syn_b, that counts as a 1
+    but  if syn_a!=syn_b, that counts as a 0

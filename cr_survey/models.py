@@ -17,7 +17,7 @@ class Constants(BaseConstants):
     num_rounds = 1
 
     ### paste constants code below
-    infreq_ans=[5,3,5,4,4,3,4,3,2,1,1,4]
+    infreq_ans=[5,5,5,5,1,1,5,1,1,5,1,1]
     Page_1=["GO_1", "GO_2", "GO_3", "GO_4", "GO_5", "GO_6", "GO_7", "Ant_1a", "GO_8", "GO_9", "GO_10", "GO_11", "Infreq_1", "GO_12", "GO_13", "Page_1_MLS", "Page_1_Pagetime"]
     Page_2=["F_1", "F_2", "F_3", "Ant_2a", "F_4", "F_5", "F_6", "F_7", "Infreq_2", "F_8", "F_9", "F_10", "Page_2_MLS", "Page_2_Pagetime"]
     Page_3=["WE_1", "WE_2", "WE_3", "WE_4", "Syn_1a", "WE_5", "WE_6", "WE_7", "RI_1", "WE_8", "WE_9", "WE_10", "WE_11", "WE_12", "Infreq_3", "WE_13", "WE_14", "Page_3_MLS", "Page_3_Pagetime"]
