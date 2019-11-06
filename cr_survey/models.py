@@ -49,11 +49,11 @@ class Player(BasePlayer):
       return models.IntegerField(
         verbose_name = q,
         choices=[
-          [1,"strongly disagree"],
-          [2,"disagree"],
-          [3,"neither agree nor disagree"],
-          [4,"agree"],
-          [5,"strongly agree"]
+          [1,"Strongly Disagree"],
+          [2,"Disagree"],
+          [3,"Neither Agree Nor Disagree"],
+          [4,"Agree"],
+          [5,"Strongly Agree"]
         ],
         widget=widgets.RadioSelectHorizontal
       )
@@ -99,6 +99,16 @@ class Player(BasePlayer):
         ],
         widget=widgets.RadioSelectHorizontal
       )
+      
+    def RIR_items(q,responses):
+        c=[]
+        for r in range(0,len(responses)):
+            c.append( [r+1,responses[r]] )
+        return models.IntegerField(
+            verbose_name=q,
+            choices=c,
+            widget=widgets.RadioSelectHorizontal        
+        )
       
     def div_z(self,a,b):
         if a==0 & b==0:
@@ -187,6 +197,8 @@ class Player(BasePlayer):
         cr=get_CR_Metric()
         
     Page_1_cr=FloatField()
+
+    RIR_items(q,responses)
 
     # to get the current value of the careless responding metric
     # take the weighted sum of the component metrics
@@ -438,17 +450,6 @@ class Player(BasePlayer):
     IM_20=Likert7("While participating on this task, I think about how much I enjoy it.")
     Ant_3b=Likert5("I become impatient when waiting in heavy traffic.")
     IM_21=Likert7("I participate in this task because I have no other choice. ")
-    RIR_1=Likert5("Which of the following occupations were you asked about earlier in this questionnaire?")
-    RIR_2=Likert5("Which type of music were you asked about earlier in this questionnaire?")
-    RIR_3=Likert5("Which of the following \"extreme\" sports were you asked about earlier in this questionnaire?")
-    RIR_4=Likert5("Which of the following vegetables were you asked about earlier in this questionnaire?")
-    RIR_6=Likert5("Which U.S. State were you asked about earlier in this questionnaire?")
-    RIR_5=Likert5("Which of the following hobbies were you asked about earlier in this questionnaire?")
-    RIR_7=Likert5("Earlier in this questionnaire, we asked you about eating _______ as part of a dare.")
-    RIR_8=Likert5("Earlier in the questionnaire, we asked you if you had experienced a recurring dream about _________.")
-    RIR_9=Likert5("Earlier in the questionnaire, we asked you whether you had a fear of __________.")
-    RIR_10=Likert5("Earlier in the questionnaire, we asked you whether you would like to spend an afternoon at _________.")
-    RIR_11=Likert5("Earlier in the questionnaire, we asked you whether you would be impatient if you had to wait in line at ___________.")
     Age=StringInput("What year were you born?")
     Gender=StringInput("What is your gender?")
     Page_1_MLS=StringInput("Page_1_MLS")
@@ -499,6 +500,18 @@ class Player(BasePlayer):
     Page_16_MLS=StringInput("Page_16_MLS")
     Page_16_Pagetime=StringInput("Page_16_Pagetime")
     Page_16_cr=models.FloatField()
+    RIR_1=RIR_items("Which of the following occupations were you asked about earlier in this questionnaire?",["Lawyer", "Physician", "Veterinarian", "Librarian"])
+    RIR_2=RIR_items("Which type of music were you asked about earlier in this questionnaire?",["Rap", "Classical", "Rock", "Country"])
+    RIR_3=RIR_items("Which of the following \"extreme\" sports were you asked about earlier in this questionnaire?",["Skydiving", "Hang gliding", "Scuba diving", "Bungee jumping"])
+    RIR_4=RIR_items("Which of the following vegetables were you asked about earlier in this questionnaire?",["Carrots", "Brussel sprouts", "Spinach", "Corn"])
+    RIR_6=RIR_items("Which U.S. State were you asked about earlier in this questionnaire?",["California", "Hawaii", "Alaska", "Texas"])
+    RIR_5=RIR_items("Which of the following hobbies were you asked about earlier in this questionnaire?",["Photography", "Woodworking", "Gardening", "Stamp collecting"])
+    RIR_7=RIR_items("Earlier in this questionnaire, we asked you about eating _______ as part of a dare.",["A plate of hot peppers", "A plate of crickets", "A live goldfish", "An earth worm"])
+    RIR_8=RIR_items("Earlier in the questionnaire, we asked you if you had experienced a recurring dream about _________.",["Being able to fly", "Having your teeth fall out", "Being naked in public", "Winning the lottery"])
+    RIR_9=RIR_items("Earlier in the questionnaire, we asked you whether you had a fear of __________.",["Spiders", "Dogs", "Thunderstorms", "Heights"])
+    RIR_10=RIR_items("Earlier in the questionnaire, we asked you whether you would like to spend an afternoon at _________.",["A flea market", "A city park", "An art museum", "An antique store"])
+    RIR_11=RIR_items("Earlier in the questionnaire, we asked you whether you would be impatient if you had to wait in line at ___________.",["A public restroom", "The grocery store", "A restaurant", "An amusement park ride"])
+
     def checkMaxLongString(self):
       s=0
       c=0
