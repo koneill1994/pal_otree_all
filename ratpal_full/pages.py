@@ -6,6 +6,12 @@ import time
     
     ## schooltime
     
+class ID_input(Page):
+    form_model='player'
+    form_fields=['PAL_subject_ID','PAL_group_ID']
+    def is_displayed(self):
+        return (self.round_number==1)
+    
 class SchoolTimeWaitPage(Page): 
     def is_displayed(self):
         return Constants.is_schooltime(self.round_number)
@@ -15,9 +21,17 @@ class SchoolTimeWaitPage(Page):
         
 class schooltime1(Page):
     form_model='player'
-    form_fields=['pair_choice']
+    form_fields=['pair_choice','confidence_first_answer']
     def is_displayed(self):
         return Constants.is_schooltime(self.round_number)
+
+class schooltime_guesses(Page):
+    form_model='player'
+    form_fields=['guess1','confidence1',
+                'guess2','confidence2',
+                'guess3','confidence3']
+    def is_displayed(self):
+        return (Constants.is_schooltime(self.round_number) and self.player.confidence_first_answer <100)
 
 
 class schooltime_non_interactive(Page):
@@ -109,6 +123,7 @@ ht_sequence = [
 sequence_group = [
     SchoolTimeWaitPage,
     schooltime1,
+    schooltime_guesses,
     ResultsWaitPage,
     SchooltimeResults,
     Feedback
@@ -128,6 +143,8 @@ sequence_non_interactive = [
 sequence_conditional=[sequence_group,sequence_individual,sequence_non_interactive]
 
 # page_sequence = sequence_conditional[Constants.condition]
-page_sequence = ht_sequence + sequence_conditional[0]
+page_sequence = sequence_conditional[0]
+
+# page_sequence = [ID_input]+ht_sequence + sequence_conditional[0]
 
 

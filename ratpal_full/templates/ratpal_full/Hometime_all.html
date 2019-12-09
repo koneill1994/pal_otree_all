@@ -8,6 +8,7 @@
 {% block content %}
 
 <button type="button" id="solitaire_button"> Play solitaire </button>
+<button type="button" id="chess_button"> Play chess </button>
 <button type="button" id="rest_button"> Just rest </button>
 <button type="button" id="study_button"> Study </button>
 
@@ -16,6 +17,16 @@
 
 <div id="game1">
     <iframe src='https://www.embed.com/app/solitaire/klondike.html' style='width: 1200px; height: 600px;' scrolling='no' frameBorder='0'></iframe>
+</div>
+
+<div id="chess">
+
+<iframe
+ style="width: 100%; height: 550px; overflow: hidden;"
+ src="https://playpager.com/embed/chess/index.html"
+ scrolling="no">
+</iframe>
+
 </div>
 
 <div id="rest">
@@ -39,10 +50,12 @@
 game=document.getElementById("game1")
 rest=document.getElementById("rest")
 task=document.getElementById("task")
+chess=document.getElementById("chess")
 
 game.style.display="none";
 rest.style.display="none";
 task.style.display="none";
+chess.style.display="none";
 
 hiddeninput=document.getElementById("id_homechoose_json");
 clicklist=[]
@@ -50,12 +63,14 @@ clicklist=[]
 game_button=document.getElementById("solitaire_button")
 rest_button=document.getElementById("rest_button")
 study_button=document.getElementById("study_button")
+chess_button=document.getElementById("chess_button")
 
 function pickgame(){
     console.log("pickgame");
     game.style.display="initial";
     rest.style.display="none";
     task.style.display="none";
+    chess.style.display="none";
     
     record_click("game")
 }
@@ -65,6 +80,7 @@ function pickrest(){
     game.style.display="none";
     rest.style.display="initial";
     task.style.display="none";
+    chess.style.display="none";
     
     record_click("rest")
 }
@@ -74,8 +90,19 @@ function picktask(){
     game.style.display="none";
     rest.style.display="none";
     task.style.display="initial";
-    
+    chess.style.display="none";
+
     record_click("task")
+}
+
+function pickchess(){
+    console.log("pickchess");
+    game.style.display="none";
+    rest.style.display="none";
+    task.style.display="none";
+    chess.style.display="initial";
+
+    record_click("chess")
 }
 
 function record_click(button){
@@ -91,7 +118,7 @@ function record_click(button){
 game_button.onclick = pickgame;
 rest_button.onclick = pickrest;
 study_button.onclick = picktask;
-
+chess_button.onclick = pickchess;
 
 </script>
 

@@ -17,7 +17,7 @@ class Constants(BaseConstants):
     players_per_group = None
     
     
-    home_timer=1 # in minutes
+    home_timer=10 # in minutes
     
     max_rounds=20 # should be an arbitrarily large number, theoretical end of ht
     st_rounds=5 # number of words shown to players in schooltime
@@ -66,6 +66,9 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     
+    PAL_subject_ID=models.CharField()
+    PAL_group_ID=models.CharField()
+    
     task=models.CharField()
     
     presented_word=models.CharField()
@@ -85,6 +88,16 @@ class Player(BasePlayer):
         self.correct_match=Constants.pairs[word]
 
     pair_choice=models.CharField()
+    confidence_first_answer=models.IntegerField() # represents percentage
+    
+    guess1=models.CharField(blank=True)
+    guess2=models.CharField(blank=True)
+    guess3=models.CharField(blank=True)
+    
+    confidence1=models.IntegerField(blank=True)
+    confidence2=models.IntegerField(blank=True)
+    confidence3=models.IntegerField(blank=True)
+    
     
     player_choice_final=models.CharField()
     

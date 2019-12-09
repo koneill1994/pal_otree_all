@@ -16,6 +16,81 @@
 
 {% formfield player.pair_choice %}
 
+<p>Your confidence in your choice:</p>
+<div id="conf_disp">100</div>
+
+<br>
+<input type="range" min="0" max="100" value="0" class="slider" id="conf_slider">
+
+<div id="hide_this">
+{% formfield player.confidence_first_answer %}
+</div>
+
+
+<style>
+    #conf_disp{
+        font-weight: bold;
+        font-size: 32px;
+        background-color: gray;
+        color: white;
+        text-align: center;
+        width: 50%;
+    }
+    #conf_disp::after{
+        content: "%"
+    }
+    #hide_this{
+        display: none;
+    }
+    #conf_slider{
+        width: 50%;
+        margin-bottom: 100px;
+    }
+    
+    #conf_slider {
+        -webkit-appearance: none;  /* Override default CSS styles */
+        appearance: none;
+        background: #d3d3d3; /* Grey background */
+        height: 15px;
+        outline: none; /* Remove outline */
+    }
+    
+    #conf_slider::-webkit-slider-thumb {
+        -webkit-appearance: none; /* Override default look */
+        appearance: none;
+        width: 25px; /* Set a specific slider handle width */
+        height: 40px; /* Slider handle height */
+        background: #4CAF50; /* Green background */
+        cursor: pointer; /* Cursor on hover */
+        border-style: outset;
+        border-color: #6ad96f #468f49;
+    }
+
+    #conf_slider::-moz-range-thumb {
+        width: 25px; /* Set a specific slider handle width */
+        height: 25px; /* Slider handle height */
+        background: #4CAF50; /* Green background */
+        cursor: pointer; /* Cursor on hover */
+        border-style: outset
+    }
+    
+</style>
+
+<script>
+conf_slider=document.getElementById("conf_slider")
+conf_disp=document.getElementById("conf_disp")
+conf_input_box=document.getElementById("id_confidence_first_answer")
+
+conf_disp.innerHTML = conf_slider.value;
+conf_input_box.value=conf_slider.value;
+
+
+conf_slider.oninput = function() {
+    conf_disp.innerHTML = this.value;
+    conf_input_box.value=this.value;
+}
+</script>
+
     {% next_button %}
 
 {% endblock %}
