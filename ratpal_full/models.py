@@ -41,6 +41,8 @@ class Constants(BaseConstants):
             return True
         return False
     
+    def get_session_number(round_n):
+        return int(round_n/(2*Constants.max_rounds))
     
     with open('wordlist.json') as json_file:
         data = json.load(json_file)
@@ -61,6 +63,19 @@ class Subsession(BaseSubsession):
 
 class Group(BaseGroup):
     condition=models.IntegerField(initial=Constants.condition)
+    
+    # need to bugtest this
+    def get_words_for_session(session_n):
+        if session_n==0:
+            return Constants.words[0:20]
+        else:
+            return
+                Constants.words[20+(session_n-1)*15:20+session_n*15] +
+                Constants.words[20+session_n*15:20+(session_n+1)*15]
+            
+    
+    
+    
 
 
 
