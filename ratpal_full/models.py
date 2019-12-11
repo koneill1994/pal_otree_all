@@ -19,36 +19,24 @@ class Constants(BaseConstants):
     
     home_timer=1000 # in minutes
     
-    # CAREFUL WITH SETTING THESE
-    # UNANTICIPATED BEHAVIOR MAY OCCUR
-    
-    max_rounds=22 # should be an arbitrarily large number, theoretical end of ht
-    st_rounds=20 # number of words shown to players in schooltime
+
+    schooltime_words=20 # number of words per round in schooltime
+    hometime_pages=2
+    max_rounds=schooltime_words+hometime_pages 
+
     pair_rounds=6 # number of times players go through ht/st paired tasks
     
-    num_rounds = pair_rounds*2*max_rounds
+    num_rounds = pair_rounds*max_rounds
     
-    # new plan
-    # put hometime on 1 single page
-    # have them loop through words there
     
-    def is_hometime(round_n):
-        if round_n%(2*Constants.max_rounds)<Constants.max_rounds:
+        
+    def display_hometime(round_n):
+        if (round_n%Constants.max_rounds)<=Constants.hometime_pages:
             return True
         return False
         
-    def is_schooltime(round_n):
-        if (round_n%(2*Constants.max_rounds)>Constants.max_rounds) and (round_n%(2*Constants.max_rounds)<Constants.st_rounds+Constants.max_rounds):
-            return True
-        return False
-        
-    def is_hometime_start(round_n):
-        if round_n%(2*Constants.max_rounds)==1:
-            return True
-        return False
-    
     def get_session_number(round_n):
-        return int(round_n/(2*Constants.max_rounds))
+        return int(round_n/Constants.max_rounds)
     
     with open('wordlist.json') as json_file:
         data = json.load(json_file)
@@ -137,8 +125,8 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     
     def UpdateWords(self):
-        # return(Constants.get_words_for_session(Constants.get_session_number(self.round_number)))
-        return(Constants.get_words_for_session(0))
+        return(Constants.get_words_for_session(Constants.get_session_number(self.round_number)))
+        # return(Constants.get_words_for_session(0))
     
     words_json=models.CharField()
     
@@ -155,16 +143,9 @@ class Player(BasePlayer):
     presented_word=models.CharField()
     correct_match=models.CharField()
     
-    def set_task(self):
-        if Constants.is_schooltime(self.round_number):
-            task="Schooltime"
-        elif Constants.is_hometime(self.round_number):
-            task="Hometime"
-        else:
-            task="error" # i sure hope this never triggers
 
     def get_pair(self):
-        word=self.UpdateWords()[(self.round_number-1)%Constants.st_rounds]
+        word=self.UpdateWords()[(self.round_number-1)%Constants.max_rounds]
         self.presented_word=word
         self.correct_match=Constants.pairs[word]
 
@@ -185,10 +166,8 @@ class Player(BasePlayer):
     
     player_choice_json=models.CharField()
     
-
-
-
     homechoose_json=models.CharField()
+    hometime_study_json=models.CharField()
     
     def evaluate_choice(self):
         return(self.pair_choice in Group.correct_match.split("/"))

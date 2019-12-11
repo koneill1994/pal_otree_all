@@ -13,8 +13,6 @@ class ID_input(Page):
         return (self.round_number==1)
     
 class SchoolTimeWaitPage(Page): 
-    def is_displayed(self):
-        return Constants.is_schooltime(self.round_number)
     def before_next_page(self):
         self.player.get_pair()
         self.player.set_task()
@@ -22,111 +20,48 @@ class SchoolTimeWaitPage(Page):
 class schooltime1(Page):
     form_model='player'
     form_fields=['pair_choice','confidence_first_answer']
-    def is_displayed(self):
-        return Constants.is_schooltime(self.round_number)
 
 class schooltime_guesses(Page):
     form_model='player'
     form_fields=['guess1','confidence1',
                 'guess2','confidence2',
                 'guess3','confidence3']
-    def is_displayed(self):
-        return (Constants.is_schooltime(self.round_number) and self.player.confidence_first_answer <100)
 
 
 class schooltime_non_interactive(Page):
-    def is_displayed(self):
-        return Constants.is_schooltime(self.round_number)
-
+    pass
 
 class ResultsWaitPage(WaitPage):
-    def is_displayed(self):
-        return Constants.is_schooltime(self.round_number)
-
+    pass
 
 class SchooltimeResults(Page):
     form_model='player'
     form_fields=['player_choice_final','player_choice_final_conf','player_choice_json']
-    def is_displayed(self):
-        return Constants.is_schooltime(self.round_number)
     def before_next_page(self):
         self.group.group_answer=self.group.get_group_answer()
 
 
 class Schooltime_feedback_individual(Page):
-    def is_displayed(self):
-        return Constants.is_schooltime(self.round_number)
-
+    pass
+    
 class Feedback(Page):
-    def is_displayed(self):
-        return Constants.is_schooltime(self.round_number)
-
+    pass
 
 ## hometime
 
 class StartHometime(Page):
-    def is_displayed(self):
-        return Constants.is_hometime_start(self.round_number)
     def before_next_page(self):
-        self.player.set_task()
-        self.participant.vars['hometime_start'] = time.time()
-        self.participant.vars['expiry'] = self.participant.vars['hometime_start'] + 60*Constants.home_timer
-        # self.player.UpdateWords()
         self.player.Words_JSON()
+    def is_displayed(self):
+        return Constants.display_hometime(self.round_number)
 
 class Hometime_one_page(Page):
     form_model='player'
-    form_fields=['homechoose_json']
+    form_fields=['homechoose_json','hometime_study_json']
     def get_timeout_seconds(self):
-        return self.participant.vars['expiry'] - time.time()
-    def vars_for_template(self):
-        return dict(
-            hometime_start=self.participant.vars['hometime_start']
-        )
+        return Constants.home_timer
 
 
-class Hometime_all(Page):
-    form_model='player'
-    form_fields=['homechoose_json']
-    def before_next_page(self):
-        self.player.get_pair()
-    def get_timeout_seconds(self):
-        return self.participant.vars['expiry'] - time.time()
-    def is_displayed(self):
-        return (self.get_timeout_seconds() > 3) and Constants.is_hometime(self.round_number)
-    def vars_for_template(self):
-        return dict(
-            hometime_start=self.participant.vars['hometime_start']
-        )
-
-        
-class schooltime_ht(Page):
-    form_model='player'
-    form_fields=['pair_choice']
-    def get_timeout_seconds(self):
-        return self.participant.vars['expiry'] - time.time()
-    def is_displayed(self):
-        return (self.get_timeout_seconds() > 3) and Constants.is_hometime(self.round_number)
-
-
-class Schooltime_feedback_individual_ht(Page):
-    def get_timeout_seconds(self):
-        return self.participant.vars['expiry'] - time.time()
-    def is_displayed(self):
-        return (self.get_timeout_seconds() > 3) and Constants.is_hometime(self.round_number)
-
-
-
-
-
-
-ht_sequence = [
-    StartHometime,
-    Hometime_all,
-    schooltime_ht,
-    Schooltime_feedback_individual_ht
-]
-    
 ht_new= [
     StartHometime,
     Hometime_one_page
@@ -157,8 +92,8 @@ sequence_non_interactive = [
 sequence_conditional=[sequence_group,sequence_individual,sequence_non_interactive]
 
 # page_sequence = sequence_conditional[Constants.condition]
-page_sequence = ht_new
+# page_sequence = ht_new
 
-# page_sequence = [ID_input]+ht_sequence + sequence_conditional[0]
+page_sequence = [ID_input]+ht_new + sequence_conditional[0]
 
 
