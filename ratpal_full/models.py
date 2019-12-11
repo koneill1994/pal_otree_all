@@ -19,8 +19,11 @@ class Constants(BaseConstants):
     
     home_timer=10 # in minutes
     
+    # CAREFUL WITH SETTING THESE
+    # UNANTICIPATED BEHAVIOR MAY OCCUR
+    
     max_rounds=20 # should be an arbitrarily large number, theoretical end of ht
-    st_rounds=5 # number of words shown to players in schooltime
+    st_rounds=20 # number of words shown to players in schooltime
     pair_rounds=6 # number of times players go through ht/st paired tasks
     
     num_rounds = pair_rounds*2*max_rounds
@@ -48,12 +51,22 @@ class Constants(BaseConstants):
         data = json.load(json_file)
         
     pairs=dict([(x[0][0],x[1][0]) for x in data])
-    
     words=list(pairs.keys())
-    random.shuffle(words)
-    
+   
     condition=random.randint(0,2)
     
+    def arrange_words_for_session(session_n):
+        if session_n==0:
+            return ([],Constants.words[0:20])
+        else:
+            return (Constants.arrange_words_for_session(session_n-1)[1][0:5],Constants.words[20+(session_n-1)*15:20+(session_n)*15])
+           
+    def get_words_for_session(session_n):
+        out=[]
+        for sublist in Constants.arrange_words_for_session(session_n):
+            for word in sublist:
+                out.append(word)
+        return out
 
 
 
@@ -64,22 +77,11 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     condition=models.IntegerField(initial=Constants.condition)
     
-    # need to bugtest this
-    def get_words_for_session(session_n):
-        if session_n==0:
-            return Constants.words[0:20]
-        else:
-            return
-                Constants.words[20+(session_n-1)*15:20+session_n*15] +
-                Constants.words[20+session_n*15:20+(session_n+1)*15]
-            
-    
-    
-    
-
-
 
 class Player(BasePlayer):
+    
+    def UpdateWords(self):
+        return(Constants.get_words_for_session(Constants.get_session_number(self.round_number)))
     
     PAL_subject_ID=models.CharField()
     PAL_group_ID=models.CharField()
@@ -98,7 +100,7 @@ class Player(BasePlayer):
             task="error" # i sure hope this never triggers
 
     def get_pair(self):
-        word=Constants.words[self.round_number]
+        word=self.UpdateWords()[(self.round_number-1)%Constants.st_rounds]
         self.presented_word=word
         self.correct_match=Constants.pairs[word]
 
@@ -116,10 +118,7 @@ class Player(BasePlayer):
     
     player_choice_final=models.CharField()
     
-    hovercount=models.IntegerField(default=0)
-    hovertime=models.IntegerField(default=0)
-    
-    hover_json=models.StringField(blank=True)
+    player_choice_json=models.CharField()
     
     # i don't like hardcoding it like this
     # but unless you want to interpret a json string

@@ -46,12 +46,7 @@ class ResultsWaitPage(WaitPage):
 
 class SchooltimeResults(Page):
     form_model='player'
-    form_fields=['player_choice_final',
-        'hovercount1','hovertime1','hover_json1','click_json1',
-        'hovercount2','hovertime2','hover_json2','click_json2',
-        'hovercount3','hovertime3','hover_json3','click_json3',
-        'hovercount4','hovertime4','hover_json4','click_json4'
-    ]
+    form_fields=['player_choice_final','player_choice_json']
     def is_displayed(self):
         return Constants.is_schooltime(self.round_number)
 
@@ -74,6 +69,7 @@ class StartHometime(Page):
         self.player.set_task()
         self.participant.vars['hometime_start'] = time.time()
         self.participant.vars['expiry'] = self.participant.vars['hometime_start'] + 60*Constants.home_timer
+        Player.UpdateWords()
 
 
 class Hometime_all(Page):
