@@ -17,17 +17,20 @@ class Constants(BaseConstants):
     players_per_group = None
     
     
-    home_timer=10 # in minutes
+    home_timer=1000 # in minutes
     
     # CAREFUL WITH SETTING THESE
     # UNANTICIPATED BEHAVIOR MAY OCCUR
     
-    max_rounds=20 # should be an arbitrarily large number, theoretical end of ht
+    max_rounds=22 # should be an arbitrarily large number, theoretical end of ht
     st_rounds=20 # number of words shown to players in schooltime
     pair_rounds=6 # number of times players go through ht/st paired tasks
     
     num_rounds = pair_rounds*2*max_rounds
     
+    # new plan
+    # put hometime on 1 single page
+    # have them loop through words there
     
     def is_hometime(round_n):
         if round_n%(2*Constants.max_rounds)<Constants.max_rounds:
@@ -77,12 +80,73 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     condition=models.IntegerField(initial=Constants.condition)
     
+    group_answer=models.CharField()
+    
+    def get_group_answer(self):
+        
+        # this value determines the minimum confidence value needed
+        # to determine a group answer
+        # in the case where all 4 players choose different answers
+        confidence_cutoff=80
+    
+        # get lists of answers and confidences
+        ans_list=[]
+        conf_list=[]
+        for p in self.get_players():
+            ans_list.append(p.player_choice_final)
+            conf_list.append(p.player_choice_final_conf)
+        
+        # get a dictionary of form {choice: count}
+        ans_dict={}
+        for ans in ans_list:
+            if ans in ans_dict:
+                ans_dict[ans]+=1
+            else:
+                ans_dict[ans]=1
+
+        # determine group answer
+        if len(ans_dict)==1: # all chose same answer
+            return list(ans_dict.keys())[0] # return that answer
+        elif len(ans_dict)==2: # two answers chosen
+            m=max(list(ans_dict.values()))
+            if m==2: # if 2 and 2, choose randomly
+                return list(ans_dict.keys())[random.randint(0,1)]
+            else: # if 3 and 1, choose the max
+                return max(ans_dict, key=ans_dict.get)
+        elif len(ans_dict)==3: # if 2, 1, and 1, choose the max
+            return max(ans_dict, key=ans_dict.get)
+        else: # all 4 separate answers
+            # choose the answer with the highest confidence above the cutoff
+            highest_conf=0
+            ans_high_conf=""
+            for i in range(0,len(conf_list)):
+                if conf_list[i]>highest_conf:
+                    highest_conf=conf_list[i]
+                    ans_high_conf=ans_list[i]
+            if highest_conf>=confidence_cutoff:
+                return ans_high_conf
+            else: # if no answers are high enough confidence, return a failure tag as the group answer
+                return "___FAILURE___" # or return None?
+                
+                
+
+
+        
+        
 
 class Player(BasePlayer):
     
     def UpdateWords(self):
-        return(Constants.get_words_for_session(Constants.get_session_number(self.round_number)))
+        # return(Constants.get_words_for_session(Constants.get_session_number(self.round_number)))
+        return(Constants.get_words_for_session(0))
     
+    words_json=models.CharField()
+    
+    def Words_JSON(self):
+        self.words_json=json.dumps(
+            [[word.split("/"),Constants.pairs[word]] for word in self.UpdateWords()]
+        )
+        
     PAL_subject_ID=models.CharField()
     PAL_group_ID=models.CharField()
     
@@ -117,30 +181,11 @@ class Player(BasePlayer):
     
     
     player_choice_final=models.CharField()
+    player_choice_final_conf=models.IntegerField()
     
     player_choice_json=models.CharField()
     
-    # i don't like hardcoding it like this
-    # but unless you want to interpret a json string
-    # in the analysis, this is the cleanest way
-    hovercount1=models.IntegerField(default=0)
-    hovertime1=models.IntegerField(default=0)
-    hovercount2=models.IntegerField(default=0)
-    hovertime2=models.IntegerField(default=0)
-    hovercount3=models.IntegerField(default=0)
-    hovertime3=models.IntegerField(default=0)
-    hovercount4=models.IntegerField(default=0)
-    hovertime4=models.IntegerField(default=0)
 
-    hover_json1=models.StringField(blank=True)
-    hover_json2=models.StringField(blank=True)
-    hover_json3=models.StringField(blank=True)
-    hover_json4=models.StringField(blank=True)
-    
-    click_json1=models.StringField(blank=True)
-    click_json2=models.StringField(blank=True)
-    click_json3=models.StringField(blank=True)
-    click_json4=models.StringField(blank=True)
 
 
     homechoose_json=models.CharField()

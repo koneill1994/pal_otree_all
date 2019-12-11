@@ -46,9 +46,11 @@ class ResultsWaitPage(WaitPage):
 
 class SchooltimeResults(Page):
     form_model='player'
-    form_fields=['player_choice_final','player_choice_json']
+    form_fields=['player_choice_final','player_choice_final_conf','player_choice_json']
     def is_displayed(self):
         return Constants.is_schooltime(self.round_number)
+    def before_next_page(self):
+        self.group.group_answer=self.group.get_group_answer()
 
 
 class Schooltime_feedback_individual(Page):
@@ -69,7 +71,18 @@ class StartHometime(Page):
         self.player.set_task()
         self.participant.vars['hometime_start'] = time.time()
         self.participant.vars['expiry'] = self.participant.vars['hometime_start'] + 60*Constants.home_timer
-        Player.UpdateWords()
+        # self.player.UpdateWords()
+        self.player.Words_JSON()
+
+class Hometime_one_page(Page):
+    form_model='player'
+    form_fields=['homechoose_json']
+    def get_timeout_seconds(self):
+        return self.participant.vars['expiry'] - time.time()
+    def vars_for_template(self):
+        return dict(
+            hometime_start=self.participant.vars['hometime_start']
+        )
 
 
 class Hometime_all(Page):
@@ -114,6 +127,11 @@ ht_sequence = [
     Schooltime_feedback_individual_ht
 ]
     
+ht_new= [
+    StartHometime,
+    Hometime_one_page
+]
+    
 # depending on condition, we'll set page_sequence equal to 
 # one of the following
 sequence_group = [
@@ -139,7 +157,7 @@ sequence_non_interactive = [
 sequence_conditional=[sequence_group,sequence_individual,sequence_non_interactive]
 
 # page_sequence = sequence_conditional[Constants.condition]
-page_sequence = sequence_conditional[0]
+page_sequence = ht_new
 
 # page_sequence = [ID_input]+ht_sequence + sequence_conditional[0]
 

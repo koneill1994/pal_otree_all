@@ -67,6 +67,7 @@
 
     {% formfield player.player_choice_json %}
     {% formfield player.player_choice_final %}
+    {% formfield player.player_choice_final_conf %}
 
 </div>
 
@@ -107,6 +108,7 @@ page_start=new Date().getTime();
 
 choice_input=document.getElementById("id_player_choice_final")
 choice_display=document.getElementById("player_choice_display")
+choice_conf=document.getElementById("id_player_choice_final_conf")
 
 clicklist=[]
 
@@ -162,6 +164,7 @@ for (let item of choices) {
         )
         json_log.value=JSON.stringify(activity_list);
         choice_input.value=item.getAttribute("data-ans")
+        choice_conf.value=item.getAttribute("data-conf")
         choice_display.innerHTML=item.getAttribute("data-ans")
     };
 }
