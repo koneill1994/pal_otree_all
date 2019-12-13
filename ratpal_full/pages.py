@@ -28,7 +28,6 @@ class schooltime_guesses(Page):
     def is_displayed(self):
         return self.player.confidence_first_answer<100
 
-
 class schooltime_non_interactive(Page):
     pass
 

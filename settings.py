@@ -26,7 +26,6 @@ SESSION_CONFIGS = [
        # num_demo_participants=1,
        # app_sequence=['pal_exam']
     # ),
-    
     # must not contain duplicate elements
     # need to combine hometime and schooltime into a single app
     dict(
