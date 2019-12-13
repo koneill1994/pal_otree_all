@@ -1,0 +1,21 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Schooltime
+{% endblock %}
+
+{% block content %}
+
+<ul>
+{% for word in player.get_split_words %}
+    <li>{{word}}</li>
+{% endfor %}
+</ul>
+
+{{player.correct_match}}
+
+
+    {% next_button %}
+
+{% endblock %}

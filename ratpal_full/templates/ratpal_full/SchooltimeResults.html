@@ -1,0 +1,182 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Schooltime results
+{% endblock %}
+
+{% block content %}
+
+<b>Words:</b>
+<ul>
+{% for word in player.get_split_words %}
+    <li>{{word}}</li>
+{% endfor %}
+</ul>
+
+
+<ul>
+    {% for p in group.get_players %}
+        <li>
+        <!-- list player first choice and guesses -->
+            <div id="playerchoice">
+                <p class="choice" data-player="{{p.id_in_group}}" data-choicetype="first_choice" data-ans="{{p.pair_choice}}" data-conf="{{p.confidence_first_answer}}">
+                    Player {{p.id_in_group}} chose {{p.pair_choice}} with a confidence of {{p.confidence_first_answer}}%
+                </p>
+            </div>
+            <ul style="margin-right: 1em">
+                {% if p.guess1 != None %}
+                <div id="playerchoice">
+                    <li>
+                        <p class="choice" data-player="{{p.id_in_group}}" data-choicetype="guess1" data-ans="{{p.guess1}}" data-conf="{{p.confidence1}}">
+                            Player {{p.id_in_group}} guessed {{p.guess1}} with a confidence of {{p.confidence1}}%
+                        </p>
+                    </li>
+                </div>
+                {% endif %}
+                {% if p.guess2 != None %}
+                <div id="playerchoice">
+                    <li>
+                        <p class="choice" data-player="{{p.id_in_group}}" data-choicetype="guess2" data-ans="{{p.guess2}}" data-conf="{{p.confidence2}}">
+                            Player {{p.id_in_group}} guessed {{p.guess2}} with a confidence of {{p.confidence2}}%
+                        </p>
+                    </li>
+                </div>
+                {% endif %}                    
+                {% if p.guess3 != None %}
+                <div id="playerchoice">
+                    <li>
+                        <p class="choice" data-player="{{p.id_in_group}}" data-choicetype="guess3" data-ans="{{p.guess3}}" data-conf="{{p.confidence3}}">
+                            Player {{p.id_in_group}} guessed {{p.guess3}} with a confidence of {{p.confidence3}}%
+                        </p>
+                    </li>
+                </div>
+                {% endif %}
+            </ul>
+        </li>
+    {%endfor%}
+</ul>
+
+<!-- convert all of the following values into just a json format -->
+<!-- e.g. [[mouse_over,player1,guess1,1000]] -->
+<!-- format: [[action(mouse_on,mouse_off,click), player, guess, timestamp]] -->
+
+
+
+<div id="hidden_input">
+
+    {% formfield player.player_choice_json %}
+    {% formfield player.player_choice_final %}
+    {% formfield player.player_choice_final_conf %}
+
+</div>
+
+
+<style>
+    {% for p in group.get_players %}
+        .choice{
+            opacity:0; 
+            display: block;
+            margin-bottom: 0px;
+            padding: 10px;
+        }
+    
+        .choice:hover{
+            opacity:1 !important;
+        }
+    {%endfor%}
+
+<!-- #hidden_input{ -->
+    <!-- display:none; -->
+<!-- } -->
+
+#playerchoice{
+    display: inline-block;
+    background: #EEEEEE;
+    margin: 10px;
+    width: 80%;
+    cursor: pointer;
+}
+</style>
+
+<p>Your final choice:</p>
+<div id="player_choice_display" style="font-weight: bold"> [None chosen yet] </div>
+
+
+<script>
+page_start=new Date().getTime();
+
+choice_input=document.getElementById("id_player_choice_final")
+choice_display=document.getElementById("player_choice_display")
+choice_conf=document.getElementById("id_player_choice_final_conf")
+
+clicklist=[]
+
+<!-- e.g. [[mouse_over,player1,guess1,1000]] -->
+<!-- format: [[action(mouse_on,mouse_off,click), player, guess, timestamp]] -->
+
+json_log=document.getElementById("id_player_choice_json")
+
+activity_list=[]
+
+choices=document.getElementsByClassName("choice");
+
+for (let item of choices) {
+    
+    item.onmouseover = function(){
+        activity_list.push(
+            [
+                "mouse_on",
+                "player_"+item.getAttribute("data-player"),
+                item.getAttribute("data-choicetype"),
+                new Date().getTime()-page_start,
+                item.getAttribute("data-ans"),
+                item.getAttribute("data-conf")
+            ]
+        )
+        json_log.value=JSON.stringify(activity_list);
+    };
+    
+    item.onmouseleave = function(){
+        activity_list.push(
+            [
+                "mouse_off",
+                "player_"+item.getAttribute("data-player"),
+                item.getAttribute("data-choicetype"),
+                new Date().getTime()-page_start,
+                item.getAttribute("data-ans"),
+                item.getAttribute("data-conf")
+            ]
+        )
+        json_log.value=JSON.stringify(activity_list);
+    };
+
+    item.onclick = function(){
+        activity_list.push(
+            [
+                "mouse_off",
+                "player_"+item.getAttribute("data-player"),
+                item.getAttribute("data-choicetype"),
+                new Date().getTime()-page_start,
+                item.getAttribute("data-ans"),
+                item.getAttribute("data-conf")
+            ]
+        )
+        json_log.value=JSON.stringify(activity_list);
+        choice_input.value=item.getAttribute("data-ans")
+        choice_conf.value=item.getAttribute("data-conf")
+        choice_display.innerHTML=item.getAttribute("data-ans")
+    };
+}
+
+
+</script>
+
+
+
+<br>
+
+    {% next_button %}
+{% endblock %}
+
+

@@ -1,0 +1,17 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Schooltime
+{% endblock %}
+
+{% block content %}
+
+{{player.presented_word}}
+
+{{player.correct_match}}
+
+
+    {% next_button %}
+
+{% endblock %}

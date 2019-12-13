@@ -1,0 +1,122 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Page title
+{% endblock %}
+
+{% block content %}
+
+
+{% if cr_score %}
+    <div>
+    Current careless responding score:
+    {{cr_score}}
+    </div>
+{% endif %}
+
+<!-- <button id="testbutton">test CR calculation</button> -->
+
+
+    {% for field in form  %}
+        {% formfield field %}
+    {% endfor %}
+
+
+<div id="next">
+    {% next_button %}
+</div>
+
+
+
+
+<script>
+
+start=new Date().getTime()
+
+question_names=[]
+{% for field in qnames  %}
+    question_names.push("{{field}}")
+{% endfor %}
+
+num_cr_measures=2
+
+cr_measures=question_names.slice(question_names.length-num_cr_measures,question_names.length)
+question_names=question_names.slice(0,question_names.length-num_cr_measures)
+
+console.log(cr_measures)
+
+measure_boxes=[]
+
+cr_measures.forEach(function(m){
+    measure_boxes.push(document.getElementById("id_"+m))
+})
+
+<!-- here put code to hide the measure boxes -->
+
+console.log(measure_boxes)
+
+function getQuestionAnswers(){
+    questions=[]
+    
+    question_names.forEach(function(n){
+        questions.push(document.getElementsByName(n))
+    })
+    
+    answers=[]
+    questions.forEach(function(q){
+        answer=null
+        q.forEach(function(box){
+            if(box.checked){
+                answer=box.value
+            }
+        })
+        answers.push(answer)
+    })
+    return(answers);
+}
+
+function getMaxLongString(responses){
+    max_string=0;
+    currString=1;
+    last_r="-1";
+    
+    responses.forEach(function(r){
+        if(r==last_r){
+            currString++;
+        }
+        else{
+            currString=1;
+        }
+        if(currString>max_string){
+                max_string=currString;
+        }
+        last_r=r;
+    })
+    return(max_string);
+}
+
+function getPageTime(){
+    pagetime=(new Date().getTime() - start)/1000
+    return pagetime;
+}
+
+
+function compute_page_vals(){
+    ans=getQuestionAnswers();
+    console.log(ans)
+    console.log(getMaxLongString(ans))
+    measure_boxes[0].value = (getMaxLongString(ans));
+    measure_boxes[1].value = getPageTime();
+}
+
+<!-- document.getElementById("testbutton").addEventListener("click", compute_page_vals); -->
+
+document.getElementById("next").addEventListener("click", compute_page_vals);
+
+</script>
+
+
+
+
+{% endblock %}

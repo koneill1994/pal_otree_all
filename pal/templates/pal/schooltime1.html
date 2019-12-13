@@ -1,0 +1,16 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Schooltime
+{% endblock %}
+
+{% block content %}
+
+{{player.presented_word}}
+
+{% formfield player.pair_choice %}
+
+    {% next_button %}
+
+{% endblock %}

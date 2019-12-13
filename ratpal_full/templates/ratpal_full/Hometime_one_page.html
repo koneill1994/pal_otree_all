@@ -1,0 +1,236 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Home time
+{% endblock %}
+
+{% block content %}
+
+<button type="button" id="solitaire_button"> Play solitaire </button>
+<button type="button" id="chess_button"> Play chess </button>
+<button type="button" id="rest_button"> Just rest </button>
+<button type="button" id="study_button"> Study </button>
+
+<br>
+
+
+<div id="solitaire">
+    <iframe src='https://www.embed.com/app/solitaire/klondike.html' style='width: 1200px; height: 600px;' scrolling='no' frameBorder='0'></iframe>
+</div>
+
+<div id="chess">
+
+<iframe
+ style="width: 100%; height: 550px; overflow: hidden;"
+ src="https://playpager.com/embed/chess/index.html"
+ scrolling="no">
+</iframe>
+
+</div>
+
+<div id="rest">
+    <p>You may use this time to rest. </p>
+</div>
+
+<div id="task"> 
+    <!-- display list of words -->
+    <ul id="practicelist"></ul>
+
+    <!-- input box for answer -->
+    <input type="text" id="practice_input">
+
+    <!-- submit button -->
+    <button type="button" id="practice_submit">Submit</button>
+
+    <!-- give feedback -->
+    <p id="practice_feedback"></p>
+
+    <!-- next button to move to next set of words -->
+    <button type="button" id="next_item">Next practice question</button>
+</div>
+
+<br>
+
+<div id="hidden_input" style="display: none">
+    {% formfield player.homechoose_json %}
+    {% formfield player.hometime_study_json %}
+</div>
+
+
+
+<script>
+
+start_time=new Date().getTime()
+
+solitaire=document.getElementById("solitaire")
+rest=document.getElementById("rest")
+task=document.getElementById("task")
+chess=document.getElementById("chess")
+
+solitaire.style.display="none";
+rest.style.display="none";
+task.style.display="none";
+chess.style.display="none";
+
+hiddeninput=document.getElementById("id_homechoose_json");
+clicklist=[]
+
+solitaire_button=document.getElementById("solitaire_button")
+rest_button=document.getElementById("rest_button")
+study_button=document.getElementById("study_button")
+chess_button=document.getElementById("chess_button")
+
+function picksolitaire(){
+    console.log("picksolitaire");
+    solitaire.style.display="initial";
+    rest.style.display="none";
+    task.style.display="none";
+    chess.style.display="none";
+    
+    record_click("solitaire")
+}
+
+function pickrest(){
+    console.log("pickrest");
+    solitaire.style.display="none";
+    rest.style.display="initial";
+    task.style.display="none";
+    chess.style.display="none";
+    
+    record_click("rest")
+}
+
+function picktask(){
+    console.log("picktask");
+    solitaire.style.display="none";
+    rest.style.display="none";
+    task.style.display="initial";
+    chess.style.display="none";
+
+    record_click("task")
+}
+
+function pickchess(){
+    console.log("pickchess");
+    solitaire.style.display="none";
+    rest.style.display="none";
+    task.style.display="none";
+    chess.style.display="initial";
+
+    record_click("chess")
+}
+
+function record_click(button){
+    
+    clicktime=(new Date().getTime()-start_time)
+    clicklist.push([button, clicktime])
+    
+    hiddeninput.value=JSON.stringify(clicklist)
+
+}
+
+solitaire_button.onclick = picksolitaire;
+rest_button.onclick = pickrest;
+study_button.onclick = picktask;
+chess_button.onclick = pickchess;
+
+<!-- study task code below -->
+
+{% autoescape off %}
+    words={{player.words_json}}
+{% endautoescape %}
+
+word_n=0;
+
+practice_list=document.getElementById("practicelist")
+practice_input=document.getElementById("practice_input")
+practice_submit=document.getElementById("practice_submit")
+practice_feedback=document.getElementById("practice_feedback")
+next_item=document.getElementById("next_item")
+
+study_log=document.getElementById("id_hometime_study_json")
+study_log_list=[]
+ <!-- [action_type,question,correct_answer,subject_answer,timestamp] -->
+
+update_practice_list()
+
+practice_submit.onclick = function(){
+    if(practice_input.value.length>0){
+        <!-- set the feedback message -->
+        if(practice_input.value==words[word_n][1]){
+            practice_feedback.innerHTML="Congratulations, you got it correct!"
+        }
+        else{
+            practice_feedback.innerHTML="Sorry, that's incorrect."
+        }
+        practice_feedback.innerHTML+="<br> You answered <b>" + practice_input.value + "</b> and the answer was <b>" + words[word_n][1] + "</b>"
+        next_item.style.display="initial"
+        
+        <!-- log the action -->
+        study_log_list.push([
+            "submit_practice",
+            words[word_n][0],
+            words[word_n][1],
+            practice_input.value,
+            (new Date().getTime()-start_time)
+        ])
+        study_log.value=JSON.stringify(study_log_list)
+    }
+    else{
+        practice_feedback.innerHTML="Type an answer into the input box."
+        study_log_list.push([
+            "attempt_submit_blank",
+            words[word_n][0],
+            words[word_n][1],
+            practice_input.value,
+            (new Date().getTime()-start_time)
+        ])   
+        study_log.value=JSON.stringify(study_log_list)
+    }
+}
+
+function update_practice_list(){
+    <!-- remove the previous list -->
+    while (practice_list.firstChild) {
+        practice_list.removeChild(practice_list.firstChild);
+    }
+    
+    <!-- populate the list with the next words -->
+    words[word_n][0].forEach(function(w){
+        li=document.createElement("LI")
+        li.appendChild(document.createTextNode(w))
+        practice_list.appendChild(li)
+    })
+    
+    next_item.style.display="none"
+}
+
+next_item.onclick = function(){
+    word_n=(word_n+1)%words.length
+    update_practice_list()
+    practice_input.value=""
+    practice_feedback.innerHTML=""
+    
+    study_log_list.push([
+        "next_practice_question",
+        words[word_n][0],
+        words[word_n][1],
+        practice_input.value,
+        (new Date().getTime()-start_time)
+    ])
+    study_log.value=JSON.stringify(study_log_list)
+}
+
+
+</script>
+
+
+
+
+
+
+
+
+
+{% endblock %}

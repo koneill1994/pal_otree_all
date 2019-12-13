@@ -1,0 +1,16 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Choose how to spend hometime
+{% endblock %}
+
+How would you like to spend the hometime period?
+
+{% formfield player.hometime_choice %}
+
+{% block content %}
+
+    {% next_button %}
+
+{% endblock %}

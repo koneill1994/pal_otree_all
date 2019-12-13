@@ -1,0 +1,20 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Study
+{% endblock %}
+
+{% block content %}
+
+<ul>
+{% for word in player.get_split_words %}
+    <li>{{word}}</li>
+{% endfor %}
+</ul>
+
+{% formfield player.pair_choice %}
+
+    {% next_button %}
+
+{% endblock %}

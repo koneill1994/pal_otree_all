@@ -1,0 +1,106 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Home time
+{% endblock %}
+
+{% block content %}
+
+<button type="button" id="solitaire_button"> Play solitaire </button>
+<button type="button" id="rest_button"> Just rest </button>
+<button type="button" id="study_button"> Study </button>
+
+<br>
+
+
+<div id="game1">
+    <iframe src='https://www.embed.com/app/solitaire/klondike.html' style='width: 1200px; height: 600px;' scrolling='no' frameBorder='0'></iframe>
+</div>
+
+<div id="rest">
+    <p>You may use this time to rest. </p>
+</div>
+
+<div id="task"> Click the next button to start the next task. 
+
+    {% next_button %}
+</div>
+
+<br>
+
+<div id="hidden_input" style="display: none">
+    {% formfield player.homechoose_json %}
+</div>
+
+
+<script>
+
+game=document.getElementById("game1")
+rest=document.getElementById("rest")
+task=document.getElementById("task")
+
+game.style.display="none";
+rest.style.display="none";
+task.style.display="none";
+
+hiddeninput=document.getElementById("id_homechoose_json");
+clicklist=[]
+
+game_button=document.getElementById("solitaire_button")
+rest_button=document.getElementById("rest_button")
+study_button=document.getElementById("study_button")
+
+function pickgame(){
+    console.log("pickgame");
+    game.style.display="initial";
+    rest.style.display="none";
+    task.style.display="none";
+    
+    record_click("game")
+}
+
+function pickrest(){
+    console.log("pickrest");
+    game.style.display="none";
+    rest.style.display="initial";
+    task.style.display="none";
+    
+    record_click("rest")
+}
+
+function picktask(){
+    console.log("picktask");
+    game.style.display="none";
+    rest.style.display="none";
+    task.style.display="initial";
+    
+    record_click("task")
+}
+
+function record_click(button){
+    
+    clicktime=(new Date().getTime()/1000) - {{hometime_start}};
+    clicklist.push([button, clicktime])
+    
+    hiddeninput.value=JSON.stringify(clicklist)
+
+}
+
+
+game_button.onclick = pickgame;
+rest_button.onclick = pickrest;
+study_button.onclick = picktask;
+
+
+</script>
+
+
+
+
+
+
+
+
+
+{% endblock %}
