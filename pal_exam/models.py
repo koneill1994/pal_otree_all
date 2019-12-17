@@ -15,7 +15,10 @@ Your app description
 class Constants(BaseConstants):
     name_in_url = 'pal_exam'
     players_per_group = None
-    num_rounds = 10
+       
+    num_rounds = 95 # set to same number as number of words
+    
+    exam_timer = 20*60 # in seconds
 
     with open('wordlist.json') as json_file:
         data = json.load(json_file)
@@ -23,7 +26,6 @@ class Constants(BaseConstants):
     pairs=dict([(x[0][0],x[1][0]) for x in data])
     
     words=list(pairs.keys())
-    random.shuffle(words)
     
 class Subsession(BaseSubsession):
     pass
@@ -31,8 +33,6 @@ class Subsession(BaseSubsession):
 
 class Group(BaseGroup):
     pass
-
-
 
 class Player(BasePlayer):
 
@@ -47,9 +47,7 @@ class Player(BasePlayer):
         self.correct_match=Constants.pairs[word]
 
 
-    pair_choice=models.CharField(
-        choices=list(Constants.pairs.values())
-    )
+    pair_choice=models.CharField()
     
 
 

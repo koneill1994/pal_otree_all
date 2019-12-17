@@ -17,8 +17,9 @@ class Constants(BaseConstants):
     players_per_group = None
     
     
-    home_timer=4 # in minutes
+    home_timer=4*60 # in seconds
     
+    school_submit_timer = 30 # in seconds
     
     schooltime_words=20 # number of words per round in schooltime
 
