@@ -20,12 +20,12 @@ SESSION_CONFIGS = [
        # num_demo_participants=1,
        # app_sequence=['pal_hometime']
     # ),
-    # dict(
-       # name='pal_exam',
-       # display_name="pal_exam",
-       # num_demo_participants=1,
-       # app_sequence=['pal_exam']
-    # ),
+    dict(
+       name='pal_exam',
+       display_name="pal_exam",
+       num_demo_participants=1,
+       app_sequence=['pal_exam']
+    ),
     # must not contain duplicate elements
     # need to combine hometime and schooltime into a single app
     dict(
@@ -40,12 +40,12 @@ SESSION_CONFIGS = [
        # num_demo_participants=1,
        # app_sequence=['cr_survey']
     # ),
-    # {
-    # 'name': 'minimum_effort_game',
-    # 'display_name': "Minimum Effort Game",
-    # 'num_demo_participants': 4,
-    # 'app_sequence': ['minimum_effort_game'],    
-    # },
+    {
+    'name': 'minimum_effort_game',
+    'display_name': "Minimum Effort Game",
+    'num_demo_participants': 4,
+    'app_sequence': ['minimum_effort_game'],    
+    },
 
 ]
 

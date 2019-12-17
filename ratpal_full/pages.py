@@ -19,6 +19,8 @@ class SchoolTimeWaitPage(Page):
 class schooltime1(Page):
     form_model='player'
     form_fields=['pair_choice','confidence_first_answer']
+    def get_timeout_seconds(self):
+        return Constants.school_submit_timer
 
 class schooltime_guesses(Page):
     form_model='player'
