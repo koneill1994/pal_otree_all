@@ -17,17 +17,14 @@ class Constants(BaseConstants):
     players_per_group = None
     
     
-    home_timer=1000 # in minutes
+    home_timer=4 # in minutes
     
-
+    
     schooltime_words=20 # number of words per round in schooltime
-    hometime_pages=2
-    max_rounds=schooltime_words+hometime_pages 
 
     pair_rounds=6 # number of times players go through ht/st paired tasks
     
-    num_rounds = pair_rounds*max_rounds
-    
+    num_rounds = pair_rounds*schooltime_words
     
         
     def display_hometime(round_n):
