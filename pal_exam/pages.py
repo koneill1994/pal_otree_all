@@ -12,9 +12,6 @@ class exam_start_page(Page):
         return self.round_number == 1
 
     def before_next_page(self):
-        self.player.get_pair()
-
-    def before_next_page(self):
         import time
         # user has 5 minutes to complete as many pages as possible
         self.participant.vars['expiry'] = time.time() + Constants.exam_timer
@@ -49,6 +46,7 @@ class exam_1(Page):
 
 page_sequence = [
     exam_start_page,
-    exam_1,
-    SchoolTimeWaitPage
+    SchoolTimeWaitPage,
+    exam_1
+    
     ]
