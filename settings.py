@@ -34,18 +34,18 @@ SESSION_CONFIGS = [
        num_demo_participants=4,
        app_sequence=['ratpal_full','pal_exam']
     ),
-    dict(
-       name='cr_survey',
-       display_name="cr_survey",
-       num_demo_participants=1,
-       app_sequence=['cr_survey']
-    ),
-    {
-    'name': 'minimum_effort_game',
-    'display_name': "Minimum Effort Game",
-    'num_demo_participants': 4,
-    'app_sequence': ['minimum_effort_game'],    
-    },
+    # dict(
+       # name='cr_survey',
+       # display_name="cr_survey",
+       # num_demo_participants=1,
+       # app_sequence=['cr_survey']
+    # ),
+    # {
+    # 'name': 'minimum_effort_game',
+    # 'display_name': "Minimum Effort Game",
+    # 'num_demo_participants': 4,
+    # 'app_sequence': ['minimum_effort_game'],    
+    # },
 
 ]
 
@@ -62,7 +62,7 @@ ROOMS = []
 
 ADMIN_USERNAME = 'admin'
 # for security, best to set admin password in an environment variable
-ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
+ADMIN_PASSWORD = 'truststudy'   #environ.get('OTREE_ADMIN_PASSWORD')
 
 DEMO_PAGE_INTRO_HTML = """ """
 
