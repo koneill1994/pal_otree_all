@@ -1,0 +1,52 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Instructions
+{% endblock %}
+
+{% block content %}
+
+<p><b>Purpose:</b>  The purpose of this study is to look at some factors that affect learning in different conditions.
+	Some of the factors are interacting with the content, interacting with other learners, and choosing extracurricular activities.
+	This study is designed to simulate the daily life of a student with a combination of home time and school time.</p>
+
+<p>You will have 6 sessions, each with simulated home time followed by simulated class time.  
+Each session will have 4 minutes of home time, followed by class time working on your task.</p>
+
+<p>For <b>home time,</b> you may choose to study, or to play a game, or to do nothing.</p>
+<ul>
+	<li>studying will help you do better in school time</li>
+</ul>
+<p>For <b>school time,</b> your task is to solve word puzzles. You must find the right word for each set of words, and type it in the blank.</p>
+<ul>
+	<li>you will be given three words; the answer will be a word that goes with all three of them</li>
+	<li>here's an example:  <b>age / mile / sand</b>
+	<li>the answer is <b>stone</b> because it makes a compound word with each of the first three words:</li>
+	<ul>
+		<li><b><i>stone</i>age</li>
+		<li>mile<i>stone</i></li>
+		<li>sand<i>stone</i></b></li>
+	</ul>
+	<li>you will have 30 seconds for each set of words</li>
+	<li>you will also need to rate how confident you are about your answer</li>
+	<li>you get to provide more guesses if you're not sure about your answer</li>
+</ul>
+<p>You might be in a group with three other players. 
+After you give your answer, you can hover over the other players' answers and choose one of those if you want.
+They can also choose yours or someone else's if they want. <b>You will get points for how accurate your group is.</b></p>
+</ul>
+<p>After the 6 sessions of home and school time, you will have a 7th session like a final exam.
+The final exam is to see how many of the word puzzles you know how to solve and how quickly you can solve them.</p>
+
+<p>After the final exam, you will receive a final score.  This score is made up of points you get over the whole study.</p>
+<ul>
+	<li>you can get up to 20 points over the whole time for playing games</li>
+	<li>you can get up to 10 points over the whole time for getting the first answer in school time</li>
+	<li>you can get up to 40 points for the final exam</li>
+	<li>if you are in a group, you can get up to 30 points more depending on how accurate your group is</li>
+</ul>
+
+    {% next_button %}
+
+{% endblock %}

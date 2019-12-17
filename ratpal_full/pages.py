@@ -40,6 +40,9 @@ class SchooltimeResults(Page):
     def before_next_page(self):
         self.group.group_answer=self.group.get_group_answer()
 
+class Instructions1(Page):
+    def is_displayed(self):
+        return self.round_number==1
 
 class Schooltime_feedback_individual(Page):
     pass
@@ -96,6 +99,6 @@ sequence_conditional=[sequence_group,sequence_individual,sequence_non_interactiv
 # page_sequence = sequence_conditional[Constants.condition]
 # page_sequence = ht_new
 
-page_sequence = [ID_input]+ht_new + sequence_conditional[0]
+page_sequence = [ID_input,Instructions1]+ht_new + sequence_conditional[0]
 
 
