@@ -15,7 +15,6 @@ class ID_input(Page):
 class SchoolTimeWaitPage(Page): 
     def before_next_page(self):
         self.player.get_pair()
-        self.player.set_task()
         
 class schooltime1(Page):
     form_model='player'
@@ -26,7 +25,8 @@ class schooltime_guesses(Page):
     form_fields=['guess1','confidence1',
                 'guess2','confidence2',
                 'guess3','confidence3']
-
+    def is_displayed(self):
+        return self.player.confidence_first_answer<100
 
 class schooltime_non_interactive(Page):
     pass
@@ -60,6 +60,8 @@ class Hometime_one_page(Page):
     form_fields=['homechoose_json','hometime_study_json']
     def get_timeout_seconds(self):
         return Constants.home_timer
+    def is_displayed(self):
+        return Constants.display_hometime(self.round_number)
 
 
 ht_new= [

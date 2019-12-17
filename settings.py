@@ -8,25 +8,24 @@ from os import environ
 SESSION_CONFIG_DEFAULTS = dict(real_world_currency_per_point=1.00, participation_fee=0.00, doc="")
 
 SESSION_CONFIGS = [
-    dict(
-       name='pal',
-       display_name="pal",
-       num_demo_participants=4,
-       app_sequence=['pal']
-    ),
-    dict(
-       name='pal_hometime',
-       display_name="pal_hometime",
-       num_demo_participants=1,
-       app_sequence=['pal_hometime']
-    ),
-    dict(
-       name='pal_exam',
-       display_name="pal_exam",
-       num_demo_participants=1,
-       app_sequence=['pal_exam']
-    ),
-    
+    # dict(
+       # name='pal',
+       # display_name="pal",
+       # num_demo_participants=4,
+       # app_sequence=['pal']
+    # ),
+    # dict(
+       # name='pal_hometime',
+       # display_name="pal_hometime",
+       # num_demo_participants=1,
+       # app_sequence=['pal_hometime']
+    # ),
+    # dict(
+       # name='pal_exam',
+       # display_name="pal_exam",
+       # num_demo_participants=1,
+       # app_sequence=['pal_exam']
+    # ),
     # must not contain duplicate elements
     # need to combine hometime and schooltime into a single app
     dict(

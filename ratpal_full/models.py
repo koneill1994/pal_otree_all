@@ -31,7 +31,7 @@ class Constants(BaseConstants):
     
         
     def display_hometime(round_n):
-        if (round_n%Constants.max_rounds)<=Constants.hometime_pages:
+        if (round_n%Constants.schooltime_words)==1:
             return True
         return False
         
