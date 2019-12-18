@@ -11,7 +11,7 @@
 
 <br>
 
-{{player.presented_word}}
+{{presented_word}}
 
 {% formfield player.pair_choice %}
 
@@ -26,15 +26,24 @@
 page_start=new Date().getTime();
 
 nextbutton=document.getElementsByClassName("otree-btn-next")[0];
-
+input_field=document.getElementById("id_pair_choice");
 rt_field=document.getElementById("id_response_time");
 
 function record_rt(){
     rt_field.value=new Date().getTime() - page_start;
-
 }
 
 nextbutton.onclick=record_rt;
+
+input_field.focus()
+
+input_field.addEventListener("keydown", function(e) {
+    <!-- if (!e) { var e = window.event; } -->
+    <!-- e.preventDefault(); // sometimes useful -->
+
+    // Enter is pressed
+    if (e.keyCode == 13) { nextbutton.click(); }
+}, false);
 
 </script>
 
