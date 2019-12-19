@@ -143,7 +143,7 @@ class Player(BasePlayer):
     
 
     def get_pair(self):
-        word=self.UpdateWords()[(self.round_number-1)%Constants.max_rounds]
+        word=self.UpdateWords()[(self.round_number-1)%Constants.schooltime_words]
         self.presented_word=word
         self.correct_match=Constants.pairs[word]
 
