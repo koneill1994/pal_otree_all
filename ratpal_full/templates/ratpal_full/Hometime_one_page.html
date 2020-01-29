@@ -137,9 +137,13 @@ chess_button.onclick = pickchess;
 
 <!-- study task code below -->
 
+
+
 {% autoescape off %}
-    words={{player.words_json}}
+    words={{numwords}}
 {% endautoescape %}
+
+console.log(words)
 
 word_n=0;
 
@@ -153,7 +157,9 @@ study_log=document.getElementById("id_hometime_study_json")
 study_log_list=[]
  <!-- [action_type,question,correct_answer,subject_answer,timestamp] -->
 
-update_practice_list()
+<!-- update_practice_list() -->
+
+practice_list.innerHTML=words[word_n][0]
 
 practice_submit.onclick = function(){
     if(practice_input.value.length>0){
@@ -190,6 +196,7 @@ practice_submit.onclick = function(){
     }
 }
 
+/*
 function update_practice_list(){
     <!-- remove the previous list -->
     while (practice_list.firstChild) {
@@ -205,10 +212,17 @@ function update_practice_list(){
     
     next_item.style.display="none"
 }
+*/
+
+<!-- if we want to show them the correct values before they try to answer -->
+<!-- we can check if the word is in study_log_list -->
+<!-- and if so give them the answer instead of an input box -->
 
 next_item.onclick = function(){
     word_n=(word_n+1)%words.length
-    update_practice_list()
+    practice_list.innerHTML=words[word_n][0]
+    
+    <!-- update_practice_list() -->
     practice_input.value=""
     practice_feedback.innerHTML=""
     

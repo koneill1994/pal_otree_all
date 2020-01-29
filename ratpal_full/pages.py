@@ -1,7 +1,7 @@
 from otree.api import Currency as c, currency_range
 from ._builtin import Page, WaitPage
 from .models import Constants
-import time
+import time, json
     
     
     ## schooltime
@@ -41,6 +41,9 @@ class SchooltimeResults(Page):
     form_fields=['player_choice_final','player_choice_final_conf','player_choice_json']
     def before_next_page(self):
         self.group.group_answer=self.group.get_group_answer()
+    def get_timeout_seconds(self):
+        return Constants.school_result_timer
+
 
 class Instructions1(Page):
     def is_displayed(self):
@@ -56,7 +59,7 @@ class Feedback(Page):
 
 class StartHometime(Page):
     def before_next_page(self):
-        self.player.Words_JSON()
+        self.player.NumWords_JSON()
     def is_displayed(self):
         return Constants.display_hometime(self.round_number)
 
@@ -67,7 +70,12 @@ class Hometime_one_page(Page):
         return Constants.home_timer
     def is_displayed(self):
         return Constants.display_hometime(self.round_number)
+    def vars_for_template(self):
+        return dict(
+            numwords=json.dumps(Constants.numpairs[Constants.get_session_number(self.round_number)-1]) 
+        )
 
+# player.get_session_number(self.round_number)
 
 ht_new= [
     StartHometime,

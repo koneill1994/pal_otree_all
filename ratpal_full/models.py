@@ -21,7 +21,9 @@ class Constants(BaseConstants):
     
     school_submit_timer = 30 # in seconds
     
-    schooltime_words=20 # number of words per round in schooltime
+    school_result_timer = 30
+    
+    schooltime_words=10 # number of words per round in schooltime
 
     pair_rounds=6 # number of times players go through ht/st paired tasks
     
@@ -42,13 +44,30 @@ class Constants(BaseConstants):
     pairs=dict([(x[0][0],x[1][0]) for x in data])
     words=list(pairs.keys())
    
+   
+    with open('nlist.json') as json_file:
+        numdata = json.load(json_file)
+    
+    numpairs=[]
+    
+    for session in numdata:
+        numpairs.append([(str(x[0]),str(x[1])) for x in session])
+   
+
+   
     condition=random.randint(0,2)
     
+    #make following generalized
+    # also its repeating first 5 from first session, pls fix
     def arrange_words_for_session(session_n):
         if session_n==0:
-            return ([],Constants.words[0:20])
+            return ([],Constants.words[0:Constants.schooltime_words])
         else:
-            return (Constants.arrange_words_for_session(session_n-1)[1][0:5],Constants.words[20+(session_n-1)*15:20+(session_n)*15])
+            return (Constants.arrange_words_for_session(session_n-1)[1][0:5],
+                    Constants.words[
+                        Constants.schooltime_words+(session_n-1)*(Constants.schooltime_words-5):
+                            Constants.schooltime_words+(session_n)*(Constants.schooltime_words-5)
+                    ])
            
     def get_words_for_session(session_n):
         out=[]
@@ -131,6 +150,13 @@ class Player(BasePlayer):
     def Words_JSON(self):
         self.words_json=json.dumps(
             [[word.split("/"),Constants.pairs[word]] for word in self.UpdateWords()]
+        )
+        
+    numwords_json=models.CharField()
+        
+    def NumWords_JSON(self):
+        self.numwords_json=json.dumps(
+            [[word,Constants.pairs[word]] for word in self.UpdateWords()]
         )
         
     PAL_subject_ID=models.CharField()
