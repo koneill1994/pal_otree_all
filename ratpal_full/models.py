@@ -20,8 +20,8 @@ class Constants(BaseConstants):
     home_timer=4*60 # in seconds
     
     school_submit_timer = 30 # in seconds
-    
-    school_result_timer = 30
+    school_result_timer = 10
+    school_guess_timer = 10
     
     schooltime_words=10 # number of words per round in schooltime
 
@@ -44,6 +44,15 @@ class Constants(BaseConstants):
     pairs=dict([(x[0][0],x[1][0]) for x in data])
     words=list(pairs.keys())
    
+   
+    with open('wlist.json') as json_file:
+        worddata = json.load(json_file)
+    
+    wordpairs=[]
+    
+    for session in worddata:
+        wordpairs.append([(str(x[0]),str(x[1])) for x in session])
+
    
     with open('nlist.json') as json_file:
         numdata = json.load(json_file)
@@ -76,7 +85,8 @@ class Constants(BaseConstants):
                 out.append(word)
         return out
 
-
+    def get_words_for_session_pregen(session_n):
+        return Constants.wordpairs[session_n]
 
 class Subsession(BaseSubsession):
     pass
@@ -141,10 +151,13 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     
+    # this gives the words for this session
     def UpdateWords(self):
-        return(Constants.get_words_for_session(Constants.get_session_number(self.round_number)))
+        return(Constants.get_words_for_session_pregen(Constants.get_session_number(self.round_number)))
+        #return(Constants.get_words_for_session(Constants.get_session_number(self.round_number)))
         # return(Constants.get_words_for_session(0))
     
+    ### remove following?
     words_json=models.CharField()
     
     def Words_JSON(self):
@@ -159,6 +172,8 @@ class Player(BasePlayer):
             [[word,Constants.pairs[word]] for word in self.UpdateWords()]
         )
         
+    ###
+        
     PAL_subject_ID=models.CharField()
     PAL_group_ID=models.CharField()
     
@@ -170,8 +185,11 @@ class Player(BasePlayer):
 
     def get_pair(self):
         word=self.UpdateWords()[(self.round_number-1)%Constants.schooltime_words]
-        self.presented_word=word
-        self.correct_match=Constants.pairs[word]
+        self.presented_word=word[0].strip("[]'")
+        self.correct_match=word[1].strip("[]'")
+
+        # self.presented_word=word
+        # self.correct_match=Constants.pairs[word]
 
     pair_choice=models.CharField()
     confidence_first_answer=models.IntegerField() # represents percentage

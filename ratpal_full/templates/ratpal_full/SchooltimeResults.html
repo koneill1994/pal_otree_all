@@ -21,7 +21,7 @@
         <!-- list player first choice and guesses -->
             <div id="playerchoice">
                 <p class="choice" data-player="{{p.id_in_group}}" data-choicetype="first_choice" data-ans="{{p.pair_choice}}" data-conf="{{p.confidence_first_answer}}">
-                    Player {{p.id_in_group}} chose {{p.pair_choice}} with a confidence of {{p.confidence_first_answer}}%
+                    Player {{p.id_in_group}} chose <b>{{p.pair_choice}}</b> with a confidence of {{p.confidence_first_answer}}%
                 </p>
             </div>
             <ul style="margin-right: 1em">
@@ -29,7 +29,7 @@
                 <div id="playerchoice">
                     <li>
                         <p class="choice" data-player="{{p.id_in_group}}" data-choicetype="guess1" data-ans="{{p.guess1}}" data-conf="{{p.confidence1}}">
-                            Player {{p.id_in_group}} guessed {{p.guess1}} with a confidence of {{p.confidence1}}%
+                            Player {{p.id_in_group}} guessed <b>{{p.guess1}}</b> with a confidence of {{p.confidence1}}%
                         </p>
                     </li>
                 </div>
@@ -38,7 +38,7 @@
                 <div id="playerchoice">
                     <li>
                         <p class="choice" data-player="{{p.id_in_group}}" data-choicetype="guess2" data-ans="{{p.guess2}}" data-conf="{{p.confidence2}}">
-                            Player {{p.id_in_group}} guessed {{p.guess2}} with a confidence of {{p.confidence2}}%
+                            Player {{p.id_in_group}} guessed <b>{{p.guess2}}</b> with a confidence of {{p.confidence2}}%
                         </p>
                     </li>
                 </div>
@@ -47,7 +47,7 @@
                 <div id="playerchoice">
                     <li>
                         <p class="choice" data-player="{{p.id_in_group}}" data-choicetype="guess3" data-ans="{{p.guess3}}" data-conf="{{p.confidence3}}">
-                            Player {{p.id_in_group}} guessed {{p.guess3}} with a confidence of {{p.confidence3}}%
+                            Player {{p.id_in_group}} guessed <b>{{p.guess3}}</b> with a confidence of {{p.confidence3}}%
                         </p>
                     </li>
                 </div>

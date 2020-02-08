@@ -16,6 +16,7 @@ class SchoolTimeWaitPage(Page):
     def before_next_page(self):
         self.player.get_pair()
         
+        ### rename?
 class schooltime1(Page):
     form_model='player'
     form_fields=['pair_choice','confidence_first_answer']
@@ -29,6 +30,8 @@ class schooltime_guesses(Page):
                 'guess3','confidence3']
     def is_displayed(self):
         return self.player.confidence_first_answer<100
+    def get_timeout_seconds(self):
+        return Constants.school_guess_timer
 
 class schooltime_non_interactive(Page):
     pass
@@ -57,11 +60,13 @@ class Feedback(Page):
 
 ## hometime
 
+# remove?
 class StartHometime(Page):
     def before_next_page(self):
         self.player.NumWords_JSON()
     def is_displayed(self):
         return Constants.display_hometime(self.round_number)
+###
 
 class Hometime_one_page(Page):
     form_model='player'
@@ -78,7 +83,7 @@ class Hometime_one_page(Page):
 # player.get_session_number(self.round_number)
 
 ht_new= [
-    StartHometime,
+    # StartHometime,
     Hometime_one_page
 ]
     
