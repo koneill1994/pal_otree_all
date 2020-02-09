@@ -35,7 +35,9 @@
 
 <div id="task"> 
 
-    <p><b>Choose the number associated with this word.</b></p>
+    <p><b id="instructions">Choose the number associated with this word.</b></p>
+    
+    <p> Time remaining: <b id="timer">TEST</b></p>
     
     <!-- display list of words -->
     <ul id="practicelist"></ul>
@@ -55,7 +57,7 @@
 
 <br>
 
-<div id="hidden_input" style="display: none">
+<div id="hidden_input" style="display: initial">
     {% formfield player.homechoose_json %}
     {% formfield player.hometime_study_json %}
 </div>
@@ -78,6 +80,8 @@ chess.style.display="none";
 
 hiddeninput=document.getElementById("id_homechoose_json");
 clicklist=[]
+
+seen_words=[]
 
 solitaire_button=document.getElementById("solitaire_button")
 rest_button=document.getElementById("rest_button")
@@ -105,6 +109,10 @@ function pickrest(){
 }
 
 function picktask(){
+    if(task.style.display=="none"){
+        update_study_word()
+    }
+
     console.log("picktask");
     solitaire.style.display="none";
     rest.style.display="none";
@@ -112,6 +120,7 @@ function picktask(){
     chess.style.display="none";
 
     record_click("task")
+   
 }
 
 function pickchess(){
@@ -155,6 +164,8 @@ practice_input=document.getElementById("practice_input")
 practice_submit=document.getElementById("practice_submit")
 practice_feedback=document.getElementById("practice_feedback")
 next_item=document.getElementById("next_item")
+instructions=document.getElementById("instructions")
+timer_el=document.getElementById("timer")
 
 study_log=document.getElementById("id_hometime_study_json")
 study_log_list=[]
@@ -162,7 +173,10 @@ study_log_list=[]
 
 <!-- update_practice_list() -->
 
-practice_list.innerHTML=words[word_n][0]
+<!-- practice_list.innerHTML=words[word_n][0] -->
+
+
+
 
 practice_submit.onclick = function(){
     if(practice_input.value.length>0){
@@ -199,6 +213,14 @@ practice_submit.onclick = function(){
     }
 }
 
+
+<!-- allow hitting enter to submit -->
+practice_input.onkeydown = function(){
+    if (event.keyCode == 13){
+        practice_submit.click()
+    }
+}
+
 /*
 function update_practice_list(){
     <!-- remove the previous list -->
@@ -217,27 +239,98 @@ function update_practice_list(){
 }
 */
 
+timer=-1
+
+function update_timer(){
+    console.log(timer)
+    if(task.style.display!="none"){
+        if(timer==0){
+            timer_el.style.display="none"
+            timer=-1
+            next_item.click()
+        } else if(timer>0){
+            timer_el.style.display="initial"
+            timer_el.innerHTML=timer
+            
+            timer--;
+        }
+    }
+
+}
+
+function set_timer(t){
+    timer=t
+    timer_el.style.display="initial"
+    timer_el.innerHTML=timer
+}
+
+<!-- display timer -->
+setInterval(update_timer, 1000)
+
+
+
 <!-- if we want to show them the correct values before they try to answer -->
 <!-- we can check if the word is in study_log_list -->
 <!-- and if so give them the answer instead of an input box -->
 
-next_item.onclick = function(){
+function update_study_word(){
     word_n=(word_n+1)%words.length
-    practice_list.innerHTML=words[word_n][0]
     
-    <!-- update_practice_list() -->
-    practice_input.value=""
-    practice_feedback.innerHTML=""
+    if(seen_words.includes(words[word_n][0])){ 
+        
+        set_timer(15)
+        
+        instructions.innerHTML="Choose the number associated with this word."
+        
+        practice_list.innerHTML=words[word_n][0]
     
-    study_log_list.push([
-        "next_practice_question",
-        words[word_n][0],
-        words[word_n][1],
-        practice_input.value,
-        (new Date().getTime()-start_time)
-    ])
-    study_log.value=JSON.stringify(study_log_list)
+        <!-- show everything we previously hid -->
+        practice_input.style.display="initial"
+        practice_submit.style.display="initial"
+    
+        <!-- update_practice_list() -->
+        practice_input.value=""
+        practice_feedback.innerHTML=""
+        
+        study_log_list.push([
+            "next_practice_question",
+            words[word_n][0],
+            words[word_n][1],
+            practice_input.value,
+            (new Date().getTime()-start_time)
+        ])
+        study_log.value=JSON.stringify(study_log_list)
+        
+        next_item.style.display="none"
+        
+    }
+    else {
+    
+        set_timer(10)
+        
+        instructions.innerHTML="Remember this word and the number associated with it."  
+    
+        practice_list.innerHTML=words[word_n][0]+": "+ words[word_n][1]
+    
+        practice_input.style.display="none"
+        practice_submit.style.display="none"
+        
+        
+        study_log_list.push([
+            "next_practice_question",
+            words[word_n][0],
+            words[word_n][1],
+            "initial_presentation",
+            (new Date().getTime()-start_time)
+        ])
+        study_log.value=JSON.stringify(study_log_list)
+        
+        seen_words.push(words[word_n][0])
+
+    }
 }
+
+next_item.onclick = update_study_word
 
 
 </script>
