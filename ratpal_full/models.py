@@ -17,7 +17,7 @@ class Constants(BaseConstants):
     players_per_group = None
     
     
-    home_timer=10000000 #4*60 # in seconds
+    home_timer=4*60 # in seconds
     
     school_submit_timer = 30 # in seconds
     school_result_timer = 10
