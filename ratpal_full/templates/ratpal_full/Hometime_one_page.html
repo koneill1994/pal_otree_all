@@ -274,8 +274,9 @@ setInterval(update_timer, 1000)
 <!-- and if so give them the answer instead of an input box -->
 
 function update_study_word(){
-    word_n=(word_n+1)%words.length
     
+    word_n=(word_n+1)%words.length
+
     if(seen_words.includes(words[word_n][0])){ 
         
         set_timer(15)
@@ -303,6 +304,7 @@ function update_study_word(){
         
         next_item.style.display="none"
         
+
     }
     else {
     

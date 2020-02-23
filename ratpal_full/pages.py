@@ -112,8 +112,8 @@ sequence_non_interactive = [
 sequence_conditional=[sequence_group,sequence_individual,sequence_non_interactive]
 
 # page_sequence = sequence_conditional[Constants.condition]
-# page_sequence = [Hometime_one_page]
+page_sequence = [Hometime_one_page]
 
-page_sequence = [ID_input,Instructions1]+ht_new + sequence_conditional[0]
+# page_sequence = [ID_input,Instructions1]+ht_new + sequence_conditional[0]
 
 
