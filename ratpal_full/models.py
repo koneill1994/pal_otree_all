@@ -38,7 +38,7 @@ class Constants(BaseConstants):
         return False
         
     def get_session_number(round_n):
-        return int(round_n/Constants.schooltime_words)
+        return int((round_n-1)/Constants.schooltime_words)
     
     with open('wordlist.json') as json_file:
         data = json.load(json_file)
