@@ -16,7 +16,7 @@ class Constants(BaseConstants):
     name_in_url = 'pal_exam'
     players_per_group = None
        
-    num_rounds = 95 # set to same number as number of words
+    num_rounds = 35 # set to same number as number of words
     
     exam_timer = 20*60 # in seconds
 
