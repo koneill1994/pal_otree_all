@@ -148,7 +148,7 @@ for(n in 1:6){
   w=list()
 
   for(row in 1:nrow(wordgroup)){
-    w[[row]]=list(wordgroup[row,]$words,wordgroup[row,]$match)
+    w[[row]]=unlist(list(wordgroup[row,]$words,wordgroup[row,]$match))
   }
   
   wlist[[n]]=w

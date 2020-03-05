@@ -81,7 +81,7 @@ class Hometime_one_page(Page):
         return Constants.display_hometime(self.round_number)
     def vars_for_template(self):
         return dict(
-            numwords=json.dumps(Constants.numpairs[Constants.get_session_number(self.round_number)-1]) 
+            numwords=json.dumps(Constants.numpairs[Constants.get_session_number(self.round_number)]) 
         )
 
 # player.get_session_number(self.round_number)
