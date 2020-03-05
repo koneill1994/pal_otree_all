@@ -19,6 +19,8 @@ class Constants(BaseConstants):
     
     home_timer=4*60 # in seconds
     
+    study_timer=10 # in seconds
+    
     school_submit_timer = 30 # in seconds
     school_result_timer = 10
     school_guess_timer = 10
