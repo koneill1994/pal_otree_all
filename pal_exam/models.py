@@ -42,7 +42,7 @@ class Player(BasePlayer):
     correct_match=models.CharField()
 
     def get_pair(self):
-        word=Constants.words[self.round_number]
+        word=Constants.words[self.round_number-1]
         self.presented_word=word
         self.correct_match=Constants.pairs[word]
 
