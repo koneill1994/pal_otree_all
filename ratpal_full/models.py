@@ -64,7 +64,7 @@ class Constants(BaseConstants):
    
 
    
-    condition=random.randint(0,2)
+    condition=random.randint(0,1)
     
     #make following generalized
     # also its repeating first 5 from first session, pls fix
@@ -93,7 +93,19 @@ class Subsession(BaseSubsession):
 
 
 class Group(BaseGroup):
-    condition=models.IntegerField(initial=Constants.condition)
+    
+    condition=models.IntegerField(initial=1) # default to individual just in case
+    
+    def set_condition(self):
+        # choose randomly
+        # condition=models.IntegerField(initial=Constants.condition)
+
+        # choose based on number of players
+        if(len(self.get_players())==4):
+            self.condition=0 # set as group
+        else:
+            self.condition=1 #set as individual
+        
     
     group_answer=models.CharField()
     

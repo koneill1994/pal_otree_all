@@ -12,6 +12,10 @@ class ID_input(Page):
     def is_displayed(self):
         return (self.round_number==1)
     
+class GroupingWaitPage(WaitPage):
+    def after_all_players_arrive(self):
+        self.group.set_condition()
+    
 class SchoolTimeWaitPage(Page): 
     def before_next_page(self):
         self.player.get_pair()
@@ -104,16 +108,18 @@ sequence_individual = [
     Schooltime_feedback_individual
 ]
 
+# this one is not used
 sequence_non_interactive = [
     SchoolTimeWaitPage,
     schooltime_non_interactive
 ]
+
 #####
-sequence_conditional=[sequence_group,sequence_individual,sequence_non_interactive]
+sequence_conditional=[sequence_group,sequence_individual]
 
 # page_sequence = sequence_conditional[Constants.condition]
-# page_sequence = [Hometime_one_page]
+# page_sequence = [GroupingWaitPage,Hometime_one_page]
 
-page_sequence = [ID_input,Instructions1]+ht_new + sequence_conditional[0]
+page_sequence = [ID_input,Instructions1,GroupingWaitPage]+ht_new + sequence_conditional[Constants.condition]
 
 
