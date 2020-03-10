@@ -53,7 +53,7 @@ class SchooltimeResults(Page):
     def get_timeout_seconds(self):
         return Constants.school_result_timer
     def is_displayed(self):
-        return self.round_number==0
+        return self.group.condition==0
 
 
 class SchooltimeResultsIndividual(Page):
@@ -62,7 +62,7 @@ class SchooltimeResultsIndividual(Page):
     def get_timeout_seconds(self):
         return Constants.school_result_timer
     def is_displayed(self):
-        return self.round_number==1
+        return self.group.condition==1
 
 
 
