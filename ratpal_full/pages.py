@@ -53,7 +53,7 @@ class SchooltimeResults(Page):
     def get_timeout_seconds(self):
         return Constants.school_result_timer
     def is_displayed(self):
-        return self.round_number==2
+        return self.round_number==0
 
 
 class SchooltimeResultsIndividual(Page):
@@ -103,6 +103,11 @@ class Hometime_one_page(Page):
 
 # player.get_session_number(self.round_number)
 
+
+# 0: set as group
+# 1: set as individual
+
+
 ht_new= [
     # StartHometime,
     Hometime_one_page
@@ -122,7 +127,9 @@ sequence_group = [
 sequence_individual = [
     SchoolTimeWaitPage,
     schooltime1,
-    Schooltime_feedback_individual
+    schooltime_guesses,
+    SchooltimeResultsIndividual,
+    Feedback
 ]
 
 # this one is not used
