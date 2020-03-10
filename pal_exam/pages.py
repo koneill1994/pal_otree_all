@@ -28,7 +28,7 @@ class exam_1(Page):
         return self.get_timeout_seconds() > 3
     def vars_for_template(self):
         return dict(
-            presented_word=self.player.presented_word
+            presented_word=Constants.words[self.round_number-1]
         )
     def before_next_page(self):
         self.player.get_pair()
