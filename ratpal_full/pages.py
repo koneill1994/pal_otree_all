@@ -53,6 +53,12 @@ class SchooltimeResults(Page):
     def get_timeout_seconds(self):
         return Constants.school_result_timer
 
+class SchooltimeResultsIndividual(Page):
+    form_model='player'
+    form_fields=['player_choice_final','player_choice_final_conf','player_choice_json']
+    def get_timeout_seconds(self):
+        return Constants.school_result_timer
+
 
 class Instructions1(Page):
     def is_displayed(self):
@@ -125,6 +131,7 @@ sequence_all_conditions=[
     schooltime_guesses,
     ResultsWaitPage,
     SchooltimeResults,
+    SchooltimeResultsIndividual,
     Feedback
 ]
 
