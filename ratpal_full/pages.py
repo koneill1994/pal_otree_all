@@ -52,12 +52,18 @@ class SchooltimeResults(Page):
         self.group.group_answer=self.group.get_group_answer()
     def get_timeout_seconds(self):
         return Constants.school_result_timer
+    def is_displayed(self):
+        return self.round_number==2
+
 
 class SchooltimeResultsIndividual(Page):
     form_model='player'
     form_fields=['player_choice_final','player_choice_final_conf','player_choice_json']
     def get_timeout_seconds(self):
         return Constants.school_result_timer
+    def is_displayed(self):
+        return self.round_number==1
+
 
 
 class Instructions1(Page):
