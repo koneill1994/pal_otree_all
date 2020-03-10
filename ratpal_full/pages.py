@@ -33,7 +33,7 @@ class schooltime_guesses(Page):
                 'guess2','confidence2',
                 'guess3','confidence3']
     def is_displayed(self):
-        return self.player.confidence_first_answer<100 or self.group.condition==0
+        return self.player.confidence_first_answer<100
     def get_timeout_seconds(self):
         return Constants.school_guess_timer
 
@@ -48,8 +48,6 @@ class ResultsWaitPage(WaitPage):
 class SchooltimeResults(Page):
     form_model='player'
     form_fields=['player_choice_final','player_choice_final_conf','player_choice_json']
-    def is_displayed(self):
-        return self.group.condition==0
     def before_next_page(self):
         self.group.group_answer=self.group.get_group_answer()
     def get_timeout_seconds(self):
@@ -66,8 +64,7 @@ class Schooltime_feedback_individual(Page):
 
     
 class Feedback(Page):
-    def is_displayed(self):
-        return self.group.condition==0
+    pass
 
 
 ## hometime
@@ -122,12 +119,22 @@ sequence_non_interactive = [
     schooltime_non_interactive
 ]
 
+sequence_all_conditions=[
+    SchoolTimeWaitPage,
+    schooltime1,
+    schooltime_guesses,
+    ResultsWaitPage,
+    SchooltimeResults,
+    Feedback
+]
+
+
 #####
-sequence_conditional=sequence_group+sequence_individual # +sequence_non_interactive
+# sequence_conditional=sequence_group+sequence_individual # +sequence_non_interactive
 
 # page_sequence = sequence_conditional
 # page_sequence = [GroupingWaitPage,Hometime_one_page]
 
-page_sequence = [ID_input,Instructions1,GroupingWaitPage]+ht_new + sequence_conditional
+page_sequence = [ID_input,Instructions1,GroupingWaitPage]+ht_new + sequence_all_conditions
 
 
