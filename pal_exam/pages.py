@@ -12,9 +12,9 @@ class exam_start_page(Page):
         return self.round_number == 1
 
     def before_next_page(self):
-        import time
         # user has 5 minutes to complete as many pages as possible
         self.participant.vars['expiry'] = time.time() + Constants.exam_timer
+        self.player.points_cumulative=self.participant.vars['points_cumulative']
         
 class exam_1(Page):
     form_model='player'
@@ -32,6 +32,7 @@ class exam_1(Page):
         )
     def before_next_page(self):
         self.player.get_pair()
+        self.player.SetPoints()
 
 
 

@@ -76,7 +76,8 @@ class Schooltime_feedback_individual(Page):
 
     
 class Feedback(Page):
-    pass
+    def before_next_page(self):
+        self.player.SetPoints()
 
 
 ## hometime
@@ -91,7 +92,7 @@ class StartHometime(Page):
 
 class Hometime_one_page(Page):
     form_model='player'
-    form_fields=['homechoose_json','hometime_study_json']
+    form_fields=['homechoose_json','hometime_study_json','time_off_task']
     def get_timeout_seconds(self):
         return Constants.home_timer
     def is_displayed(self):

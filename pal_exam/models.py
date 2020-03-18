@@ -16,6 +16,8 @@ class Constants(BaseConstants):
     name_in_url = 'pal_exam'
     players_per_group = None
        
+    final_exam_accuracy_points=7 # points per correct answer
+       
     num_rounds = 35 # set to same number as number of words
     
     exam_timer = 20*60 # in seconds
@@ -49,6 +51,12 @@ class Player(BasePlayer):
 
     pair_choice=models.CharField()
     
+    
+    points_cumulative=models.FloatField()
+
+    def SetPoints():
+        self.points_cumulative+=Constants.individual_accuracy_points*int(self.pair_choice==self.correct_match)
+        self.participant.vars['points_cumulative']=self.points_cumulative
 
 
 
