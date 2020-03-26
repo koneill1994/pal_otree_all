@@ -71,14 +71,14 @@ start_time=new Date().getTime()
 non_task_segment_start=start_time
 
 non_task_sum=0
-is_on_task=False
+is_on_task=false
 
 solitaire=document.getElementById("solitaire")
 rest=document.getElementById("rest")
 task=document.getElementById("task")
 chess=document.getElementById("chess")
 
-time_off_task_box=document.getElementById("time_off_task")
+time_off_task_box=document.getElementById("id_time_off_task")
 
 solitaire.style.display="none";
 rest.style.display="none";
@@ -147,9 +147,9 @@ function record_click(button){
     
     hiddeninput.value=JSON.stringify(clicklist)
     
-    if(is_on_task){
+    if(!is_on_task){
         non_task_sum+=(new Date().getTime() - non_task_segment_start)
-        time_off_task_box.innerHTML=non_task_sum
+        time_off_task_box.value=non_task_sum
     }
     non_task_segment_start=new Date().getTime()
     is_on_task=(button=="task")

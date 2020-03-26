@@ -181,9 +181,12 @@ class Player(BasePlayer):
 
     time_off_task=models.FloatField()
     
-    def SetPoints():
-        if(display_hometime(self.round_number)):
-            self.points_cumulative+=Constants.hometime_points*((self.time_off_task/1000)/Constants.home_timer)
+    def SetPoints(self):
+        if(Constants.display_hometime(self.round_number)):
+            if self.time_off_task==None:
+                self.points_cumulative+=Constants.hometime_points
+            else:
+                self.points_cumulative+=Constants.hometime_points*((self.time_off_task/1000)/Constants.home_timer)
         self.points_cumulative+=Constants.individual_accuracy_points*int(self.pair_choice==self.correct_match)
         if(self.group.condition==0):
             self.points_cumulative+=Constants.group_accuracy_points*int(self.pair_choice==self.group.group_answer)
