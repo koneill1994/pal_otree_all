@@ -12,6 +12,12 @@ class ID_input(Page):
     def is_displayed(self):
         return (self.round_number==1)
     
+class Demographics(Page):
+    form_model='player'
+    form_fields=["age","gender","education"]
+    def is_displayed(self):
+        return (self.round_number==1)
+    
 class GroupingWaitPage(WaitPage):
     def after_all_players_arrive(self):
         self.group.set_condition()
@@ -156,6 +162,6 @@ sequence_all_conditions=[
 # page_sequence = sequence_conditional
 # page_sequence = [GroupingWaitPage,Hometime_one_page]
 
-page_sequence = [ID_input,Instructions1,GroupingWaitPage]+ht_new + sequence_all_conditions
+page_sequence = [ID_input,Demographics,Instructions1,GroupingWaitPage]+ht_new + sequence_all_conditions
 
 

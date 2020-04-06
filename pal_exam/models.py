@@ -16,7 +16,7 @@ class Constants(BaseConstants):
     name_in_url = 'pal_exam'
     players_per_group = None
        
-    final_exam_accuracy_points=7 # points per correct answer
+    final_exam_accuracy_points=400/35 # points per correct answer
        
     num_rounds = 35 # set to same number as number of words
     

@@ -16,9 +16,6 @@ class Constants(BaseConstants):
     name_in_url = 'ratpal_full'
     players_per_group = None
     
-    hometime_points=120
-    individual_accuracy_points=1 # points per correct answer
-    group_accuracy_points=3
     
     
     
@@ -36,6 +33,13 @@ class Constants(BaseConstants):
     pair_rounds=6 # number of times players go through ht/st paired tasks
     
     num_rounds = pair_rounds*schooltime_words
+    
+    
+    hometime_points=200
+    individual_accuracy_points=100/60 # points per correct answer
+    group_accuracy_points=300/60
+
+    
     
         
     def display_hometime(round_n):
@@ -171,8 +175,6 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     
-    
-    
     # hometime_points=120
     # individual_accuracy_points=1 # points per correct answer
     # group_accuracy_points=3
@@ -259,5 +261,29 @@ class Player(BasePlayer):
     def get_split_words(self):
         return self.presented_word.split("/")
    
-
+    # questionnaires
+    
+    age=models.IntegerField(label="Please enter your age",min=18,max=112)
+    gender=models.StringField(
+        label="Please select the gender you identify as",
+        choices=[
+            "Male",
+            "Female",
+            "Non-binary",
+            "Prefer not to say"
+        ],
+        widget=widgets.RadioSelect
+    )
+    education=models.StringField(
+        label="Please select the highest education level you have attained:",
+        choices=[
+            "high school or below", 
+            "1 year of undergraduate college", 
+            "2 years of undergraduate college", 
+            "3 years of undergraduate college", 
+            "4 or more years of undergraduate college", 
+            "graduate level college"
+        ],
+        widget=widgets.RadioSelect
+    )
 
