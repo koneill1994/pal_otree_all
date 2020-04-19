@@ -34,12 +34,12 @@ SESSION_CONFIGS = [
        num_demo_participants=4,
        app_sequence=['ratpal_full','pal_exam']
     ),
-    # dict(
-       # name='cr_survey',
-       # display_name="cr_survey",
-       # num_demo_participants=1,
-       # app_sequence=['cr_survey']
-    # ),
+    dict(
+       name='cr_survey',
+       display_name="cr_survey",
+       num_demo_participants=1,
+       app_sequence=['cr_survey']
+    ),
     # {
     # 'name': 'minimum_effort_game',
     # 'display_name': "Minimum Effort Game",
@@ -63,6 +63,9 @@ ROOMS = []
 ADMIN_USERNAME = 'admin'
 # for security, best to set admin password in an environment variable
 ADMIN_PASSWORD = 'truststudy'   #environ.get('OTREE_ADMIN_PASSWORD')
+
+DATABASE_URL="postgres://postgres@localhost/django_db"
+
 
 DEMO_PAGE_INTRO_HTML = """ """
 

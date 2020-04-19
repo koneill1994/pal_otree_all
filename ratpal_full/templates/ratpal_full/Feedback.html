@@ -9,19 +9,37 @@
 
 <p>
     The correct match to {{player.presented_word}} 
-    was {{player.correct_match}} 
-    and you chose {{player.player_choice_final}}
+    was {{player.correct_match}}.  
+    
+    You chose {{player.player_choice_final}}, 
+    {% if player.guess1!="" %}
+    you guessed {{player.guess1}},
+    {% endif %}
+    and the group chose {{group.group_answer}}.  
+    
+    You have earned {{player.points_cumulative}} points so far.  
 </p>
 
 {% if player.player_choice_final == player.correct_match %}
 
-Good job!  You got it correct.  
+Good job!  You got it correct and scored {{Constants.individual_accuracy_points}} points.  
 
 {% else %}
 
-Sorry!  You were not correct.  
+Sorry!  You were not correct, so you didn't score any points for your answer.  
 
 {% endif %}
+
+{% if group.group_answer == player.correct_match %}
+
+The group got it correct, scoring you {{Constants.group_accuracy_points}} points.  
+
+{% else %}
+
+The group answer was not correct, so you did not get any points for it.  
+
+{% endif %}
+
 
  {{ form.errors }}
 

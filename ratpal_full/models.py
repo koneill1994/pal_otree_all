@@ -17,15 +17,29 @@ class Constants(BaseConstants):
     players_per_group = None
     
     
+    
+    
+    
     home_timer=4*60 # in seconds
     
-    school_submit_timer = 30 # in seconds
+    study_timer=10 # in seconds
     
-    schooltime_words=20 # number of words per round in schooltime
+    school_submit_timer = 30 # in seconds
+    school_result_timer = 10
+    school_guess_timer = 10
+    
+    schooltime_words=10 # number of words per round in schooltime
 
     pair_rounds=6 # number of times players go through ht/st paired tasks
     
     num_rounds = pair_rounds*schooltime_words
+    
+    
+    hometime_points=200
+    individual_accuracy_points=100/60 # points per correct answer
+    group_accuracy_points=300/60
+
+    
     
         
     def display_hometime(round_n):
@@ -34,7 +48,7 @@ class Constants(BaseConstants):
         return False
         
     def get_session_number(round_n):
-        return int(round_n/Constants.schooltime_words)
+        return int((round_n-1)/Constants.schooltime_words)
     
     with open('wordlist.json') as json_file:
         data = json.load(json_file)
@@ -42,13 +56,39 @@ class Constants(BaseConstants):
     pairs=dict([(x[0][0],x[1][0]) for x in data])
     words=list(pairs.keys())
    
-    condition=random.randint(0,2)
+   
+    with open('wlist.json') as json_file:
+        worddata = json.load(json_file)
     
+    wordpairs=[]
+    
+    for session in worddata:
+        wordpairs.append([(str(x[0]),str(x[1])) for x in session])
+
+   
+    with open('nlist.json') as json_file:
+        numdata = json.load(json_file)
+    
+    numpairs=[]
+    
+    for session in numdata:
+        numpairs.append([(str(x[0]),str(x[1])) for x in session])
+   
+
+   
+    condition=random.randint(0,1)
+    
+    #make following generalized
+    # also its repeating first 5 from first session, pls fix
     def arrange_words_for_session(session_n):
         if session_n==0:
-            return ([],Constants.words[0:20])
+            return ([],Constants.words[0:Constants.schooltime_words])
         else:
-            return (Constants.arrange_words_for_session(session_n-1)[1][0:5],Constants.words[20+(session_n-1)*15:20+(session_n)*15])
+            return (Constants.arrange_words_for_session(session_n-1)[1][0:5],
+                    Constants.words[
+                        Constants.schooltime_words+(session_n-1)*(Constants.schooltime_words-5):
+                            Constants.schooltime_words+(session_n)*(Constants.schooltime_words-5)
+                    ])
            
     def get_words_for_session(session_n):
         out=[]
@@ -57,14 +97,27 @@ class Constants(BaseConstants):
                 out.append(word)
         return out
 
-
+    def get_words_for_session_pregen(session_n):
+        return Constants.wordpairs[session_n]
 
 class Subsession(BaseSubsession):
     pass
 
 
 class Group(BaseGroup):
-    condition=models.IntegerField(initial=Constants.condition)
+    
+    condition=models.IntegerField(initial=1) # default to individual just in case
+    
+    def set_condition(self):
+        # choose randomly
+        # condition=models.IntegerField(initial=Constants.condition)
+
+        # choose based on number of players
+        if(len(self.get_players())==4):
+            self.condition=0 # set as group
+        else:
+            self.condition=1 #set as individual
+        
     
     group_answer=models.CharField()
     
@@ -122,16 +175,48 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     
+    # hometime_points=120
+    # individual_accuracy_points=1 # points per correct answer
+    # group_accuracy_points=3
+
+    points_cumulative=models.FloatField()
+
+    time_off_task=models.FloatField()
+    
+    def SetPoints(self):
+        if(Constants.display_hometime(self.round_number)):
+            if self.time_off_task==None:
+                self.points_cumulative+=Constants.hometime_points
+            else:
+                self.points_cumulative+=Constants.hometime_points*((self.time_off_task/1000)/Constants.home_timer)
+        self.points_cumulative+=Constants.individual_accuracy_points*int(self.pair_choice==self.correct_match)
+        if(self.group.condition==0):
+            self.points_cumulative+=Constants.group_accuracy_points*int(self.pair_choice==self.group.group_answer)
+        self.participant.vars['points_cumulative']=self.points_cumulative
+
+    
+    # this gives the words for this session
     def UpdateWords(self):
-        return(Constants.get_words_for_session(Constants.get_session_number(self.round_number)))
+        return(Constants.get_words_for_session_pregen(Constants.get_session_number(self.round_number)))
+        #return(Constants.get_words_for_session(Constants.get_session_number(self.round_number)))
         # return(Constants.get_words_for_session(0))
     
+    ### remove following?
     words_json=models.CharField()
     
     def Words_JSON(self):
         self.words_json=json.dumps(
             [[word.split("/"),Constants.pairs[word]] for word in self.UpdateWords()]
         )
+        
+    numwords_json=models.CharField()
+        
+    def NumWords_JSON(self):
+        self.numwords_json=json.dumps(
+            [[word,Constants.pairs[word]] for word in self.UpdateWords()]
+        )
+        
+    ###
         
     PAL_subject_ID=models.CharField()
     PAL_group_ID=models.CharField()
@@ -144,8 +229,11 @@ class Player(BasePlayer):
 
     def get_pair(self):
         word=self.UpdateWords()[(self.round_number-1)%Constants.schooltime_words]
-        self.presented_word=word
-        self.correct_match=Constants.pairs[word]
+        self.presented_word=word[0].strip("[]'")
+        self.correct_match=word[1].strip("[]'")
+
+        # self.presented_word=word
+        # self.correct_match=Constants.pairs[word]
 
     pair_choice=models.CharField()
     confidence_first_answer=models.IntegerField() # represents percentage
@@ -173,5 +261,29 @@ class Player(BasePlayer):
     def get_split_words(self):
         return self.presented_word.split("/")
    
-
+    # questionnaires
+    
+    age=models.IntegerField(label="Please enter your age",min=18,max=112)
+    gender=models.StringField(
+        label="Please select the gender you identify as",
+        choices=[
+            "Male",
+            "Female",
+            "Non-binary",
+            "Prefer not to say"
+        ],
+        widget=widgets.RadioSelect
+    )
+    education=models.StringField(
+        label="Please select the highest education level you have attained:",
+        choices=[
+            "high school or below", 
+            "1 year of undergraduate college", 
+            "2 years of undergraduate college", 
+            "3 years of undergraduate college", 
+            "4 or more years of undergraduate college", 
+            "graduate level college"
+        ],
+        widget=widgets.RadioSelect
+    )
 

@@ -16,45 +16,43 @@
 
 
 <ul>
-    {% for p in group.get_players %}
-        <li>
-        <!-- list player first choice and guesses -->
+    <li>
+    <!-- list player first choice and guesses -->
+        <div id="playerchoice">
+            <p class="choice" data-player="{{player.id_in_group}}" data-choicetype="first_choice" data-ans="{{player.pair_choice}}" data-conf="{{player.confidence_first_answer}}">
+                Player {{player.id_in_group}} chose <b>{{player.pair_choice}}</b> with a confidence of {{player.confidence_first_answer}}%
+            </p>
+        </div>
+        <ul style="margin-right: 1em">
+            {% if player.guess1 != None %}
             <div id="playerchoice">
-                <p class="choice" data-player="{{p.id_in_group}}" data-choicetype="first_choice" data-ans="{{p.pair_choice}}" data-conf="{{p.confidence_first_answer}}">
-                    Player {{p.id_in_group}} chose <b>{{p.pair_choice}}</b> with a confidence of {{p.confidence_first_answer}}%
-                </p>
+                <li>
+                    <p class="choice" data-player="{{player.id_in_group}}" data-choicetype="guess1" data-ans="{{player.guess1}}" data-conf="{{player.confidence1}}">
+                        Player {{player.id_in_group}} guessed <b>{{player.guess1}}</b> with a confidence of {{player.confidence1}}%
+                    </p>
+                </li>
             </div>
-            <ul style="margin-right: 1em">
-                {% if p.guess1 != None %}
-                <div id="playerchoice">
-                    <li>
-                        <p class="choice" data-player="{{p.id_in_group}}" data-choicetype="guess1" data-ans="{{p.guess1}}" data-conf="{{p.confidence1}}">
-                            Player {{p.id_in_group}} guessed <b>{{p.guess1}}</b> with a confidence of {{p.confidence1}}%
-                        </p>
-                    </li>
-                </div>
-                {% endif %}
-                {% if p.guess2 != None %}
-                <div id="playerchoice">
-                    <li>
-                        <p class="choice" data-player="{{p.id_in_group}}" data-choicetype="guess2" data-ans="{{p.guess2}}" data-conf="{{p.confidence2}}">
-                            Player {{p.id_in_group}} guessed <b>{{p.guess2}}</b> with a confidence of {{p.confidence2}}%
-                        </p>
-                    </li>
-                </div>
-                {% endif %}                    
-                {% if p.guess3 != None %}
-                <div id="playerchoice">
-                    <li>
-                        <p class="choice" data-player="{{p.id_in_group}}" data-choicetype="guess3" data-ans="{{p.guess3}}" data-conf="{{p.confidence3}}">
-                            Player {{p.id_in_group}} guessed <b>{{p.guess3}}</b> with a confidence of {{p.confidence3}}%
-                        </p>
-                    </li>
-                </div>
-                {% endif %}
-            </ul>
-        </li>
-    {%endfor%}
+            {% endif %}
+            {% if player.guess2 != None %}
+            <div id="playerchoice">
+                <li>
+                    <p class="choice" data-player="{{player.id_in_group}}" data-choicetype="guess2" data-ans="{{player.guess2}}" data-conf="{{player.confidence2}}">
+                        Player {{player.id_in_group}} guessed <b>{{player.guess2}}</b> with a confidence of {{player.confidence2}}%
+                    </p>
+                </li>
+            </div>
+            {% endif %}                    
+            {% if player.guess3 != None %}
+            <div id="playerchoice">
+                <li>
+                    <p class="choice" data-player="{{player.id_in_group}}" data-choicetype="guess3" data-ans="{{player.guess3}}" data-conf="{{player.confidence3}}">
+                        Player {{player.id_in_group}} guessed <b>{{player.guess3}}</b> with a confidence of {{player.confidence3}}%
+                    </p>
+                </li>
+            </div>
+            {% endif %}
+        </ul>
+    </li>
 </ul>
 
 <!-- convert all of the following values into just a json format -->
@@ -63,7 +61,7 @@
 
 
 
-<div id="hidden_input" style="display: none;">
+<div id="hidden_input">
 
     {% formfield player.player_choice_json %}
     {% formfield player.player_choice_final %}
@@ -73,7 +71,6 @@
 
 
 <style>
-    {% for p in group.get_players %}
         .choice{
             opacity:0; 
             display: block;
@@ -84,7 +81,6 @@
         .choice:hover{
             opacity:1 !important;
         }
-    {%endfor%}
 
 <!-- #hidden_input{ -->
     <!-- display:none; -->
