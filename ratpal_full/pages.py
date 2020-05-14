@@ -50,16 +50,20 @@ class schooltime_non_interactive(Page):
 class ResultsWaitPage(WaitPage):
     def is_displayed(self):
         return self.group.condition==0
+    def before_next_page(self):
+        self.group.group_answer=self.group.get_group_answer()
+
 
 class SchooltimeResults(Page):
     form_model='player'
     form_fields=['player_choice_final','player_choice_final_conf','player_choice_json']
-    def before_next_page(self):
-        self.group.group_answer=self.group.get_group_answer()
     def get_timeout_seconds(self):
         return Constants.school_result_timer
     def is_displayed(self):
         return self.group.condition==0
+    def before_next_page(self):
+        self.player.SetPoints()
+
 
 
 class SchooltimeResultsIndividual(Page):
@@ -69,6 +73,8 @@ class SchooltimeResultsIndividual(Page):
         return Constants.school_result_timer
     def is_displayed(self):
         return self.group.condition==1
+    def before_next_page(self):
+        self.player.SetPoints()
 
 
 
@@ -82,9 +88,16 @@ class Schooltime_feedback_individual(Page):
 
     
 class Feedback(Page):
-    def before_next_page(self):
-        self.player.SetPoints()
+    def vars_for_template(self):
+        return dict(
+            guess1_notblank=self.player.is_not_blank(self.player.guess1),
+            is_individual_condition=(self.group.condition==1),
+            points_cum=round(self.player.points_cumulative,2),
+            accuracy_pt=round(Constants.individual_accuracy_points,2)
+        )
 
+
+# 
 
 ## hometime
 
@@ -161,7 +174,9 @@ sequence_all_conditions=[
 
 # page_sequence = sequence_conditional
 # page_sequence = [GroupingWaitPage,Hometime_one_page]
+# page_sequence = sequence_all_conditions
 
+# full page sequence:
 page_sequence = [ID_input,Demographics,Instructions1,GroupingWaitPage]+ht_new + sequence_all_conditions
 
 

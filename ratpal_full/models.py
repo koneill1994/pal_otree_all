@@ -179,19 +179,21 @@ class Player(BasePlayer):
     # individual_accuracy_points=1 # points per correct answer
     # group_accuracy_points=3
 
-    points_cumulative=models.FloatField()
+    points_cumulative=models.FloatField(initial=0)
 
     time_off_task=models.FloatField()
     
     def SetPoints(self):
+        if(self.round_number>1):
+            self.points_cumulative=self.participant.vars['points_cumulative']
         if(Constants.display_hometime(self.round_number)):
             if self.time_off_task==None:
                 self.points_cumulative+=Constants.hometime_points
             else:
                 self.points_cumulative+=Constants.hometime_points*((self.time_off_task/1000)/Constants.home_timer)
-        self.points_cumulative+=Constants.individual_accuracy_points*int(self.pair_choice==self.correct_match)
+        self.points_cumulative+=Constants.individual_accuracy_points*int(self.player_choice_final==self.correct_match)
         if(self.group.condition==0):
-            self.points_cumulative+=Constants.group_accuracy_points*int(self.pair_choice==self.group.group_answer)
+            self.points_cumulative+=Constants.group_accuracy_points*int(self.player_choice_final==self.group.group_answer)
         self.participant.vars['points_cumulative']=self.points_cumulative
 
     
@@ -261,6 +263,10 @@ class Player(BasePlayer):
     def get_split_words(self):
         return self.presented_word.split("/")
    
+    def is_not_blank(self,x):
+        if x=="" or x==None:
+            return False
+        return True
     # questionnaires
     
     age=models.IntegerField(label="Please enter your age",min=18,max=112)
