@@ -111,7 +111,7 @@ class StartHometime(Page):
 
 class Hometime_one_page(Page):
     form_model='player'
-    form_fields=['homechoose_json','hometime_study_json','time_off_task']
+    form_fields=['homechoose_json','hometime_study_json']
     def get_timeout_seconds(self):
         return Constants.home_timer
     def is_displayed(self):
@@ -120,7 +120,9 @@ class Hometime_one_page(Page):
         return dict(
             numwords=json.dumps(Constants.numpairs[Constants.get_session_number(self.round_number)]) 
         )
-
+    def before_next_page(self):
+        self.player.GetTimeOffTask()
+        
 # player.get_session_number(self.round_number)
 
 

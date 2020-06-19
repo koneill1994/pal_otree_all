@@ -57,6 +57,7 @@ class Player(BasePlayer):
     def SetPoints(self):
         self.points_cumulative=self.participant.vars['points_cumulative']
         
+        self.participant.vars['correct_cumulative']+=int(self.pair_choice==self.correct_match)
         self.points_cumulative+=Constants.final_exam_accuracy_points*int(self.pair_choice==self.correct_match)
         self.participant.vars['points_cumulative']=self.points_cumulative
 

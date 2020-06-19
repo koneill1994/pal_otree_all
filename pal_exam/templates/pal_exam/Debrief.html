@@ -1,0 +1,31 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Debrief
+{% endblock %}
+
+{% block content %}
+
+<p>
+Final exam correct: {{correct}}
+<p>
+Final exam points: {{points_exam}}
+<p>
+Cumulative points: {{points_total}}
+
+
+</p>
+
+<p> Thank you for helping us with this study. 
+	We will compare how well people learned if they were in teams to how well people learned if they were not in teams.
+	Your participation will help us learn more about peer-assisted learning.</p>
+
+
+
+
+
+
+    {% next_button %}
+
+{% endblock %}

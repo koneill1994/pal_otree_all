@@ -25,8 +25,8 @@ class Constants(BaseConstants):
     study_timer=10 # in seconds
     
     school_submit_timer = 30 # in seconds
-    school_result_timer = 10
-    school_guess_timer = 10
+    school_result_timer = 20
+    school_guess_timer = 20
     
     schooltime_words=10 # number of words per round in schooltime
 
@@ -35,7 +35,7 @@ class Constants(BaseConstants):
     num_rounds = pair_rounds*schooltime_words
     
     
-    hometime_points=200
+    hometime_points=200/6  #points available for each hometime session
     individual_accuracy_points=100/60 # points per correct answer
     group_accuracy_points=300/60
 
@@ -182,6 +182,45 @@ class Player(BasePlayer):
     points_cumulative=models.FloatField(initial=0)
 
     time_off_task=models.FloatField()
+    
+    # [["task",7272],["rest",12842],["task",16125],["rest",20951],["task",24445]]
+    # "[[\"task\",7272],[\"rest\",12842],[\"task\",16125],[\"rest\",20951],[\"task\",24445]]"
+
+    def GetTimeOffTask(self):
+        # homechoose_json -> time_off_task
+
+        if len(self.homechoose_json)>0:
+        
+            hometime_list=json.loads(self.homechoose_json)
+
+            # this is the most elegant hack i could think of
+            # add in a illusory "task" transition at the end of the task
+            # so that we catch the last period before hometime ends
+            hometime_list.append(["task",(1000*Constants.home_timer)])
+
+            # we start in "off task" state
+            on_task=False
+            off_task_sum=0
+            start_off_task=0
+            for state_change in hometime_list:
+                if on_task:
+                    if state_change[0]!="task":
+                        start_off_task=state_change[1]
+                        on_task=False
+                else:
+                    if state_change[0]=="task":
+                        off_task_sum+=state_change[1]-start_off_task
+                        on_task=True
+                        
+            # if hometime_list[-1][0]!="task":
+                # off_task_sum+=(1000*Constants.home_timer)-hometime_list[-1][1]
+            
+            self.time_off_task = off_task_sum
+            
+        else:
+            self.time_off_task=(1000*Constants.home_timer)
+
+                    
     
     def SetPoints(self):
         if(self.round_number>1):
