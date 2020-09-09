@@ -32,6 +32,8 @@ class schooltime1(Page):
     form_fields=['pair_choice','confidence_first_answer']
     def get_timeout_seconds(self):
         return Constants.school_submit_timer
+    def before_next_page(self):
+        self.group.setConfederateAnswers()
 
 class schooltime_guesses(Page):
     form_model='player'
@@ -48,6 +50,10 @@ class schooltime_non_interactive(Page):
         return self.group.condition==2
 
 class ResultsWaitPage(WaitPage):
+    def is_displayed(self):
+        return self.group.condition==0
+
+class PreResultsPage(Page):
     def is_displayed(self):
         return self.group.condition==0
     def before_next_page(self):
@@ -165,6 +171,7 @@ sequence_all_conditions=[
     schooltime1,
     schooltime_guesses,
     ResultsWaitPage,
+    PreResultsPage,
     SchooltimeResults,
     SchooltimeResultsIndividual,
     Feedback
@@ -176,9 +183,9 @@ sequence_all_conditions=[
 
 # page_sequence = sequence_conditional
 # page_sequence = [GroupingWaitPage,Hometime_one_page]
-# page_sequence = sequence_all_conditions
+page_sequence = sequence_all_conditions
 
 # full page sequence:
-page_sequence = [ID_input,Demographics,Instructions1,GroupingWaitPage]+ht_new + sequence_all_conditions
+# page_sequence = [ID_input,Demographics,Instructions1,GroupingWaitPage]+ht_new + sequence_all_conditions
 
 
