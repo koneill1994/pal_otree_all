@@ -104,7 +104,9 @@ class Constants(BaseConstants):
         
         
     # load confederate data 
-    confederate_df=pd.read_csv("confederate_data.csv")
+    # confederate_df=pd.read_csv("confederate_data.csv")
+    confederate_df=pd.read_csv("PAL_confederate_test_data.csv")
+
 
     # randomly choose three players to be confederates
     confeds=[]
