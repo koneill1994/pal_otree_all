@@ -5,7 +5,7 @@ from otree.api import (
 
 import random, json
 import pandas as pd
-from munch import munchify
+from types import SimpleNamespace
 
 author = 'Your name here'
 
@@ -122,7 +122,7 @@ class Subsession(BaseSubsession):
 
 class Group(BaseGroup):
     
-    condition=models.IntegerField(initial=1) # default to individual just in case
+    condition=models.IntegerField(initial=0) # set to "group" b/c confederates are there
     
             
     def confederateAnswerLookup(self,df,confeds,i):
@@ -151,13 +151,22 @@ class Group(BaseGroup):
         d["id_in_group"]=id_in_group
         return d
 
-    def setConfederateAnswers(self):
-        confederate_answers=[]
-        for i in [0,1,2]: # index through 3 confederates
-            confederate_answers.append(
-                munchify(self.confederateAnswerLookup(Constants.confederate_df, Constants.confeds, i))
-            )
+    confederate_answers=models.CharField()
     
+    # json.loads(json.dumps(d),object_hook=lambda d: SimpleNamespace(**d))
+    
+    def setConfederateAnswers(self):
+        conf_answers=[]
+        for i in [0,1,2]: # index through 3 confederates
+            conf_answers.append(
+                self.confederateAnswerLookup(Constants.confederate_df, Constants.confeds, i)
+            )
+        return json.dumps(conf_answers)
+    
+    def getConfederateObject(self):
+        return json.loads(self.confederate_answers,object_hook=lambda d: SimpleNamespace(**d))
+
+    # this won't be called without the waiting page
     def set_condition(self):
         # choose randomly
         # condition=models.IntegerField(initial=Constants.condition)
@@ -186,7 +195,7 @@ class Group(BaseGroup):
         for p in self.get_players():
             ans_list.append(p.player_choice_final)
             conf_list.append(p.player_choice_final_conf)
-        for c in self.confederate_answers:
+        for c in self.getConfederateObject():
             ans_list.append(c.player_choice_final)
             conf_list.append(c.player_choice_final_conf)
 
@@ -337,7 +346,7 @@ class Player(BasePlayer):
         # self.correct_match=Constants.pairs[word]
 
     pair_choice=models.CharField()
-    confidence_first_answer=models.IntegerField() # represents percentage
+    confidence_first_answer=models.IntegerField(initial=0) # represents percentage
     
     guess1=models.CharField(blank=True)
     guess2=models.CharField(blank=True)
