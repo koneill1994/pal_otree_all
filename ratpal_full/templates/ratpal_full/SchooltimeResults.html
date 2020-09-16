@@ -55,6 +55,46 @@
             </ul>
         </li>
     {%endfor%}
+    {% for p in confed_answers %}
+        <li>
+        <!-- list player first choice and guesses -->
+            <div id="playerchoice">
+                <p class="choice" data-player="{{p.id_in_group}}" data-choicetype="first_choice" data-ans="{{p.pair_choice}}" data-conf="{{p.confidence_first_answer}}">
+                    Player {{p.id_in_group}} chose <b>{{p.pair_choice}}</b> with a confidence of {{p.confidence_first_answer}}%
+                </p>
+            </div>
+            <ul style="margin-right: 1em">
+                {% if p.guess1 != None %}
+                <div id="playerchoice">
+                    <li>
+                        <p class="choice" data-player="{{p.id_in_group}}" data-choicetype="guess1" data-ans="{{p.guess1}}" data-conf="{{p.confidence1}}">
+                            Player {{p.id_in_group}} guessed <b>{{p.guess1}}</b> with a confidence of {{p.confidence1}}%
+                        </p>
+                    </li>
+                </div>
+                {% endif %}
+                {% if p.guess2 != None %}
+                <div id="playerchoice">
+                    <li>
+                        <p class="choice" data-player="{{p.id_in_group}}" data-choicetype="guess2" data-ans="{{p.guess2}}" data-conf="{{p.confidence2}}">
+                            Player {{p.id_in_group}} guessed <b>{{p.guess2}}</b> with a confidence of {{p.confidence2}}%
+                        </p>
+                    </li>
+                </div>
+                {% endif %}                    
+                {% if p.guess3 != None %}
+                <div id="playerchoice">
+                    <li>
+                        <p class="choice" data-player="{{p.id_in_group}}" data-choicetype="guess3" data-ans="{{p.guess3}}" data-conf="{{p.confidence3}}">
+                            Player {{p.id_in_group}} guessed <b>{{p.guess3}}</b> with a confidence of {{p.confidence3}}%
+                        </p>
+                    </li>
+                </div>
+                {% endif %}
+            </ul>
+        </li>
+    {%endfor%}
+
 </ul>
 
 <!-- convert all of the following values into just a json format -->

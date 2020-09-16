@@ -4,6 +4,8 @@ from otree.api import (
 )
 
 import random, json
+import pandas as pd
+from types import SimpleNamespace
 
 author = 'Your name here'
 
@@ -99,6 +101,20 @@ class Constants(BaseConstants):
 
     def get_words_for_session_pregen(session_n):
         return Constants.wordpairs[session_n]
+        
+        
+    # load confederate data 
+    # confederate_df=pd.read_csv("confederate_data.csv")
+    confederate_df=pd.read_csv("PAL_confederate_test_data.csv")
+
+
+    # randomly choose three players to be confederates
+    confeds=[]
+    for i in random.sample(range(0,len(confederate_df["participant.code"])),3):
+        confeds.append(confederate_df["participant.code"][i])
+
+
+
 
 class Subsession(BaseSubsession):
     pass
@@ -106,11 +122,56 @@ class Subsession(BaseSubsession):
 
 class Group(BaseGroup):
     
-    condition=models.IntegerField(initial=1) # default to individual just in case
+    condition=models.IntegerField(initial=0) # set to "group" b/c confederates are there
     
+            
+    def confederateAnswerLookup(self,df,confeds,i):
+        player=Constants.confeds[i]
+        id_in_group=[2,3,4][i] # player is id 1, confederates are id's 2,3,4
+
+        row=df[df["participant.code"]==player]
+        k="ratpal_full.1.player."
+
+        r2=["pair_choice",
+            "confidence_first_answer",
+            "guess1",
+            "guess2",
+            "guess3",
+            "confidence1",
+            "confidence2",
+            "confidence3",
+            "player_choice_final",
+            "player_choice_final_conf"]
+
+        sel=".".join(["ratpal_full",str(self.round_number),"player"])
+
+        subs=row[[sel+"."+r for r in r2]]
+        subs.columns=r2
+        d=subs.to_dict("records")[0]
+        d["id_in_group"]=id_in_group
+        return d
+
+    confederate_answers=models.CharField()
+    
+    # json.loads(json.dumps(d),object_hook=lambda d: SimpleNamespace(**d))
+    
+    def setConfederateAnswers(self):
+        conf_answers=[]
+        for i in [0,1,2]: # index through 3 confederates
+            conf_answers.append(
+                self.confederateAnswerLookup(Constants.confederate_df, Constants.confeds, i)
+            )
+        return json.dumps(conf_answers)
+    
+    def getConfederateObject(self):
+        return json.loads(self.confederate_answers,object_hook=lambda d: SimpleNamespace(**d))
+
+    # this won't be called without the waiting page
     def set_condition(self):
         # choose randomly
         # condition=models.IntegerField(initial=Constants.condition)
+
+        # figure out what to do with this
 
         # choose based on number of players
         if(len(self.get_players())==4):
@@ -134,6 +195,10 @@ class Group(BaseGroup):
         for p in self.get_players():
             ans_list.append(p.player_choice_final)
             conf_list.append(p.player_choice_final_conf)
+        for c in self.getConfederateObject():
+            ans_list.append(c.player_choice_final)
+            conf_list.append(c.player_choice_final_conf)
+
         
         # get a dictionary of form {choice: count}
         ans_dict={}
@@ -258,6 +323,10 @@ class Player(BasePlayer):
         )
         
     ###
+
+    ###
+        
+        
         
     PAL_subject_ID=models.CharField()
     PAL_group_ID=models.CharField()
@@ -277,7 +346,7 @@ class Player(BasePlayer):
         # self.correct_match=Constants.pairs[word]
 
     pair_choice=models.CharField()
-    confidence_first_answer=models.IntegerField() # represents percentage
+    confidence_first_answer=models.IntegerField(initial=0) # represents percentage
     
     guess1=models.CharField(blank=True)
     guess2=models.CharField(blank=True)

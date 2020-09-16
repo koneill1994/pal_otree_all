@@ -89,8 +89,18 @@ words_i=function(sesh){
   }
 }
 
+words_i_general=function(sesh,words_per_session,overlap){
+  (sesh-1)*overlap+1:words_per_session
+}
+
+words_i_general(2,25,10)
+
 # the number list which holds all the word-number pairs we'll want
 nlist=list()
+
+
+n_words=10
+n_foils=10
 
 # for each session
 for(n in 1:6){
@@ -99,7 +109,7 @@ for(n in 1:6){
   w=wordlist[words_i(n),]$match
   
   # foils, gets random foils for this session
-  f=sample(foil_list,10)
+  f=sample(foil_list,n_foils)
   
   # sesh hold the list of word-number pairs for this session
   sesh=list()
@@ -111,12 +121,12 @@ for(n in 1:6){
   # keep adding random words from either worsd or foils until we have
   # 10 words and 10 foils
   # each paired with a random number [1:9]
-  while(wc<11 | fc<11){
-    if(wc>=11){
+  while(wc<n_words+1 | fc<n_foils+1){
+    if(wc>=n_words+1){
       sesh[[length(sesh)+1]]=c(f[fc],round(runif(1,1,9)))
       fc=fc+1
     }
-    else if(fc>=11){
+    else if(fc>=n_foils+1){
       sesh[[length(sesh)+1]]=c(w[wc],round(runif(1,1,9)))
       wc=wc+1
     }
