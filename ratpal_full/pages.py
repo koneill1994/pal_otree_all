@@ -76,6 +76,9 @@ class SchooltimeResultsIndividual(Page):
     def before_next_page(self):
         self.player.SetPoints()
 
+class ConsentForm(Page):
+    def is_displayed(self):
+        return self.round_number==1
 
 
 class Instructions1(Page):
@@ -179,6 +182,6 @@ sequence_all_conditions=[
 # page_sequence = sequence_all_conditions
 
 # full page sequence:
-page_sequence = [ID_input,Demographics,Instructions1,GroupingWaitPage]+ht_new + sequence_all_conditions
+page_sequence = [ConsentForm,ID_input,Demographics,Instructions1,GroupingWaitPage]+ht_new + sequence_all_conditions
 
 

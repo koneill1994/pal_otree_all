@@ -1,0 +1,102 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    <p><b>Subject Informed Consent Document</p>
+<p>Paired-Associate Learning (PAL) Experimental Study</b></p>
+{% endblock %}
+
+{% block content %}
+
+<p>Investigator(s) name & address: Ion Juvina, Ph.D., Michael Collins, Kevin J. O’Neill, Jarean Carson, Chris Rieser, and Alexander R. Hough, 
+Wright State University, Psychology Department, 335 Fawcett Hall. </p>
+<p>Site(s) where study is to be conducted: 407, 526, 526a Fawcett Hall</p>
+<p>Phone number for subjects to call for questions: (937) 775-3519</p>
+
+<p><b>Introduction and Background Information</b></p>
+
+<p>You are invited to participate in a research study.  
+This study is being conducted by Ion Juvina, Ph.D., Michael Collins, Kevin J. O’Neill, Jarean Carson, Chris Rieser, and Alexander R. Hough, 
+Wright State University. Approximately 120 subjects will be invited to participate.  </p>
+
+<p><b>Purpose:</b>  The purpose of this study is to experimentally investigate some of the factors that affect learning in different conditions. </p>
+
+<p><b>Procedures</b></p>
+
+<p>In this study, you will be asked to use a computer to perform a paired-associates task. 
+This task involves memorizing combinations of words and numbers. 
+You will also complete survey questions before, during, and after the study. 
+You will be placed into one of three possible conditions. 
+The approximate time to complete this study will be 2 hours. This study will be conducted over 1 session.</p>
+
+<p><b>Potential Risks</b></p>
+
+<p>There are risks associated with this study. Those risks are wrist strain, finger strain, eye strain, fatigue, and soreness 
+from regular computer use, and claustrophobia from the booths you will be performing the study in.</p>
+
+<p><b>Benefits</b></p>
+
+<p>There are no direct benefits to you for participating in this study. 
+This study will provide potential benefits to society and the scientific community. 
+A better understanding of the cognitive mechanisms involved in individual and team-based learning 
+will potentially lead to improved academic performance and structure. 
+The information collected may not benefit you directly. The information learned in this study may be helpful to others.</p>
+
+<p><b>Compensation</b></p> 
+
+<p>You will receive course credits or be paid money for your time or inconvenience while you are in this study. 
+Base compensation for participation in this study will be 2 course credits or $10 an hour. 
+You will be able to earn up to 2 course credits or $10 in addition to the base compensation through performance incentives. 
+Should you need to leave before the study is completed, your compensation will be pro-rated at a rate of 
+2 course credits or $10 per hour of participation rounding up. Performance incentives achieved will be added to your compensation. </p> 
+
+<p><b>Confidentiality</b></p>
+
+<p>Total privacy cannot be guaranteed.  We will protect your privacy to the extent permitted by law.  
+If the results from this study are published, your name will not be made public. 
+Once your information leaves our institution, we cannot promise that others will keep it private.</p>  
+
+<p>Your information may be shared with the following:
+
+<ul>
+	<li>The sponsor and companies hired by the sponsor to oversee the study</li>
+	<li>The Wright State IRB and Office of Research and Sponsored Programs</li>
+	<li>Government agencies, such as: Department of Defense (DoD), Air Force Office of Scientific Research (AFOSR)</li>
+	<li>Office for Human Research Protections (OHRP)</li>
+
+<p><b>Security</b></p>
+
+<p>Personal information will be kept on a password-protected computer and in a locked file cabinet 
+in a locked office on campus at Wright State University. </p>
+
+<p><b>Conflict of Interest </b></p>
+
+<p>This study may involve a conflict of interest because the institution and/or the investigator will be compensated for your participation in it.  
+Please ask the investigator how the institution and/or investigator will benefit by your participation in the study.</p>
+
+<p><b>Voluntary Participation</b></p>
+
+<p>Taking part in this study is voluntary. You may choose not to take part at all. 
+If you decide to be in this study you may stop taking part at any time. 
+If you decide not to be in this study or if you stop taking part at any time, 
+you will not lose any benefits for which you may qualify and you will be compensated for the time that you were present.</p>  
+
+<p><b>Research Subject’s Rights, Questions, Concerns, and Complaints</b></p>
+
+<p>You may contact the principal investigator at ion.juvina@wright.edu. </p>
+<p>If you have any questions about your rights as a study subject, questions, concerns or complaints, 
+you may call the Wright State IRB Office (937) 775-4462.  You may discuss any questions about your rights as a subject 
+with a member of the IRB or staff.  The IRB is an independent committee composed of 
+members of the University community, staff of the institutions, as well as lay members of the community not connected with these institutions.  
+The IRB has reviewed this study. </p>
+
+<p>This paper tells you what will happen during the study if you choose to take part.  
+Your signature means that this study has been discussed with you, that your questions have been answered, and that you will take part in the study.  
+This informed consent document is not a contract.  You are not giving up any legal rights by signing this informed consent document.  
+You will be given a signed copy of this consent to keep for your records.</p>
+
+<p>By clicking next you are agreeing that you consent to participate in this experiment.</p>
+
+    {% next_button %}
+
+{% endblock %}

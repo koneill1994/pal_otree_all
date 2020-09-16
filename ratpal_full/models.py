@@ -26,7 +26,7 @@ class Constants(BaseConstants):
     
     school_submit_timer = 30 # in seconds
     school_result_timer = 20
-    school_guess_timer = 20
+    school_guess_timer = 30
     
     schooltime_words=10 # number of words per round in schooltime
 
