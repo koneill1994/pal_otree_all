@@ -125,7 +125,8 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     
     condition=models.IntegerField(initial=0) # set to "group" b/c confederates are there
-    
+    # group: 0
+    # individual: 1
             
     def confederateAnswerLookup(self,df,confeds,i):
         player=Constants.confeds[i]
