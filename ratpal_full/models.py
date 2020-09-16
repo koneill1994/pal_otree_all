@@ -30,7 +30,7 @@ class Constants(BaseConstants):
     school_result_timer = 20
     school_guess_timer = 30
     
-    schooltime_words=10 # number of words per round in schooltime
+    schooltime_words=15 # number of words per round in schooltime
 
     pair_rounds=6 # number of times players go through ht/st paired tasks
     
@@ -124,7 +124,7 @@ class Subsession(BaseSubsession):
 
 class Group(BaseGroup):
     
-    condition=models.IntegerField(initial=0) # set to "group" b/c confederates are there
+    condition=models.IntegerField(initial=1) # set to "group" b/c confederates are there
     # group: 0
     # individual: 1
             
