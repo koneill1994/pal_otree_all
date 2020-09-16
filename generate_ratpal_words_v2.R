@@ -92,6 +92,17 @@ words_i=function(sesh){
   }
 }
 
+words_i_general=function(sesh,words_per_session,overlap){
+  (sesh-1)*(words_per_session-overlap)+1:words_per_session
+}
+
+words_i_final_exam=function(words_per_session,overlap){
+  1:((6-1)*(words_per_session-overlap)+words_per_session)
+}
+
+words_per_session=15
+overlap=5
+
 # the number list which holds all the word-number pairs we'll want
 nlist=list()
 
@@ -102,7 +113,7 @@ n_foils=15
 for(n in 1:6){
   
   # words, gets the words for this session
-  w=wordlist[words_i(n),]$match
+  w=wordlist[words_i_general(n, words_per_session, overlap),]$match
   
   # foils, gets random foils for this session
   f=sample(foil_list,n_foils)
@@ -150,7 +161,7 @@ wlist=list()
 
 for(n in 1:6){
 
-  wordgroup=wordlist[words_i(n),]
+  wordgroup=wordlist[words_i_general(n, words_per_session, overlap),]
 
   w=list()
 
@@ -162,8 +173,19 @@ for(n in 1:6){
   
 }
 
+# final exam stuff
+
+examlist=list()
+for(row in words_i_final_exam(words_per_session, overlap)){
+  examlist[[row]]=unlist(list(wordlist[row,]$words,wordlist[row,]$match))
+}
+
+
 # uncomment these lines to save the generated word pairs to file
-#write(toJSON(nlist),"nlist.json")
-#write(toJSON(wlist),"wlist.json")
-# 
+write(toJSON(nlist),"nlist.json")
+write(toJSON(wlist),"wlist.json")
+write(toJSON(examlist),"examlist.json")
+
+
+# THIS IS OBSOLETE
 #write(toJSON(wordpairs),"wordlist.json")

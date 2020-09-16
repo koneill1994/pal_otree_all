@@ -52,11 +52,12 @@ class Constants(BaseConstants):
     def get_session_number(round_n):
         return int((round_n-1)/Constants.schooltime_words)
     
-    with open('wordlist.json') as json_file:
-        data = json.load(json_file)
+    # OBSOLETE
+    # with open('wordlist.json') as json_file:
+        # data = json.load(json_file)
         
-    pairs=dict([(x[0][0],x[1][0]) for x in data])
-    words=list(pairs.keys())
+    # pairs=dict([(x[0][0],x[1][0]) for x in data])
+    # words=list(pairs.keys())
    
    
     with open('wlist.json') as json_file:
@@ -80,24 +81,25 @@ class Constants(BaseConstants):
    
     condition=random.randint(0,1)
     
-    #make following generalized
+    # FOLLOWING IS OBSOLETE
+    # make following generalized
     # also its repeating first 5 from first session, pls fix
-    def arrange_words_for_session(session_n):
-        if session_n==0:
-            return ([],Constants.words[0:Constants.schooltime_words])
-        else:
-            return (Constants.arrange_words_for_session(session_n-1)[1][0:5],
-                    Constants.words[
-                        Constants.schooltime_words+(session_n-1)*(Constants.schooltime_words-5):
-                            Constants.schooltime_words+(session_n)*(Constants.schooltime_words-5)
-                    ])
+    # def arrange_words_for_session(session_n):
+        # if session_n==0:
+            # return ([],Constants.words[0:Constants.schooltime_words])
+        # else:
+            # return (Constants.arrange_words_for_session(session_n-1)[1][0:5],
+                    # Constants.words[
+                        # Constants.schooltime_words+(session_n-1)*(Constants.schooltime_words-5):
+                            # Constants.schooltime_words+(session_n)*(Constants.schooltime_words-5)
+                    # ])
            
-    def get_words_for_session(session_n):
-        out=[]
-        for sublist in Constants.arrange_words_for_session(session_n):
-            for word in sublist:
-                out.append(word)
-        return out
+    # def get_words_for_session(session_n):
+        # out=[]
+        # for sublist in Constants.arrange_words_for_session(session_n):
+            # for word in sublist:
+                # out.append(word)
+        # return out
 
     def get_words_for_session_pregen(session_n):
         return Constants.wordpairs[session_n]
@@ -219,18 +221,23 @@ class Group(BaseGroup):
                 return max(ans_dict, key=ans_dict.get)
         elif len(ans_dict)==3: # if 2, 1, and 1, choose the max
             return max(ans_dict, key=ans_dict.get)
-        else: # all 4 separate answers
+        else:
+            # if all different, choose randomly
+            return list(ans_dict.keys())[random.randint(0,3)]
+            
+            
+        # else: # all 4 separate answers
             # choose the answer with the highest confidence above the cutoff
-            highest_conf=0
-            ans_high_conf=""
-            for i in range(0,len(conf_list)):
-                if conf_list[i]>highest_conf:
-                    highest_conf=conf_list[i]
-                    ans_high_conf=ans_list[i]
-            if highest_conf>=confidence_cutoff:
-                return ans_high_conf
-            else: # if no answers are high enough confidence, return a failure tag as the group answer
-                return "___FAILURE___" # or return None?
+            # highest_conf=0
+            # ans_high_conf=""
+            # for i in range(0,len(conf_list)):
+                # if conf_list[i]>highest_conf:
+                    # highest_conf=conf_list[i]
+                    # ans_high_conf=ans_list[i]
+            # if highest_conf>=confidence_cutoff:
+                # return ans_high_conf
+            # else: # if no answers are high enough confidence, return a failure tag as the group answer
+                # return "___FAILURE___" # or return None?
                 
                 
 

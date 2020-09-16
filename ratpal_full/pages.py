@@ -194,10 +194,7 @@ sequence_all_conditions=[
 page_sequence = sequence_all_conditions
 
 # full page sequence:
-<<<<<<< HEAD
-page_sequence = [ConsentForm,ID_input,Demographics,Instructions1,GroupingWaitPage]+ht_new + sequence_all_conditions
-=======
-# page_sequence = [ID_input,Demographics,Instructions1,GroupingWaitPage]+ht_new + sequence_all_conditions
->>>>>>> 0470bcefc05bbe298e11e9ac744fd6288f505018
+
+# page_sequence = [ConsentForm,ID_input,Demographics,Instructions1,GroupingWaitPage]+ht_new + sequence_all_conditions
 
 
