@@ -33,7 +33,8 @@ class schooltime1(Page):
     def get_timeout_seconds(self):
         return Constants.school_submit_timer
     def before_next_page(self):
-        self.group.confederate_answers=self.group.setConfederateAnswers()
+        if self.group.condition==0:
+            self.group.confederate_answers=self.group.setConfederateAnswers()
 
 class schooltime_guesses(Page):
     form_model='player'
