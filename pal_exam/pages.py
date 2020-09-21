@@ -19,7 +19,8 @@ class exam_start_page(Page):
     def before_next_page(self):
         # user has 5 minutes to complete as many pages as possible
         self.participant.vars['expiry'] = time.time() + Constants.exam_timer
-        self.player.points_cumulative=self.participant.vars['points_cumulative']
+        if ("points_cumulative" in self.participant.vars) and ('correct_cumulative' in self.participant.vars):
+            self.player.points_cumulative=self.participant.vars['points_cumulative']
         self.participant.vars['correct_cumulative']=0
         
 class exam_1(Page):
