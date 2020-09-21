@@ -27,7 +27,7 @@ class Constants(BaseConstants):
     with open('examlist.json') as json_file:
         data = json.load(json_file)
         
-    pairs=dict([(x[0][0],x[1][0]) for x in data])
+    pairs=dict([(x[0],x[1]) for x in data])
     
     words=list(pairs.keys())
     
@@ -57,11 +57,12 @@ class Player(BasePlayer):
     points_cumulative=models.FloatField()
 
     def SetPoints(self):
-        self.points_cumulative=self.participant.vars['points_cumulative']
-        
-        self.participant.vars['correct_cumulative']+=int(self.pair_choice==self.correct_match)
-        self.points_cumulative+=Constants.final_exam_accuracy_points*int(self.pair_choice==self.correct_match)
-        self.participant.vars['points_cumulative']=self.points_cumulative
+        if ("points_cumulative" in self.participant.vars) and ('correct_cumulative' in self.participant.vars):
+            self.points_cumulative=self.participant.vars['points_cumulative']
+            
+            self.participant.vars['correct_cumulative']+=int(self.pair_choice==self.correct_match)
+            self.points_cumulative+=Constants.final_exam_accuracy_points*int(self.pair_choice==self.correct_match)
+            self.participant.vars['points_cumulative']=self.points_cumulative
 
 
 
