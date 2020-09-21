@@ -79,7 +79,6 @@ class Constants(BaseConstants):
    
 
    
-    condition=random.randint(0,1)
     
     # FOLLOWING IS OBSOLETE
     # make following generalized
@@ -124,7 +123,7 @@ class Subsession(BaseSubsession):
 
 class Group(BaseGroup):
     
-    condition=models.IntegerField(initial=1) # set to "group" b/c confederates are there
+    condition=models.IntegerField(initial=1)
     # group: 0
     # individual: 1
             
