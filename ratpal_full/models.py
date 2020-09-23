@@ -27,7 +27,7 @@ class Constants(BaseConstants):
     study_timer=10 # in seconds
     
     school_submit_timer = 30 # in seconds
-    school_result_timer = 20
+    school_result_timer = 30
     school_guess_timer = 30
     
     schooltime_words=15 # number of words per round in schooltime
@@ -38,8 +38,8 @@ class Constants(BaseConstants):
     
     
     hometime_points=200/6  #points available for each hometime session
-    individual_accuracy_points=100/60 # points per correct answer
-    group_accuracy_points=300/60
+    individual_accuracy_points=100/90 # points per correct answer with 15 problems per school session
+    group_accuracy_points=300/90 #points per correct answer with 15 problems per school session
 
     
     

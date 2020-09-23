@@ -192,10 +192,10 @@ sequence_all_conditions=[
 
 # page_sequence = sequence_conditional
 # page_sequence = [GroupingWaitPage,Hometime_one_page]
-page_sequence = sequence_all_conditions
+# page_sequence = sequence_all_conditions
 
 # full page sequence:
 
-# page_sequence = [ConsentForm,ID_input,Demographics,Instructions1,GroupingWaitPage]+ht_new + sequence_all_conditions
+page_sequence = [ConsentForm,ID_input,Demographics,Instructions1,GroupingWaitPage]+ht_new + sequence_all_conditions
 
 
