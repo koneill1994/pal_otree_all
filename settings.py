@@ -35,6 +35,20 @@ SESSION_CONFIGS = [
        app_sequence=['ratpal_full','pal_exam']
     ),
     dict(
+       name='ratpal_individual',
+       display_name="ratpal_individual",
+       num_demo_participants=1,
+       app_sequence=['ratpal_full','pal_exam'],
+       pal_condition="individual",
+    ),
+    dict(
+       name='ratpal_confederates',
+       display_name="ratpal_confederates",
+       num_demo_participants=1,
+       app_sequence=['ratpal_full','pal_exam'],
+       pal_condition="confederate",
+    ),
+    dict(
        name='cr_survey',
        display_name="cr_survey",
        num_demo_participants=1,

@@ -105,8 +105,8 @@ class Constants(BaseConstants):
         
         
     # load confederate data 
-    # confederate_df=pd.read_csv("confederate_data.csv")
-    confederate_df=pd.read_csv("PAL_confederate_test_data.csv")
+    confederate_df=pd.read_csv("confederate_data.csv")
+    # confederate_df=pd.read_csv("PAL_confederate_test_data.csv")
 
 
     # randomly choose three players to be confederates
@@ -123,9 +123,15 @@ class Subsession(BaseSubsession):
 
 class Group(BaseGroup):
     
-    condition=models.IntegerField(initial=1)
-    # group: 0
+    condition=models.IntegerField(initial=0)
+    # confederate: 0
     # individual: 1
+    
+    def SetCondition(self):
+        if self.session.config['pal_condition']=="individual":
+            self.condition=1
+        elif self.session.config['pal_condition']=="confederate":
+            self.condition=0
             
     def confederateAnswerLookup(self,df,confeds,i):
         player=Constants.confeds[i]
@@ -150,14 +156,29 @@ class Group(BaseGroup):
         subs=row[[sel+"."+r for r in r2]]
         subs.columns=r2
         d=subs.to_dict("records")[0]
+        
+        # attempting to purge the nans
+        for key in d:
+            if pd.isna(d[key]):
+                d[key]=None
+        
+        
         d["id_in_group"]=id_in_group
         return d
 
     confederate_answers=models.CharField()
     
-    # json.loads(json.dumps(d),object_hook=lambda d: SimpleNamespace(**d))
+    # debug variables
+    constants_confederate_df=models.CharField()
+    constants_confeds=models.CharField()
+    
+    
     
     def setConfederateAnswers(self):
+    
+        self.constants_confederate_df=json.dumps(Constants.confederate_df.to_dict("records"))
+        self.constants_confeds=json.dumps(Constants.confeds)
+        
         conf_answers=[]
         for i in [0,1,2]: # index through 3 confederates
             conf_answers.append(
@@ -168,18 +189,19 @@ class Group(BaseGroup):
     def getConfederateObject(self):
         return json.loads(self.confederate_answers,object_hook=lambda d: SimpleNamespace(**d))
 
+    # DEPRECATED
     # this won't be called without the waiting page
-    def set_condition(self):
+    # def set_condition(self):
         # choose randomly
         # condition=models.IntegerField(initial=Constants.condition)
 
         # figure out what to do with this
 
         # choose based on number of players
-        if(len(self.get_players())==4):
-            self.condition=0 # set as group
-        else:
-            self.condition=1 #set as individual
+        # if(len(self.get_players())==4):
+            # self.condition=0 # set as group
+        # else:
+            # self.condition=1 #set as individual
         
     
     group_answer=models.CharField()
@@ -252,6 +274,7 @@ class Player(BasePlayer):
     # group_accuracy_points=3
 
     points_cumulative=models.FloatField(initial=0)
+    exam_score_cumulative=models.FloatField()
 
     time_off_task=models.FloatField()
     

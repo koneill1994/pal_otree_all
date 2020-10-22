@@ -25,6 +25,7 @@ class GroupingWaitPage(WaitPage):
 class SchoolTimeWaitPage(Page): 
     def before_next_page(self):
         self.player.get_pair()
+        self.group.SetCondition()
         
         ### rename?
 class schooltime1(Page):
@@ -190,12 +191,16 @@ sequence_all_conditions=[
 #####
 # sequence_conditional=sequence_group+sequence_individual # +sequence_non_interactive
 
-# page_sequence = sequence_conditional
+# page_sequence = ht_new + sequence_all_conditions
 # page_sequence = [GroupingWaitPage,Hometime_one_page]
 # page_sequence = sequence_all_conditions
 
+# note: DON'T USE GROUPING WAIT PAGE
+# it screws up the confederate loadings and displaying of answers
+
 # full page sequence:
 
-page_sequence = [ConsentForm,ID_input,Demographics,Instructions1,GroupingWaitPage]+ht_new + sequence_all_conditions
+
+page_sequence = [ConsentForm,ID_input,Demographics,Instructions1]+ht_new + sequence_all_conditions
 
 
